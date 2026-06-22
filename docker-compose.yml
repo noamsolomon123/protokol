@@ -1,0 +1,110 @@
+# ---------------------------------------------------------------------------
+# Knesset OSINT — local/dev orchestration.
+#
+# Brings up the full stack:
+#   * postgres — structured store (politicians, votes, bills, statements, ...).
+#   * neo4j    — entity / corruption graph.
+#   * api      — FastAPI app; on start it runs Alembic migrations then uvicorn.
+#
+# Quick start:
+#   cp .env.example .env      # adjust secrets (Neo4j password!)
+#   docker compose up --build
+#   # API:    http://localhost:8000
+#   # Neo4j:  http://localhost:7474  (bolt on 7687)
+#
+# Secrets: NO real secrets live in this file. The values below are safe local
+# defaults that mirror .env.example. In any shared/CI/prod environment, supply
+# real values via the host environment or a private .env (which is gitignored).
+#
+# How to extend:
+#   * More politicians/sources -> no compose change; run additional `ingest`
+#     jobs:  docker compose run --rm api knesset-osint ingest person --person-id <id>
+#   * Add a worker/scheduler -> add another service that reuses `build: .` and
+#     overrides `command`, with the same depends_on health gates as `api`.
+# ---------------------------------------------------------------------------
+
+services:
+  # --- PostgreSQL: source-of-truth structured store -----------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: knesset_osint_postgres
+    environment:
+      # Safe local defaults (match .env.example DATABASE_URL: osint/osint/osint).
+      # Override via host env for non-local use, e.g.:
+      #   POSTGRES_PASSWORD=... docker compose up
+      POSTGRES_USER: ${POSTGRES_USER:-osint}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-osint}
+      POSTGRES_DB: ${POSTGRES_DB:-osint}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # `pg_isready` against the configured user/db; api waits for this.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-osint} -d ${POSTGRES_DB:-osint}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # --- Neo4j: entity / relationship graph ---------------------------------
+  neo4j:
+    image: neo4j:5
+    container_name: knesset_osint_neo4j
+    environment:
+      # NEO4J_AUTH is "user/password". Default mirrors .env.example
+      # (neo4j / change_me_neo4j). CHANGE THIS for anything shared.
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-change_me_neo4j}
+    ports:
+      - "7474:7474"  # HTTP browser UI
+      - "7687:7687"  # Bolt driver protocol
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      # Bolt readiness probe via cypher-shell using the configured creds.
+      test:
+        - "CMD-SHELL"
+        - "cypher-shell -u ${NEO4J_USER:-neo4j} -p ${NEO4J_PASSWORD:-change_me_neo4j} 'RETURN 1' || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
+  # --- API: FastAPI app (also carries migrations + CLI) -------------------
+  api:
+    build: .
+    container_name: knesset_osint_api
+    # Pull defaults from .env (HTTP tuning, source URLs, pilot scope, ...).
+    # The two overrides below replace localhost hostnames from .env.example with
+    # the in-network service names so the container talks to the sibling DBs.
+    env_file:
+      - .env
+    environment:
+      # Override DATABASE_URL / NEO4J_URI to use compose service hostnames.
+      # Credentials track the same safe defaults as the db services above.
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-osint}:${POSTGRES_PASSWORD:-osint}@postgres:5432/${POSTGRES_DB:-osint}
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: ${NEO4J_USER:-neo4j}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-change_me_neo4j}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    # Apply schema migrations, then serve the API. Using sh -c so the two steps
+    # run sequentially in one container process.
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn knesset_osint.main:app --host 0.0.0.0 --port 8000"
+    restart: unless-stopped
+
+# --- Named volumes (persist DB state across `down`/`up`) -------------------
+volumes:
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:

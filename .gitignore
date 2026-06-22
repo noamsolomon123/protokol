@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Environment / secrets — NEVER commit
+.env
+*.env
+!.env.example
+
+# Local data dumps
+/data/
+*.sqlite3
+*.db
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Transient build/test artifacts (leading-underscore scratch files), screenshots
+_*
+*.log
+.playwright-mcp/
+*.png
+# ...but DO keep the site's committed data
+!docs/data/*.json

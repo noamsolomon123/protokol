@@ -1,0 +1,56 @@
+# ---------------------------------------------------------------------------
+# Build-context exclusions for the Docker image.
+#
+# Keeps the image small and — critically — keeps secrets and host-only cruft
+# OUT of the build context. The container reads config from env (docker-compose
+# env_file + overrides), NEVER from a baked-in .env.
+# ---------------------------------------------------------------------------
+
+# Virtual environments (host-specific; deps are reinstalled in the image)
+.venv/
+venv/
+env/
+
+# Python caches / build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Secrets — NEVER ship these into an image layer
+.env
+*.env
+!.env.example
+
+# Local data dumps / databases
+/data/
+*.sqlite3
+*.db
+
+# Version control & CI
+.git/
+.gitignore
+.github/
+
+# IDE / OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Docker / ops files (not needed inside the image)
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+Makefile
+
+# Docs (not needed at runtime)
+docs/
+*.md
+!README.md

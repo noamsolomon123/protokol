@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-22",
+  "politician": {
+    "id": 1,
+    "knesset_person_id": 965,
+    "full_name": "בנימין נתניהו",
+    "first_name": "בנימין",
+    "last_name": "נתניהו",
+    "is_current": true,
+    "current_party": null,
+    "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Person(965)"
+  },
+  "counts": {
+    "roles": 128,
+    "bills": 31,
+    "votes": 216
+  },
+  "votes_ingested_note": "participation computed over 216 ingested votes (capped at 250 for this build)",
+  "scorecard": {
+    "index": {
+      "value": 99.5,
+      "coverage_scored": 1,
+      "coverage_total": 5,
+      "label": "preliminary",
+      "included": [
+        "participation"
+      ],
+      "weights_used": {
+        "participation": 1.0
+      }
+    },
+    "dimensions": [
+      {
+        "key": "participation",
+        "label_he": "השתתפות בהצבעות",
+        "label_en": "Vote participation",
+        "available": true,
+        "scorable": true,
+        "score": 99.5,
+        "raw": {
+          "cast": 215,
+          "absent": 1,
+          "eligible": 216,
+          "by_stance": {
+            "absent": 1,
+            "against": 132,
+            "for": 83
+          }
+        },
+        "weight": 0.15,
+        "source_note": "Knesset Votes.svc roll-call records",
+        "method": "(for + against + abstain) / (for + against + abstain + absent) × 100",
+        "source_urls": [],
+        "pending_reason": null
+      },
+      {
+        "key": "legislative_activity",
+        "label_he": "פעילות חקיקתית",
+        "label_en": "Legislative activity",
+        "available": true,
+        "scorable": false,
+        "score": null,
+        "raw": {
+          "bills_sponsored": 31,
+          "as_lead_initiator": 13
+        },
+        "weight": 0.15,
+        "source_note": "Knesset ParliamentInfo KNS_BillInitiator",
+        "method": "counts only; objective 0–100 needs all-MK percentile (Phase 2)",
+        "source_urls": [],
+        "pending_reason": null
+      },
+      {
+        "key": "integrity",
+        "label_he": "יושרה והליכים משפטיים",
+        "label_en": "Integrity & legal proceedings",
+        "available": false,
+        "scorable": false,
+        "score": null,
+        "raw": {},
+        "weight": 0.3,
+        "source_note": "Court rulings + State Comptroller reports",
+        "method": "not computed — source not wired yet",
+        "source_urls": [],
+        "pending_reason": "Phase 2: wire court-rulings and State Comptroller source adapters."
+      },
+      {
+        "key": "promise_keeping",
+        "label_he": "עמידה בהבטחות",
+        "label_en": "Promise-keeping",
+        "available": false,
+        "scorable": false,
+        "score": null,
+        "raw": {},
+        "weight": 0.2,
+        "source_note": "Public statements ↔ voting record (RAG)",
+        "method": "not computed — source not wired yet",
+        "source_urls": [],
+        "pending_reason": "Phase 2: ingest statements and run the contradiction (RAG) engine."
+      },
+      {
+        "key": "financial_conflict",
+        "label_he": "כספים וניגוד עניינים",
+        "label_en": "Finance & conflicts of interest",
+        "available": false,
+        "scorable": false,
+        "score": null,
+        "raw": {},
+        "weight": 0.2,
+        "source_note": "Budget Key + Corporations Authority + entity graph",
+        "method": "not computed — source not wired yet",
+        "source_urls": [],
+        "pending_reason": "Phase 2: wire Budget Key / Corporations Authority and the Neo4j graph."
+      }
+    ],
+    "disclaimer_he": "מדד זה מבוסס אך ורק על נתונים ציבוריים רשמיים ומקושר למקור לכל נתון. זהו כלי תצוגה אובייקטיבי — לא חוות דעת. המדד משוקלל לפי הקריטריונים שתבחר/י, ואינו קובע אם אדם 'טוב' או 'רע'. שיפוט נתון לקורא.",
+    "disclaimer_en": "This index is built only from official public data, with a source link for every figure. It is an objective display tool, not an opinion. It is weighted by the criteria you choose and never labels a person 'good' or 'bad' — judgment is left to the reader.",
+    "notes": [
+      "Index reflects 1 of 5 dimensions; the rest await Phase 2 data sources."
+    ]
+  },
+  "sample_bills": [
+    {
+      "name": "חוק איסור השקעה בתאגידים המקיימים קשר עסקי עם איראן, התשס\"ח-2008",
+      "knesset_num": 17,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(240795)"
+    },
+    {
+      "name": "הצעת חוק משק החשמל (תיקון - הוראות בענין רשיונות ייצור), התשס\"ו-2006",
+      "knesset_num": 17,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(139308)"
+    },
+    {
+      "name": "הצעת חוק-יסוד: הממשלה",
+      "knesset_num": 12,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(152148)"
+    },
+    {
+      "name": "הצעת חוק פישוט הליכי גירוש (הוראת שעה), התשנ\"ג-1992",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(154482)"
+    },
+    {
+      "name": "הצעת חוק יסוד: הכנסת (תיקון מס' ), התשנ\"ב-1992",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(154064)"
+    },
+    {
+      "name": "הצעת חוק שירות המדינה (מינויים) (תיקון - מינוי יועצים משפטיים של משרדים), התשפ\"א-2021",
+      "knesset_num": 24,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(2159711)"
+    },
+    {
+      "name": "הצעת חוק-יסוד: הכנסת (תיקון - שינוי שיטת הבחירות), התשנ\"ב-1992",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(154142)"
+    },
+    {
+      "name": "הצעת חוק התפזרות הכנסת השלוש עשרה, התשנ\"ג-1994",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(155918)"
+    },
+    {
+      "name": "הצעת חוק פדיון שבויים, התשנ\"ד-1994",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(155969)"
+    },
+    {
+      "name": "הצעת חוק ירושלים ובנותיה, התשפ\"ב-2022",
+      "knesset_num": 24,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(2163745)"
+    },
+    {
+      "name": "הצעת חוק האזרחות (הוראת שעה), התשנ\"ו-1995",
+      "knesset_num": 13,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(158770)"
+    },
+    {
+      "name": "חוק המאבק הלאומי בתאונות דרכים, התשנ\"ז-1997",
+      "knesset_num": 14,
+      "is_lead_initiator": true,
+      "source_url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_Bill(162300)"
+    }
+  ],
+  "recent_votes": [
+    {
+      "stance": "for",
+      "event_title": "קריאה שנייה",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "for",
+      "event_title": "אישור החוק",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "for",
+      "event_title": "קריאה שנייה",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הסתייגות",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "for",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת סיכום",
+      "date": "2004-08-04",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת אי-אמון בממשלה",
+      "date": "2004-08-02",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת אי-אמון בממשלה",
+      "date": "2004-08-02",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "להסיר מסדר-היום",
+      "date": "2004-07-28",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "להסיר מסדר-היום",
+      "date": "2004-07-28",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "for",
+      "event_title": "אישור החוק",
+      "date": "2004-07-26",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "for",
+      "event_title": "קריאה שנייה",
+      "date": "2004-07-26",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת אי-אמון בממשלה",
+      "date": "2004-07-26",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת אי-אמון בממשלה",
+      "date": "2004-07-26",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    },
+    {
+      "stance": "against",
+      "event_title": "הצעת אי-אמון בממשלה",
+      "date": "2004-07-26",
+      "source_url": "https://knesset.gov.il/Odata/Votes.svc/vote_rslts_kmmbr_shadow"
+    }
+  ],
+  "sources": {
+    "parliamentinfo_v4": "https://knesset.gov.il/OdataV4/ParliamentInfo",
+    "votes_v3": "https://knesset.gov.il/Odata/Votes.svc"
+  }
+}
