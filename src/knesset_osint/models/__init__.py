@@ -22,6 +22,7 @@ from knesset_osint.models.role import Role
 from knesset_osint.models.statement import Statement
 from knesset_osint.models.vote import Vote, VoteEvent
 from knesset_osint.models.verification import Contradiction
+from knesset_osint.models.statistic_verdict import StatisticVerdict
 
 __all__ = [
     "Base",
@@ -35,6 +36,7 @@ __all__ = [
     "Action",
     "Contradiction",
     "OfficialStatistic",
+    "StatisticVerdict",
     "SourceType",
     "VoteStance",
     "VoteResult",
