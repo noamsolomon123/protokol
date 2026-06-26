@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 18,
+  "with_interviews": 19,
   "mks": [
     {
       "person_id": 30702,
@@ -30,6 +30,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 780
+    },
+    {
+      "person_id": 30842,
+      "name": "חנוך דב מלביצקי",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 1912
     },
     {
       "person_id": 4395,
@@ -315,13 +322,6 @@
       "person_id": 12938,
       "name": "חמד עמאר",
       "party": "ישראל ביתנו",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30842,
-      "name": "חנוך דב מלביצקי",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
