@@ -1,8 +1,15 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 16,
+  "with_interviews": 18,
   "mks": [
+    {
+      "person_id": 30702,
+      "name": "חוה אתי עטייה",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 205
+    },
     {
       "person_id": 30809,
       "name": "גלית דיסטל אטבריאן",
@@ -16,6 +23,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 303
+    },
+    {
+      "person_id": 30839,
+      "name": "דן אילוז",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 780
     },
     {
       "person_id": 4395,
@@ -263,13 +277,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30839,
-      "name": "דן אילוז",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30840,
       "name": "ואליד אלהואשלה",
       "party": "רע\"ם",
@@ -287,13 +294,6 @@
       "person_id": 30776,
       "name": "ולדימיר בליאק",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30702,
-      "name": "חוה אתי עטייה",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
