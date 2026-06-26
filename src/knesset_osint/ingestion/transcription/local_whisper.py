@@ -26,19 +26,24 @@ DEFAULT_MODEL = "ivrit-ai/whisper-large-v3-turbo-ct2"
 
 def _add_nvidia_dll_dirs() -> None:
     """On Windows, make the pip-installed cuDNN/cuBLAS DLLs discoverable so
-    CTranslate2 can use the GPU (otherwise it raises 'cannot load cudnn')."""
+    CTranslate2 can use the GPU. CTranslate2 loads these via plain LoadLibrary,
+    which searches PATH (NOT the add_dll_directory list) — so we do both, and
+    this must run BEFORE faster-whisper/ctranslate2 loads the CUDA libs."""
     if sys.platform != "win32":
         return
-    for pkg in ("nvidia.cudnn", "nvidia.cublas"):
+    for pkg in ("nvidia.cublas", "nvidia.cudnn"):
         spec = importlib.util.find_spec(pkg)
         if not spec or not spec.submodule_search_locations:
             continue
         bindir = Path(list(spec.submodule_search_locations)[0]) / "bin"
         if bindir.is_dir():
+            b = str(bindir)
             try:
-                os.add_dll_directory(str(bindir))
+                os.add_dll_directory(b)
             except (OSError, AttributeError):
                 pass
+            if b not in os.environ.get("PATH", ""):
+                os.environ["PATH"] = b + os.pathsep + os.environ.get("PATH", "")
 
 
 def _detect_device() -> tuple[str, str]:
@@ -62,9 +67,9 @@ class LocalWhisperTranscriber:
         device: str | None = None,
         compute_type: str | None = None,
     ) -> None:
+        _add_nvidia_dll_dirs()
         from faster_whisper import WhisperModel
 
-        _add_nvidia_dll_dirs()
         dev, ct = _detect_device()
         self.device = device or dev
         self.compute_type = compute_type or ct
