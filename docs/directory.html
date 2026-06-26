@@ -55,7 +55,8 @@
   .party-head .pl{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-  .card{display:flex;align-items:center;gap:12px;border:1.4px solid var(--rule);background:var(--paper-edge);padding:12px 14px;border-radius:3px;transition:all .15s ease;}
+  .card{display:flex;align-items:center;gap:12px;border:1.4px solid var(--rule);background:var(--paper-edge);padding:12px 14px;border-radius:3px;transition:all .15s ease;text-decoration:none;color:inherit;}
+  .cnt{margin-inline-start:auto;font-family:"Suez One",serif;font-size:20px;color:var(--stamp);line-height:1;}
   .card:hover{border-color:var(--stamp);transform:translateY(-2px);box-shadow:6px 8px 0 rgba(27,24,20,.06);}
   .ava{flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;}
   .card .who{min-width:0;}
@@ -135,19 +136,19 @@ function render(filter){
       </div>
       <div class="grid">
         ${g.members.map(m => `
-          <div class="card" title="${m.name}">
+          <a class="card" href="mk.html?id=${m.person_id}" title="${m.name}">
             <span class="ava">${firstLetter(m.name)}</span>
-            <span class="who"><span class="nm">${m.name}</span><span class="id num">ID ${m.person_id}</span></span>
-            <span class="soon">פרופיל בקרוב</span>
-          </div>`).join('')}
+            <span class="who"><span class="nm">${m.name}</span><span class="id num">${m.interview_count ? m.interview_count + ' ראיונות' : 'ID ' + m.person_id}</span></span>
+            ${m.interview_count ? `<span class="cnt num">${m.interview_count}</span>` : ''}
+          </a>`).join('')}
       </div>
     </section>`).join('');
 }
 
-fetch('data/mk_roster.json', { cache: 'no-store' })
-  .then(r => r.ok ? r.json() : [])
+fetch('data/mk_index.json', { cache: 'no-store' })
+  .then(r => r.ok ? r.json() : null)
   .then(data => {
-    ROSTER = Array.isArray(data) ? data : [];
+    ROSTER = (data && data.mks) || [];
     if(!ROSTER.length){ stateEl.textContent = 'מרשם חברי הכנסת אינו זמין כרגע.'; return; }
     render('');
   })
