@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 11,
+  "with_interviews": 12,
   "mks": [
     {
       "person_id": 4395,
@@ -51,6 +51,13 @@
       "party": "הליכוד",
       "interview_count": 3,
       "segment_count": 276
+    },
+    {
+      "person_id": 30835,
+      "name": "בועז ביסמוט",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 482
     },
     {
       "person_id": 4397,
@@ -203,13 +210,6 @@
       "person_id": 2291,
       "name": "אריה מכלוף דרעי",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30835,
-      "name": "בועז ביסמוט",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
