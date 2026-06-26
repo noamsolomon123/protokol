@@ -23,12 +23,25 @@ def main() -> int:
     enable_utf8_console()
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--max", type=int, default=10, help="max transcripts to process this run")
-    ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--engine", choices=["local", "gemini"], default="gemini",
+                    help="gemini (cloud, higher quality, quota-limited) or local (Ollama, free/unlimited but weaker)")
+    ap.add_argument("--local-model", default="gemma3:4b", help="Ollama model for --engine local")
+    ap.add_argument("--model", default="gemini-2.5-flash", help="Gemini model for --engine gemini")
     args = ap.parse_args()
 
-    for k, v in load_env_file(REPO / ".env").items():
-        os.environ.setdefault(k, v)
-    pool = GeminiKeyPool(load_gemini_keys())
+    if args.engine == "local":
+        from knesset_osint.verification.ollama_llm import ollama_generate_json
+        def gen(p):
+            return ollama_generate_json(p, model=args.local_model)
+        print(f"engine: local Ollama ({args.local_model}) — unlimited")
+    else:
+        from knesset_osint.verification.gemini_llm import gemini_generate_json
+        for k, v in load_env_file(REPO / ".env").items():
+            os.environ.setdefault(k, v)
+        pool = GeminiKeyPool(load_gemini_keys())
+        def gen(p):
+            return gemini_generate_json(pool, p, model=args.model)
+        print(f"engine: gemini ({len(pool)} keys)")
     stats = fc.load_verified_stats(REPO)
 
     fpath = DATA / "findings" / "findings.json"
@@ -48,7 +61,7 @@ def main() -> int:
             processed.add(f)
             continue
         try:
-            claims = fc.extract_claims(pool, d, model=args.model)
+            claims = fc.extract_claims(gen, d)
         except Exception as e:  # noqa: BLE001 -> retry next run
             print("extract failed", Path(f).name, e)
             continue
@@ -57,7 +70,7 @@ def main() -> int:
             if not tstats:
                 continue
             try:
-                v = fc.adjudicate(pool, c.get("claim", ""), c.get("quote", ""), tstats, model=args.model)
+                v = fc.adjudicate(gen, c.get("claim", ""), c.get("quote", ""), tstats)
             except Exception as e:  # noqa: BLE001
                 print("adjudicate failed", e)
                 continue

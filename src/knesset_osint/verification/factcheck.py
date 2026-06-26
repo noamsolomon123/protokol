@@ -12,9 +12,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from knesset_osint.ingestion.transcription.keys import GeminiKeyPool
-from knesset_osint.verification.gemini_llm import gemini_generate_json
-
 # The 6 topics for which we have adversarially-verified official statistics.
 TOPICS = [
     'גיוס לצה"ל ושיעורי גיוס (כללי / חרדים / מגזרים)',
@@ -83,20 +80,28 @@ def transcript_text(d: dict, max_chars: int = 14000) -> str:
     return " ".join(s.get("text", "") for s in d.get("segments", []))[:max_chars]
 
 
-def extract_claims(pool: GeminiKeyPool, transcript: dict, *, model: str = "gemini-2.5-flash") -> list[dict]:
+def extract_claims(gen, transcript: dict) -> list[dict]:
+    """`gen` is a callable(prompt:str) -> parsed JSON (Ollama or Gemini backed)."""
     prompt = _EXTRACT_PROMPT.format(
         topics="\n".join("- " + t for t in TOPICS), transcript=transcript_text(transcript)
     )
-    claims = gemini_generate_json(pool, prompt, model=model)
-    return claims if isinstance(claims, list) else []
+    claims = gen(prompt)
+    if isinstance(claims, list):
+        return claims
+    # Some local models wrap the array in an object, e.g. {"claims": [...]}.
+    if isinstance(claims, dict):
+        for v in claims.values():
+            if isinstance(v, list):
+                return v
+    return []
 
 
-def adjudicate(pool: GeminiKeyPool, claim: str, quote: str, stats: list[dict], *, model: str = "gemini-2.5-flash") -> dict:
+def adjudicate(gen, claim: str, quote: str, stats: list[dict]) -> dict:
     stat_lines = "\n".join(
         f'{i}: {s.get("metric")} | {s.get("dimension_value","")} = {s.get("value")} {s.get("unit","")} '
         f'({s.get("period","")}) — מקור: {s.get("source_org","")}'
         for i, s in enumerate(stats)
     )
     prompt = _ADJ_PROMPT.format(claim=claim, quote=quote, stats=stat_lines)
-    res = gemini_generate_json(pool, prompt, model=model)
+    res = gen(prompt)
     return res if isinstance(res, dict) else {"outcome": "unverifiable", "stat_index": None, "confidence": 0, "reason": ""}
