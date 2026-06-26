@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 19,
+  "with_interviews": 20,
   "mks": [
     {
       "person_id": 30702,
@@ -114,6 +114,13 @@
       "party": "הימין הממלכתי",
       "interview_count": 3,
       "segment_count": 1253
+    },
+    {
+      "person_id": 30860,
+      "name": "טלי גוטליב",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 47
     },
     {
       "person_id": 30799,
@@ -329,13 +336,6 @@
       "person_id": 30782,
       "name": "טטיאנה מזרסקי",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30860,
-      "name": "טלי גוטליב",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
