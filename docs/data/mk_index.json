@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 9,
+  "with_interviews": 11,
   "mks": [
     {
       "person_id": 4395,
@@ -37,6 +37,20 @@
       "party": "הליכוד",
       "interview_count": 3,
       "segment_count": 482
+    },
+    {
+      "person_id": 30300,
+      "name": "אמיר אוחנה",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 210
+    },
+    {
+      "person_id": 30710,
+      "name": "אריאל קלנר",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 276
     },
     {
       "person_id": 4397,
@@ -172,13 +186,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30300,
-      "name": "אמיר אוחנה",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30808,
       "name": "אפרת רייטן מרום",
       "party": "העבודה",
@@ -189,13 +196,6 @@
       "person_id": 30873,
       "name": "ארז מלול",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30710,
-      "name": "אריאל קלנר",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },

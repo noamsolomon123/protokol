@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "status": "candidates_for_review",
+  "counts": {
+    "total": 2,
+    "contradicted": 0,
+    "consistent": 2
+  },
+  "findings": [
+    {
+      "person_id": 30799,
+      "mk_name": "מישל בוסקילה",
+      "video_id": "_uOSPcvwTeY",
+      "url": "https://www.youtube.com/watch?v=_uOSPcvwTeY",
+      "title": "ישיבת מליאה 03/09/2019",
+      "topic": "מחירי דיור ושכר דירה",
+      "quote": "כמה קשה היום בעיר להשיג דירה.",
+      "claim": "קשה להשיג דירה לשכירות או לקנייה בעיר.",
+      "approx_seconds": 448,
+      "outcome": "consistent",
+      "confidence": 0.9,
+      "reason": "מחירי הדירות בעיר תל אביב-יפו גבוהים במיוחד (3,987.3 אלף ש\"ח בממוצע), ושכר הדירה לשוכרים חדשים עלה ב-4.6% ב-2025, מה שמקשה על השגת דירה. בנוסף, 27.8% ממשקי הבית מתקשים לכסות הוצאות חודשיות.",
+      "stat": {
+        "metric": "avg_home_price_nis",
+        "dimension_value": "תל אביב-יפו",
+        "value": 3987.3,
+        "unit": "thousand_nis",
+        "period": "2022 (ממוצע שנתי)",
+        "source_org": "הלשכה המרכזית לסטטיסטיקה (הלמ\"ס)",
+        "source_url": "https://www.cbs.gov.il/he/mediarelease/madad/doclib/2024/051/10_24_051t4.pdf",
+        "confirm_quote": "לוח 2.2 (עמוד 3), שורת 'תל אביב - 5000'; עמודת 'ממוצע שנתי' (2022) = '2,769 3,987.3'. אומת חזותית מרצועת השורה."
+      },
+      "status": "candidate"
+    },
+    {
+      "person_id": 30831,
+      "mk_name": "אלי דלל",
+      "video_id": "1UoNb1SWiH8",
+      "url": "https://www.youtube.com/watch?v=1UoNb1SWiH8",
+      "title": "ראיון עם מרכז הקואליציה בוועדת הכספים, חבר הכנסת אלי דלל, 05.12.2025",
+      "topic": "גיוס לצה\"ל ושיעורי גיוס (חרדים)",
+      "quote": "הצבא במשך עשרות שנים היה לו נוח מאוד לא לגייס חרדים",
+      "claim": "במשך עשרות שנים, צה\"ל העדיף לא לגייס חרדים.",
+      "approx_seconds": 235,
+      "outcome": "consistent",
+      "confidence": 0.8,
+      "reason": "הנתונים מראים שיעור גיוס נמוך מאוד של חרדים לצה\"ל (10% בשנת 2022) ועשרות אלפי חרדים במעמד דחיית שירות (66,000 בפברואר 2024, ו-50,000 בשנת 2020). מצב זה, הנמשך לאורך שנים, תואם את הטענה כי לצה\"ל היה נוח לא לגייס חרדים.",
+      "stat": {
+        "metric": "haredi_men_enlistment_rate_pct",
+        "dimension_value": "חרדים",
+        "value": 10,
+        "unit": "percent",
+        "period": "2022",
+        "source_org": "מרכז המחקר והמידע של הכנסת (ממ\"מ)",
+        "source_url": "https://fs.knesset.gov.il/globaldocs/MMM/32b8ae93-49cc-ef11-a856-005056aa1f91/2_32b8ae93-49cc-ef11-a856-005056aa1f91_11_20777.pdf",
+        "confirm_quote": "שיעור הגיוס של גברים חרדים בשנת 2022 מקרב 12,337 בני ה-18 החרדים נאמד ב-10%, ואילו שיעור הגיוס של גברים חרדים מכלל דחויי השירות במעמד תורתו אומנותו (שמספרם נע בין 63,000 ל-66,000 בשנים האחרונות) נמוך יותר"
+      },
+      "status": "candidate"
+    }
+  ]
+}

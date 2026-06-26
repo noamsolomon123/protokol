@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+  פְּרוֹטוֹקוֹל · ממצאים לבדיקה — automated candidate findings (NOT final verdicts).
+  Reads data/findings.json. Each finding: a politician's quote vs an official
+  statistic (with source) + link to the video moment. Marked "מועמד לבדיקה".
+-->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · ממצאים לבדיקה</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--stamp-deep:#8b1216;--true:#3c6446;--gold:#9a7b2e;--maxw:980px;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;}
+  header.mast{padding:46px 0 22px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(36px,7vw,72px);line-height:.92;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:14px 0 0;max-width:60ch;}
+  .banner{background:var(--paper-2);border-block:1.5px solid var(--ink);margin-top:18px;}
+  .banner .wrap{padding:10px 22px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}
+  .banner b{color:var(--stamp);}
+  .counts{display:flex;gap:26px;margin:22px 0 8px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}
+  .counts b{font-family:"Suez One",serif;font-size:24px;}
+  .counts .c-red b{color:var(--stamp);} .counts .c-grn b{color:var(--true);}
+  .find{border:1.5px solid var(--ink);background:var(--paper-edge);box-shadow:14px 18px 0 rgba(27,24,20,.05);margin:0 0 22px;padding:20px 20px 16px;position:relative;}
+  .f-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .who{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:20px;}
+  .who a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:11px;border:1.3px solid var(--ink);padding:3px 10px;border-radius:2px;}
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--stamp);text-transform:uppercase;display:block;margin:8px 0 4px;}
+  .quote{font-family:"Frank Ruhl Libre",serif;font-style:italic;font-size:20px;line-height:1.5;margin:0;}
+  .quote::before{content:"\201E";}.quote::after{content:"\201C";}
+  .src{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-top:6px;}
+  .src a{color:var(--gold);}
+  .mid{display:grid;grid-template-columns:1.3fr auto;gap:16px;align-items:center;border-top:1px solid var(--rule);margin-top:14px;padding-top:14px;}
+  .datum{font-family:"Frank Ruhl Libre",serif;font-size:17px;}
+  .datum b{font-family:"Suez One",serif;}
+  .stamp{justify-self:end;font-family:"Suez One",serif;border:3px solid var(--stamp);color:var(--stamp);border-radius:6px;padding:7px 14px;text-align:center;transform:rotate(-6deg);line-height:1.05;}
+  .stamp.ok{border-color:var(--true);color:var(--true);}
+  .stamp .m{font-size:15px;display:block;} .stamp .s{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;display:block;margin-top:2px;}
+  .foot{display:flex;justify-content:space-between;gap:12px;margin-top:12px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);}
+  .foot a{border:1.3px solid var(--ink);padding:5px 11px;border-radius:2px;text-decoration:none;}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:40px 8px;}
+  footer{margin:40px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
+  @media(max-width:680px){ .mid{grid-template-columns:1fr;} .stamp{justify-self:start;} }
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a></span>
+    <span>בדיקה אוטומטית · מועמדים לבדיקה אנושית</span>
+  </div></div>
+
+  <header class="mast"><div class="wrap">
+    <div class="kicker">בדיקת אמירות מול נתונים רשמיים</div>
+    <h1 class="wordmark">מַמְצָאִים לִבְדִיקָה</h1>
+    <p class="standfirst">המערכת מחלצת אמירות עובדתיות מתוך ראיונות, ומשווה אותן לנתונים רשמיים מאומתים. כל ממצא מציג את הציטוט, את הנתון הרשמי ומקורו, וקישור לרגע בסרטון.</p>
+  </div></header>
+  <div class="banner"><div class="wrap">⚠ אלה <b>ממצאים אוטומטיים מועמדים לבדיקה אנושית</b> — אינם קביעות סופיות. התמלול אוטומטי ועלול לכלול שגיאות; כל ממצא יאומת ידנית לפני פרסום כקביעה.</div></div>
+
+  <div class="wrap">
+    <div class="counts" id="counts"></div>
+    <div id="list"></div>
+    <p id="state" class="state">טוען ממצאים…</p>
+    <footer>
+      <p>בדיקה אובייקטיבית מול נתונים רשמיים בלבד. "תואם" = האמירה עולה בקנה אחד עם הנתון; "סותר" = האמירה אינה תואמת את הנתון הרשמי. כל ממצא מקושר למקור הנתון ולרגע בסרטון.</p>
+    </footer>
+  </div>
+
+<script>
+const listEl=document.getElementById('list'), stateEl=document.getElementById('state'), countsEl=document.getElementById('counts');
+function esc(t){return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function moment(f){ const t=Math.floor(f.approx_seconds||0); return f.url ? `${f.url}${f.url.includes('?')?'&':'?'}t=${t}` : '#'; }
+function card(f){
+  const bad = f.outcome==='contradicted';
+  const stamp = bad
+    ? '<div class="stamp"><span class="m">סוֹתֵר נְתוּנִים</span><span class="s">CANDIDATE</span></div>'
+    : '<div class="stamp ok"><span class="m">תּוֹאֵם נְתוּנִים</span><span class="s">CANDIDATE</span></div>';
+  const s=f.stat||{};
+  return `<section class="find">
+    <div class="f-top">
+      <span class="who"><a href="mk.html?id=${f.person_id}">${esc(f.mk_name)}</a></span>
+      <span class="tag">${esc(f.topic||'')}</span>
+    </div>
+    <span class="lbl">הָאֲמִירָה</span>
+    <p class="quote">${esc(f.quote)}</p>
+    <div class="src">מתוך: ${esc(f.title||'')} · <a href="${moment(f)}" target="_blank" rel="noopener">צפייה ברגע ↗</a></div>
+    <div class="mid">
+      <div>
+        <span class="lbl">הַנָּתוֹן הָרִשְׁמִי</span>
+        <div class="datum"><b>${esc(String(s.value))} ${esc(s.unit||'')}</b> · ${esc(s.dimension_value||'')} (${esc(s.period||'')})</div>
+        <div class="src">מקור: ${esc(s.source_org||'')} · <a href="${s.source_url}" target="_blank" rel="noopener">↗</a></div>
+        ${f.reason?`<div class="src" style="margin-top:6px;color:var(--ink)">${esc(f.reason)}</div>`:''}
+      </div>
+      ${stamp}
+    </div>
+    <div class="foot"><span>ביטחון אוטומטי <span class="num">${(f.confidence??'')}</span></span><a href="mk.html?id=${f.person_id}">עמוד הח"כ ←</a></div>
+  </section>`;
+}
+fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!d.findings||!d.findings.length){ stateEl.textContent='עדיין אין ממצאים. המערכת מעבדת ראיונות ברציפות — ממצאים יופיעו כאן.'; return; }
+  const c=d.counts||{};
+  countsEl.innerHTML=`<span class="c-red"><b>${c.contradicted||0}</b> סותרים</span><span class="c-grn"><b>${c.consistent||0}</b> תואמים</span><span><b>${c.total||0}</b> סה״כ ממצאים</span>`;
+  // contradictions first
+  const fs=d.findings.slice().sort((a,b)=> (a.outcome==='contradicted'?0:1)-(b.outcome==='contradicted'?0:1));
+  listEl.innerHTML=fs.map(card).join('');
+  stateEl.style.display='none';
+}).catch(()=>{ stateEl.textContent='שגיאה בטעינת הממצאים.'; });
+</script>
+</body>
+</html>
