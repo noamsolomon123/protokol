@@ -1,0 +1,15 @@
+{
+  "metric": "idf_enlistment_rate",
+  "dimension_type": "city",
+  "source_type": "idf_spokesperson",
+  "unit": "percent",
+  "rows": [
+    {
+      "dimension_value": "_TEMPLATE",
+      "value": 0.0,
+      "period": "YYYY",
+      "source_url": "https://OFFICIAL-SOURCE-URL",
+      "notes": "Replace with a real, sourced figure. Rows without source_url are rejected."
+    }
+  ]
+}
