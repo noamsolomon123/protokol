@@ -53,8 +53,8 @@ def main() -> int:
     ap.add_argument("--once", action="store_true", help="process one MK then exit (testing)")
     ap.add_argument("--search-interval", type=int, default=900,
                     help="seconds to wait between YouTube searches (quota throttle)")
-    ap.add_argument("--per-mk", type=int, default=3, help="max new videos per MK per pass")
-    ap.add_argument("--max-minutes", type=int, default=90, help="skip videos longer than this")
+    ap.add_argument("--per-mk", type=int, default=5, help="max new videos per MK per pass")
+    ap.add_argument("--max-minutes", type=int, default=75, help="skip videos longer than this")
     args = ap.parse_args()
 
     os.environ.setdefault("HF_HOME", str(DATA / "models"))
@@ -89,7 +89,7 @@ def main() -> int:
         name, pid = mk.get("name"), mk.get("person_id")
 
         try:
-            vids = search_mk_videos(yt_key, name, max_results=args.per_mk + 3)
+            vids = search_mk_videos(yt_key, name, max_results=25)
         except Exception as e:  # noqa: BLE001
             logger.warning("YouTube search failed for %s: %s", name, e)
             vids = []
