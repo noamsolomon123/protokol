@@ -19,6 +19,8 @@ class SourceType(str, enum.Enum):
     OPEN_KNESSET = "open_knesset"            # Hasadna mirror (enrichment only)
     BUDGET_KEY = "budget_key"                # Mafteach HaTaktsiv (future)
     STATE_COMPTROLLER = "state_comptroller"  # future
+    CBS = "cbs"                              # Central Bureau of Statistics / הלמ"ס
+    IDF_SPOKESPERSON = "idf_spokesperson"    # IDF spokesperson published figures
     COURT = "court"                          # court rulings (future)
     CORPORATIONS_AUTHORITY = "corporations_authority"  # future
     MANUAL = "manual"                        # human-entered, must still carry a source_url
@@ -72,3 +74,20 @@ class ContradictionStatus(str, enum.Enum):
     NEEDS_REVIEW = "needs_review"
     CONFIRMED = "confirmed"
     DISMISSED = "dismissed"
+
+
+class VerdictOutcome(str, enum.Enum):
+    """Result of checking a structured claim against official statistics."""
+
+    CONSISTENT = "consistent"        # claim matches the official data
+    INCONSISTENT = "inconsistent"    # claim contradicted by the official data
+    UNVERIFIABLE = "unverifiable"    # no/insufficient official data to judge
+
+
+class VerdictReviewStatus(str, enum.Enum):
+    """Human-review lifecycle of a verdict. A verdict is only public when
+    `published` is True; review status records whether a human has ruled."""
+
+    PENDING = "pending"      # not yet human-reviewed
+    APPROVED = "approved"    # a human (or the auto-gate) approved publication
+    REJECTED = "rejected"    # a human rejected it; never publish
