@@ -5,24 +5,62 @@
       "label": "הרוגים בתאונות דרכים בישראל",
       "unit": "הרוגים",
       "match": ["תחבורה"],
-      "note": "נתון רשמי (הגדרת 30 יום). שתי סדרות רשמיות מקבילות — למ\"ס והרשות הלאומית לבטיחות בדרכים — תואמות בקירוב. 2025 נתון ארעי.",
+      "note": "נתון רשמי (הגדרת 30 יום). 2025 ארעי.",
       "sources": [
         {"org": "הלשכה המרכזית לסטטיסטיקה (למ\"ס)", "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/230/27_25_230b.pdf"},
         {"org": "הרשות הלאומית לבטיחות בדרכים (סיכום 2025)", "url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"}
       ],
       "points": [
-        {"year": 2014, "value": 319, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2015, "value": 356, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2016, "value": 377, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2017, "value": 364, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2018, "value": 316, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2019, "value": 355, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2020, "value": 305, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2021, "value": 363, "source_org": "למ\"ס", "source_url": "https://www.cbs.gov.il/he/mediarelease/doclib/2022/043/27_22_043t2.xls"},
-        {"year": 2022, "value": 351, "source_org": "הרשות הלאומית לבטיחות בדרכים", "source_url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"},
-        {"year": 2023, "value": 361, "source_org": "הרשות הלאומית לבטיחות בדרכים", "source_url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"},
-        {"year": 2024, "value": 439, "source_org": "למ\"ס + הרשות הלאומית לבטיחות בדרכים", "source_url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/230/27_25_230b.pdf"},
-        {"year": 2025, "value": 459, "provisional": true, "source_org": "הרשות הלאומית לבטיחות בדרכים (ארעי)", "source_url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"}
+        {"year": 2014, "value": 319}, {"year": 2015, "value": 356}, {"year": 2016, "value": 377},
+        {"year": 2017, "value": 364}, {"year": 2018, "value": 316}, {"year": 2019, "value": 355},
+        {"year": 2020, "value": 305}, {"year": 2021, "value": 363}, {"year": 2022, "value": 351},
+        {"year": 2023, "value": 361}, {"year": 2024, "value": 439},
+        {"year": 2025, "value": 459, "provisional": true}
+      ]
+    },
+    "housing": {
+      "label": "מדד מחירי הדירות (למ\"ס, ערך דצמבר, בסיס 1993=100)",
+      "unit": "נק׳ מדד",
+      "match": ["שיכון", "בינוי", "דיור"],
+      "note": "מדד מחירי הדירות של הלמ\"ס (מבוסס עסקאות), ערך סוף-שנה. אינו מחיר בשקלים אלא מדד יחסי.",
+      "sources": [
+        {"org": "הלשכה המרכזית לסטטיסטיקה — מדד מחירי דירות", "url": "https://www.cbs.gov.il/he/subjects/Pages/%D7%9E%D7%93%D7%93-%D7%9E%D7%97%D7%99%D7%A8%D7%99-%D7%93%D7%99%D7%A8%D7%95%D7%AA.aspx"}
+      ],
+      "points": [
+        {"year": 2014, "value": 352.5}, {"year": 2015, "value": 380.4}, {"year": 2016, "value": 402.1},
+        {"year": 2017, "value": 407.8}, {"year": 2018, "value": 404.7}, {"year": 2019, "value": 421.6},
+        {"year": 2020, "value": 438.3}, {"year": 2021, "value": 495.9}, {"year": 2022, "value": 568.7},
+        {"year": 2023, "value": 563.0}, {"year": 2024, "value": 606.2},
+        {"year": 2025, "value": 600.2, "provisional": true}
+      ]
+    },
+    "health": {
+      "label": "מיטות אשפוז כללי ל-1,000 נפש (בתקן, סוף שנה)",
+      "unit": "מיטות ל-1,000",
+      "match": ["בריאות"],
+      "note": "משרד הבריאות — שיעור מיטות אשפוז כללי (קורטיבי) בתקן ל-1,000 תושבים. 2023 עודכן ל-1.746 בדוח דצמבר 2024.",
+      "sources": [
+        {"org": "משרד הבריאות — מיטות אשפוז ברישוי, דצמבר 2024", "url": "https://www.gov.il/BlobFolder/reports/licensed-inpatient-hospital-beds/he/files_publications_units_info_beds2024_dec2024.pdf"}
+      ],
+      "points": [
+        {"year": 2014, "value": 1.863}, {"year": 2015, "value": 1.830}, {"year": 2016, "value": 1.803},
+        {"year": 2017, "value": 1.796}, {"year": 2018, "value": 1.780}, {"year": 2019, "value": 1.783},
+        {"year": 2020, "value": 1.760}, {"year": 2021, "value": 1.736}, {"year": 2022, "value": 1.746},
+        {"year": 2023, "value": 1.746}, {"year": 2024, "value": 1.768}
+      ]
+    },
+    "crime": {
+      "label": "מספר הנרצחים בישראל (כלל האוכלוסייה)",
+      "unit": "נרצחים",
+      "match": ["ביטחון לאומי", "משטרה", "פנים"],
+      "note": "נתוני משטרת ישראל ששוחררו בבקשות חופש מידע (הפרסום היזום הופסק). זינוק 2023-2024 מרוכז בחברה הערבית. שנים חסרות הושמטו בכוונה לשמירה על דיוק (פורסם רק כשיעור או כתת-אוכלוסייה).",
+      "sources": [
+        {"org": "מרכז טאוב (נתוני משטרה בחופש מידע)", "url": "https://www.taubcenter.org.il/wp-content/uploads/2024/02/Homicide-2024-HEB-3.pdf"},
+        {"org": "התנועה לחופש המידע", "url": "https://www.meida.org.il/17864"}
+      ],
+      "points": [
+        {"year": 2020, "value": 147}, {"year": 2023, "value": 299},
+        {"year": 2024, "value": 282}, {"year": 2025, "value": 295, "provisional": true}
       ]
     }
   }
