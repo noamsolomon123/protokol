@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+import pytest
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -126,3 +127,24 @@ def test_verify_transcription_source_queues_for_review(db_session: Session) -> N
     assert loaded.outcome is VerdictOutcome.INCONSISTENT  # still computed
     assert loaded.published is False                       # but not public
     assert loaded.review_status is VerdictReviewStatus.PENDING
+
+
+def test_verify_rejects_claim_without_statement_id(db_session: Session) -> None:
+    """A claim with no statement_id can't become a verdict — a StatisticVerdict
+    must tie to a persisted Statement, so this is rejected before flush (which
+    would otherwise raise an opaque IntegrityError on the NOT NULL column)."""
+    _seed_cities(db_session)
+    ad_hoc = StructuredClaim(
+        politician_id=1,
+        statement_id=None,
+        metric="idf_enlistment_rate",
+        dimension_type="city",
+        dimension_value="תל אביב",
+        assertion=ClaimAssertion.SUPERLATIVE_MIN,
+        claimed_value=None,
+        source_type=SourceType.KNESSET_ODATA,
+        source_url="https://knesset.gov.il/x",
+        exact_quote="...",
+    )
+    with pytest.raises(ValueError, match="statement_id"):
+        verify_statement(db_session, ad_hoc)

@@ -33,6 +33,12 @@ def verify_statement(
     transcription_source_types: set[SourceType] | None = None,
 ) -> StatisticVerdict:
     """Verify one structured claim and persist (flush) the resulting verdict."""
+    if claim.statement_id is None:
+        raise ValueError(
+            "verify_statement requires claim.statement_id: a verdict must be tied "
+            "to a persisted Statement. Persist the statement (or set statement_id) "
+            "before verifying."
+        )
     matcher = matcher or DimensionStatisticMatcher()
     adjudicator = adjudicator or Adjudicator()
     if gate is None:

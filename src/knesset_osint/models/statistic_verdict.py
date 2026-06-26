@@ -18,7 +18,6 @@ from sqlalchemy import (
     Enum as SAEnum,
     Float,
     ForeignKey,
-    Integer,
     JSON,
     String,
     Text,
