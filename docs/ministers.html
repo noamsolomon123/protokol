@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--gold:#9a7b2e;--maxw:1040px;}
+  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--stamp-deep:#8b1216;--true:#3c6446;--gold:#9a7b2e;--maxw:1040px;}
   *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
   ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
@@ -26,6 +26,21 @@
   .m .nm a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
   .m .meta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:8px;letter-spacing:.02em;}
   .m .perf{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);margin-top:8px;border-top:1px dashed var(--rule);padding-top:8px;}
+  .m.perf-card{grid-column:1/-1;}
+  .perf-h{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--stamp);text-transform:uppercase;margin:14px 0 4px;border-top:1px solid var(--rule);padding-top:12px;}
+  .perf-t{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;margin:0 0 10px;}
+  .chart{display:flex;align-items:flex-end;gap:5px;height:130px;border-bottom:2px solid var(--ink);padding-bottom:0;}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .bar i{width:80%;background:var(--ink-faint);display:block;}
+  .bar.ten i{background:repeating-linear-gradient(45deg,var(--stamp),var(--stamp) 5px,var(--stamp-deep) 5px,var(--stamp-deep) 10px);}
+  .bar .v{font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--ink-soft);margin-bottom:3px;}
+  .labels{display:flex;gap:5px;margin-top:3px;}
+  .labels span{flex:1;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--ink-faint);}
+  .labels span.ten{color:var(--stamp);font-weight:600;}
+  .perf-cap{font-family:"Frank Ruhl Libre",serif;font-size:14px;color:var(--ink-soft);margin-top:10px;}
+  .perf-cap b{color:var(--ink);} .perf-cap .red{color:var(--stamp);}
+  .perf-src{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);margin-top:6px;} .perf-src a{color:var(--gold);}
+  .perf-note{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);margin-top:8px;background:rgba(180,31,36,.05);padding:8px 10px;}
   .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:40px 8px;}
   footer{margin:30px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
 </style>
@@ -46,16 +61,34 @@
     <footer><p>מרשם עובדתי של חברי הממשלה. לשונית "ביצועים" תציג נתוני תחום רשמיים בתקופת הכהונה — כעובדה מקושרת למקור, ולא כקביעה שהשר/ה אחראי/ת לתוצאה.</p></footer>
   </div>
 <script>
-function esc(t){return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-fetch('data/ministers.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+Promise.all([
+  fetch('data/ministers.json',{cache:'no-store'}).then(r=>r.ok?r.json():null),
+  fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():{series:{}}).catch(()=>({series:{}}))
+]).then(([d, ps])=>{
   if(!d||!d.ministers||!d.ministers.length){ document.getElementById('state').textContent='נתוני השרים אינם זמינים כרגע.'; return; }
-  const g=document.getElementById('grid');
-  g.innerHTML=d.ministers.map(m=>`<div class="m">
-    <div class="role">${esc(m.position)}</div>
-    <div class="nm"><a href="mk.html?id=${m.person_id}">${esc(m.name)}</a></div>
-    <div class="meta">${esc(m.ministry||'')} · נכנס/ה לתפקיד ${String(m.start_date||'').slice(0,10)}</div>
-    <div class="perf">לשונית ביצועים — בקרוב</div>
-  </div>`).join('');
+  const series=(ps&&ps.series)||{};
+  document.getElementById('grid').innerHTML=d.ministers.map(m=>{
+    const tyn=parseInt(String(m.start_date||'').slice(0,4))||null;
+    let matched=null;
+    for(const key in series){ const s=series[key]; if((s.match||[]).some(k=>(m.position||'').includes(k)||(m.ministry||'').includes(k))){matched=s;break;} }
+    let perf='<div class="perf">לשונית ביצועים — בקרוב</div>';
+    if(matched){
+      const pts=matched.points||[], max=Math.max(...pts.map(p=>p.value),1);
+      const bars=pts.map(p=>{const h=Math.round(p.value/max*100),ten=tyn&&p.year>=tyn;return `<div class="bar ${ten?'ten':''}"><span class="v">${p.value}${p.provisional?'*':''}</span><i style="height:${h}%"></i></div>`;}).join('');
+      const labels=pts.map(p=>`<span class="${tyn&&p.year>=tyn?'ten':''}">'${String(p.year).slice(2)}</span>`).join('');
+      const startPt=pts.find(p=>p.year===tyn)||pts.find(p=>tyn&&p.year>=tyn), lastPt=pts[pts.length-1];
+      let cap='';
+      if(startPt&&lastPt){const up=lastPt.value>startPt.value;cap=`בתקופת הכהונה (משנת ${tyn}): מ-<b>${startPt.value}</b> ל-<b class="${up?'red':''}">${lastPt.value}${lastPt.provisional?'*':''}</b> ${esc(matched.unit)}${up?' — עלייה':''}.`;}
+      const srcs=(matched.sources||[]).map(x=>`<a href="${x.url}" target="_blank" rel="noopener">${esc(x.org)} ↗</a>`).join(' · ');
+      perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה (מודגש באדום). אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
+    }
+    return `<div class="m${matched?' perf-card':''}">
+      <div class="role">${esc(m.position)}</div>
+      <div class="nm"><a href="mk.html?id=${m.person_id}">${esc(m.name)}</a></div>
+      <div class="meta">${esc(m.ministry||'')} · נכנס/ה לתפקיד ${String(m.start_date||'').slice(0,10)}</div>
+      ${perf}</div>`;
+  }).join('');
   document.getElementById('state').style.display='none';
 }).catch(()=>{document.getElementById('state').textContent='שגיאה בטעינה.';});
 </script>
