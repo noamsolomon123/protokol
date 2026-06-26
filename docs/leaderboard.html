@@ -1,21 +1,467 @@
 <!DOCTYPE html>
+<!--
+  פְּרוֹטוֹקוֹל · לוח הסתירות — live leaderboard page (self-contained, RTL).
+  ----------------------------------------------------------------------------
+  Aesthetic: "Forensic Dossier" (investigative print exposé, ink-on-paper).
+  Data: fetches data/leaderboard.json
+        { schema_version, metric, rows:[{slug, full_name, party, contradicted_count}] }
+  When that file has rows -> REAL mode (live counts, demo banner/ribbon hidden).
+  When it is empty/missing -> DEMO mode: renders clearly-labelled synthetic
+  placeholder data (ישראל ישראלי etc.) so the page is a usable showcase until
+  real, sourced verdicts are published. No backend, no build step -> free on Pages.
+-->
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>לוח אמירות שסותרות נתונים רשמיים</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · לוח הסתירות</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<meta name="description" content="לוח הסתירות — חברי כנסת מדורגים לפי מספר האמירות שנמצאו סותרות נתונים רשמיים, עם מקור לכל קביעה." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f4efe3;
+    --paper-2:#ece4d2;
+    --paper-edge:#e3d9c2;
+    --ink:#1b1814;
+    --ink-soft:#6a6052;
+    --ink-faint:#9a9080;
+    --rule:#cbc0a8;
+    --rule-soft:#ded4bd;
+    --stamp:#b41f24;
+    --stamp-deep:#8b1216;
+    --true:#3c6446;
+    --gold:#9a7b2e;
+    --shadow:18px 22px 0 rgba(27,24,20,.06);
+    --maxw:980px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Heebo",sans-serif;
+    font-weight:400;
+    line-height:1.65;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(154,123,46,.05), transparent 38%),
+      radial-gradient(circle at 86% 80%, rgba(180,31,36,.04), transparent 40%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/></svg>");
+  }
+  ::selection{background:var(--stamp);color:var(--paper);}
+  a{color:inherit;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+
+  /* ---------- demo ribbon ---------- */
+  .ribbon{
+    position:fixed;top:16px;inset-inline-start:-58px;z-index:60;
+    transform:rotate(-45deg);
+    background:repeating-linear-gradient(45deg,var(--ink),var(--ink) 12px,#2c2720 12px,#2c2720 24px);
+    color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+    padding:6px 64px;box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+
+  /* ---------- file header strip ---------- */
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{
+    display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding-top:9px;padding-bottom:9px;
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;white-space:nowrap;transition:color .15s;}
+  .nav-link:hover{color:var(--stamp);}
+  .filebar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--stamp);margin-inline-start:7px;vertical-align:middle;animation:blink 2.4s steps(2,jump-none) infinite;}
+  @keyframes blink{50%{opacity:.25;}}
+
+  /* ---------- masthead ---------- */
+  header.mast{position:relative;padding:62px 0 30px;border-bottom:3px double var(--ink);overflow:hidden;}
+  header.mast::before{
+    content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
+    background:
+      linear-gradient(90deg,transparent 30%,var(--ink) 30% 62%,transparent 62%) 0 22%/100% 12px no-repeat,
+      linear-gradient(90deg,transparent 12%,var(--ink) 12% 40%,transparent 40%) 0 71%/100% 12px no-repeat,
+      linear-gradient(90deg,transparent 55%,var(--ink) 55% 88%,transparent 88%) 0 88%/100% 12px no-repeat;
+  }
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.34em;color:var(--stamp);text-transform:uppercase;margin-bottom:14px;}
+  .wordmark{font-family:"Suez One",serif;font-weight:400;font-size:clamp(58px,13vw,138px);line-height:.86;letter-spacing:-.01em;margin:0;color:var(--ink);}
+  .wordmark .lo{color:var(--stamp);}
+  .subhead{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(19px,2.7vw,29px);margin:20px 0 0;max-width:30ch;color:var(--ink);}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:14px 0 0;max-width:54ch;line-height:1.7;}
+
+  /* ---------- demo banner ---------- */
+  .demo-banner{background:var(--paper-2);border-bottom:1.5px solid var(--ink);}
+  .demo-banner .wrap{padding:10px 22px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.02em;line-height:1.6;}
+  .demo-banner b{color:var(--stamp);}
+
+  /* ---------- manifesto tenets ---------- */
+  .tenets{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1.5px solid var(--ink);}
+  .tenet{padding:24px 22px;border-inline-start:1px solid var(--rule);}
+  .tenet:first-child{border-inline-start:none;}
+  .tenet .t-no{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--stamp);letter-spacing:.1em;}
+  .tenet h3{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:18px;margin:8px 0 6px;}
+  .tenet p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.6;}
+
+  /* ---------- section heading ---------- */
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:46px 0 6px;flex-wrap:wrap;}
+  .sec-head h2{font-family:"Suez One",serif;font-weight:400;font-size:clamp(30px,5vw,48px);margin:0;letter-spacing:-.01em;}
+  .sec-head .meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.05em;}
+  .sec-sub{font-family:"Frank Ruhl Libre",serif;font-size:16px;color:var(--ink-soft);margin:0 0 18px;}
+
+  /* ---------- controls ---------- */
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px;}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;border:1.4px solid var(--ink);background:transparent;color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer;transition:all .15s ease;}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
+  .chip:hover{background:var(--stamp);border-color:var(--stamp);color:var(--paper);}
+
+  /* ---------- leaderboard ---------- */
+  .board{border-top:2px solid var(--ink);}
+  .row{position:relative;display:grid;grid-template-columns:84px 1fr auto;align-items:center;gap:18px;padding:20px 14px 20px 8px;border-bottom:1px solid var(--rule);cursor:pointer;background:transparent;transition:background .2s ease;opacity:0;transform:translateY(14px);}
+  .row.in{animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+  .row:hover{background:linear-gradient(90deg,rgba(180,31,36,.05),rgba(180,31,36,0));}
+  .row.static{cursor:default;}
+  .row.static:hover{background:transparent;}
+  .row::after{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:var(--stamp);transform:scaleY(0);transform-origin:center;transition:transform .2s ease;}
+  .row:not(.static):hover::after,.row[aria-expanded="true"]::after{transform:scaleY(1);}
+  .ord{font-family:"Suez One",serif;font-size:46px;line-height:1;color:var(--ink-faint);text-align:center;transition:color .2s ease;}
+  .row:not(.static):hover .ord,.row[aria-expanded="true"] .ord{color:var(--stamp);}
+  .who .name{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:21px;line-height:1.2;}
+  .who .party{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);letter-spacing:.04em;margin-top:3px;}
+  .bar-wrap{display:flex;align-items:center;gap:12px;margin-top:9px;}
+  .bar{height:9px;background:var(--paper-2);border:1px solid var(--rule);position:relative;flex:1;max-width:340px;overflow:hidden;}
+  .bar > i{position:absolute;inset-block:0;inset-inline-start:0;width:0;background:repeating-linear-gradient(45deg,var(--stamp),var(--stamp) 6px,var(--stamp-deep) 6px,var(--stamp-deep) 12px);transition:width 1.1s cubic-bezier(.2,.7,.2,1);}
+  .marg{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);opacity:0;transform:translateX(8px);transition:all .2s ease;white-space:nowrap;}
+  .row:hover .marg{opacity:1;transform:none;}
+  .count{display:flex;flex-direction:column;align-items:center;min-width:74px;}
+  .count b{font-family:"Suez One",serif;font-size:42px;line-height:.9;color:var(--stamp);}
+  .count span{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;}
+  .empty-note{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:30px 8px;}
+
+  /* ---------- dossier (expanded) ---------- */
+  .dossier{grid-column:1/-1;display:none;padding:6px 4px 8px;}
+  .row[aria-expanded="true"] + .dossier{display:block;animation:rise .45s ease forwards;}
+  .dossier-inner{background:transparent;margin:8px 0 28px;display:flex;flex-direction:column;gap:24px;counter-reset:ev;}
+  .ev{padding:28px 24px 20px;border:1.5px solid var(--ink);background:var(--paper-edge);box-shadow:var(--shadow);position:relative;counter-increment:ev;}
+  .ev::before{content:"ראיה " counter(ev,decimal-leading-zero);position:absolute;top:-11px;inset-inline-start:22px;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;padding:3px 11px;}
+  .ev-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;border:1.3px solid var(--ink);padding:3px 10px;border-radius:2px;}
+  .ev-date{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.05em;}
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--stamp);text-transform:uppercase;display:block;margin-bottom:5px;}
+  .claim{font-family:"Frank Ruhl Libre",serif;font-style:italic;font-size:21px;line-height:1.5;margin:0;color:var(--ink);}
+  .claim::before{content:"\201E";}.claim::after{content:"\201C";}
+  .srcline{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-top:8px;}
+  .srcline a{color:var(--gold);text-underline-offset:3px;}
+  .ev-mid{display:grid;grid-template-columns:1.3fr auto;gap:18px;align-items:center;margin:16px 0 6px;border-top:1px solid var(--rule);padding-top:16px;}
+  .datum{font-family:"Frank Ruhl Libre",serif;font-size:18px;line-height:1.45;}
+  .datum b{font-family:"Suez One",serif;font-weight:400;color:var(--ink);}
+  .stamp{
+    justify-self:end;font-family:"Suez One",serif;color:var(--stamp);
+    border:3px solid var(--stamp);border-radius:6px;padding:8px 16px;text-align:center;
+    transform:rotate(-7deg);line-height:1.05;mix-blend-mode:multiply;opacity:.92;
+    box-shadow:inset 0 0 0 2px var(--paper-edge),inset 0 0 0 3.6px var(--stamp);
+    -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><filter id='r'><feTurbulence baseFrequency='0.04' numOctaves='3'/><feDisplacementMap in='SourceGraphic' scale='5'/></filter><rect width='100%25' height='100%25' filter='url(%23r)'/></svg>");
+  }
+  .stamp.true{color:var(--true);border-color:var(--true);box-shadow:inset 0 0 0 2px var(--paper-edge),inset 0 0 0 3.6px var(--true);}
+  .stamp .s-main{font-size:18px;letter-spacing:.02em;display:block;}
+  .stamp .s-sub{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.18em;display:block;margin-top:2px;}
+  .row[aria-expanded="true"] .stamp{animation:thud .55s cubic-bezier(.2,.9,.3,1.2) both;}
+  @keyframes thud{0%{transform:rotate(-7deg) scale(1.8);opacity:0;}60%{opacity:1;}100%{transform:rotate(-7deg) scale(1);}}
+  .ev-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap;}
+  .conf{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.04em;}
+  .conf .reviewed{color:var(--true);}
+  .appeal{font-family:"IBM Plex Mono",monospace;font-size:11px;border:1.3px solid var(--ink);padding:5px 12px;border-radius:2px;text-decoration:none;transition:all .15s;}
+  .appeal:hover{background:var(--ink);color:var(--paper);}
+
+  /* ---------- methodology ---------- */
+  .method{margin:58px 0 0;border-top:3px double var(--ink);padding-top:30px;}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:18px 0 0;}
+  .step{padding:16px;border-inline-start:1px solid var(--rule);}
+  .step:first-child{border-inline-start:none;}
+  .step .s-no{font-family:"Suez One",serif;font-size:30px;color:var(--stamp);line-height:1;}
+  .step h4{font-family:"Frank Ruhl Libre",serif;font-size:15px;margin:8px 0 4px;}
+  .step p{margin:0;font-size:12.5px;color:var(--ink-soft);line-height:1.55;}
+
+  footer{margin:50px 0 70px;padding-top:24px;border-top:1.5px solid var(--ink);}
+  footer .cols{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;}
+  footer h5{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--stamp);text-transform:uppercase;margin:0 0 10px;}
+  footer p{font-family:"Frank Ruhl Libre",serif;font-size:14.5px;color:var(--ink-soft);margin:0 0 10px;line-height:1.7;}
+  footer ul{list-style:none;padding:0;margin:0;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}
+  footer li{padding:5px 0;border-bottom:1px dotted var(--rule);}
+  footer a{color:var(--gold);}
+  .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:.05em;margin-top:26px;text-align:center;}
+
+  body[data-mode="real"] .ribbon,
+  body[data-mode="real"] .demo-banner,
+  body[data-mode="real"] .controls{display:none;}
+
+  @media (max-width:760px){
+    .tenets,.steps{grid-template-columns:1fr;}
+    .tenet,.step{border-inline-start:none;border-top:1px solid var(--rule);}
+    .row{grid-template-columns:56px 1fr auto;gap:12px;}
+    .ord{font-size:34px;}
+    .ev-mid{grid-template-columns:1fr;}
+    .stamp{justify-self:start;}
+    footer .cols{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+    .row{opacity:1;transform:none;}
+  }
+</style>
 </head>
-<body>
-  <main class="container">
-    <h1>אמירות שסותרות נתונים רשמיים</h1>
-    <p class="disclaimer">
-      הדירוג מבוסס על אמירות שנמצאו <strong>לא תואמות נתונים רשמיים</strong>, עם קישור למקור הרשמי לכל קביעה.
-      זו אינה קביעה ש"פלוני שקרן" — כל פריט ניתן לבדיקה עצמאית מול המקור.
-    </p>
-    <ol id="board" class="board"></ol>
-    <p id="empty" hidden>אין עדיין נתונים מפורסמים.</p>
-  </main>
-  <script src="leaderboard.js"></script>
+<body data-mode="demo">
+  <div class="ribbon">תצוגה לדוגמה · נתונים סינתטיים</div>
+
+  <div class="filebar"><div class="wrap">
+    <a class="nav-link" href="./">→ כרטיסי הציונים</a>
+    <span>מקור־אמת: נתונים ממשלתיים רשמיים <span class="dot"></span></span>
+  </div></div>
+
+  <header class="mast"><div class="wrap">
+    <div class="kicker">ללא צד פוליטי · רק עובדות</div>
+    <h1 class="wordmark">פְּרוֹטוֹ<span class="lo">קוֹל</span></h1>
+    <p class="subhead">מה אמרו בכנסת — ומה אומרים הנתונים הרשמיים.</p>
+    <p class="standfirst">פלטפורמה אובייקטיבית שמשווה אמירות של חברי כנסת מול נתונים רשמיים שפורסמו על־ידי המדינה. כל קביעה מגובה במקור בר־בדיקה. איננו קובעים ש"מישהו שקרן" — אנו מציגים אמירות ש<strong>סותרות נתונים רשמיים</strong>, לצד המקור.</p>
+  </div></header>
+
+  <div class="demo-banner"><div class="wrap">⚠ המערכת בהרצה — הנתונים בעמוד זה הם <b>להמחשה בלבד</b> (שמות ונתונים לדוגמה). עם פרסום ממצאים אמיתיים ומגובי־מקור, הם יחליפו את התצוגה הזו אוטומטית.</div></div>
+
+  <section class="tenets" aria-label="עקרונות">
+    <div class="tenet"><div class="t-no">01</div><h3>ללא צד פוליטי</h3><p>ימין ושמאל נבדקים באותה אמת־מידה. אין דירוג "טוב/רע" — רק ספירת אמירות שסותרות נתונים.</p></div>
+    <div class="tenet"><div class="t-no">02</div><h3>כל קביעה — מקור רשמי</h3><p>לצד כל סתירה מוצג הנתון הממשלתי המקורי וקישור אליו, לבדיקה עצמאית.</p></div>
+    <div class="tenet"><div class="t-no">03</div><h3>סתירה, לא "שקר"</h3><p>אמירה מסומנת רק אם היא נתונה לבדיקה וסותרת נתון רשמי. ניתן לערער על כל קביעה.</p></div>
+  </section>
+
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>לוּחַ הַסְּתִירוֹת</h2>
+      <span class="meta">ממוין לפי מס׳ אמירות</span>
+    </div>
+    <p class="sec-sub">חברי הכנסת מדורגים לפי מספר האמירות שנמצאו סותרות נתונים רשמיים. לחצו על שורה לפתיחת תיק הראיות.</p>
+
+    <div class="controls" role="group" aria-label="סינון לפי נושא">
+      <button class="chip" aria-pressed="true" data-topic="all">הכול</button>
+      <button class="chip" aria-pressed="false" data-topic="גיוס">גיוס</button>
+      <button class="chip" aria-pressed="false" data-topic="כלכלה">כלכלה</button>
+      <button class="chip" aria-pressed="false" data-topic="ביטחון">ביטחון</button>
+      <button class="chip" aria-pressed="false" data-topic="חברה">חברה</button>
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <section class="method">
+      <div class="sec-head" style="margin-top:0">
+        <h2>כֵּיצַד נִבְדָּק</h2>
+        <span class="meta">צינור אימות · בקרה אנושית</span>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="s-no">1</div><h4>איסוף</h4><p>פרוטוקולים רשמיים של הכנסת + ראיונות (תמלול) עם קישור למקור.</p></div>
+        <div class="step"><div class="s-no">2</div><h4>חילוץ טענה</h4><p>זיהוי אמירות עובדתיות הניתנות לבדיקה — לא דעות או הבטחות.</p></div>
+        <div class="step"><div class="s-no">3</div><h4>השוואה לנתון</h4><p>התאמה לנתון ממשלתי רשמי (למ"ס, דובר צה"ל, בנק ישראל ועוד).</p></div>
+        <div class="step"><div class="s-no">4</div><h4>סף ביטחון</h4><p>סתירה חד־משמעית מתפרסמת אוטומטית; מקרה גבולי עובר בקרה אנושית.</p></div>
+        <div class="step"><div class="s-no">5</div><h4>פרסום + ערעור</h4><p>כל קביעה מוצגת עם מקורותיה וכפתור "ערער על הקביעה".</p></div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="cols">
+        <div>
+          <h5>הבהרה</h5>
+          <p>במצב הרצה, השמות והנתונים בעמוד זה הם <strong>לדוגמה בלבד</strong> (ישראל ישראלי וכד׳) ואינם מתייחסים לאדם אמיתי. כל שורה אמיתית נשענת על מקור ממשלתי רשמי עם קישור בר־בדיקה.</p>
+          <p>הדירוג אינו קביעה ש"חבר כנסת שקרן", אלא ספירה אובייקטיבית של אמירות שנמצאו סותרות נתונים רשמיים — עם המקור לצדן.</p>
+        </div>
+        <div>
+          <h5>מקורות אמת</h5>
+          <ul>
+            <li>הלשכה המרכזית לסטטיסטיקה (למ"ס)</li>
+            <li>דובר צה"ל / נתוני גיוס</li>
+            <li>בנק ישראל · משרד האוצר</li>
+            <li>מבקר המדינה</li>
+            <li><a href="./">כרטיסי הציונים · האתר הראשי ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="colophon">פְּרוֹטוֹקוֹל · בקרת עובדות · מהדורה 2026 · אתר סטטי חינמי</div>
+    </footer>
+  </div>
+
+<script>
+/* DEMO DATA — synthetic placeholders, shown only until real verdicts exist. */
+const DEMO_DATA = [
+  { full_name:"ישראל ישראלי", party:"סיעה א׳", count:12, margin:"5 גיוס · 4 כלכלה · 3 ביטחון",
+    topics:["גיוס","כלכלה","ביטחון"], evidence:[
+      { topic:"גיוס", date:"מליאה · 2024", claim:"לתל אביב שיעור הגיוס הנמוך ביותר בארץ",
+        datum:"לפי הנתון הרשמי, תל אביב מדורגת במקום <b>4 מתוך 30</b> הערים הגדולות — מהגבוהים בארץ.",
+        source:"הלשכה המרכזית לסטטיסטיקה / דובר צה\"ל · 2022", conf:"0.92", verdict:"contradict" },
+      { topic:"כלכלה", date:"ראיון · 2024", claim:"יוקר המחיה ירד בשנה האחרונה",
+        datum:"מדד המחירים לצרכן <b>עלה</b> בתקופה הנדונה (נתון לדוגמה).",
+        source:"בנק ישראל · מדד מחירים", conf:"0.88", verdict:"contradict" },
+      { topic:"ביטחון", date:"מליאה · 2023", claim:"תקציב הביטחון נשאר ללא שינוי",
+        datum:"הנתון הרשמי <b>תואם</b> את הטענה — אין שינוי מהותי בתקופה (נתון לדוגמה).",
+        source:"משרד האוצר · ספר התקציב", conf:"0.81", verdict:"true" },
+    ]},
+  { full_name:"ישראלה כהן", party:"סיעה ב׳", count:9, margin:"4 חברה · 3 כלכלה · 2 גיוס",
+    topics:["חברה","כלכלה","גיוס"], evidence:[
+      { topic:"חברה", date:"ראיון · 2025", claim:"שיעור האבטלה הוא הגבוה בעשור",
+        datum:"הנתון הרשמי מצביע על שיעור <b>נמוך</b> מהשיא שצוין (נתון לדוגמה).",
+        source:"למ\"ס · סקר כוח אדם", conf:"0.90", verdict:"contradict" },
+    ]},
+  { full_name:"משה ישראלי", party:"סיעה ג׳", count:7, margin:"3 כלכלה · 2 גיוס · 2 ביטחון",
+    topics:["כלכלה","גיוס","ביטחון"], evidence:[
+      { topic:"כלכלה", date:"מליאה · 2024", claim:"ההשקעה בחינוך הוכפלה",
+        datum:"הגידול בפועל נמוך מהותית מהכפלה (נתון לדוגמה).",
+        source:"משרד החינוך · נתוני תקציב", conf:"0.86", verdict:"contradict" },
+    ]},
+  { full_name:"נועה לוי", party:"סיעה ד׳", count:5, margin:"3 חברה · 2 כלכלה",
+    topics:["חברה","כלכלה"], evidence:[
+      { topic:"חברה", date:"ראיון · 2025", claim:"מספר הסטודנטים ירד",
+        datum:"מספר הסטודנטים <b>עלה</b> בתקופה (נתון לדוגמה).",
+        source:"למ\"ס · השכלה גבוהה", conf:"0.84", verdict:"contradict" },
+    ]},
+  { full_name:"דוד ישראלי", party:"סיעה ה׳", count:3, margin:"2 ביטחון · 1 גיוס",
+    topics:["ביטחון","גיוס"], evidence:[
+      { topic:"ביטחון", date:"מליאה · 2023", claim:"מדד X במקום האחרון",
+        datum:"בפועל מדורג באמצע הטבלה (נתון לדוגמה).",
+        source:"מקור רשמי · לדוגמה", conf:"0.83", verdict:"contradict" },
+    ]},
+  { full_name:"יעל כהן", party:"סיעה ו׳", count:2, margin:"1 כלכלה · 1 חברה",
+    topics:["כלכלה","חברה"], evidence:[
+      { topic:"כלכלה", date:"ראיון · 2024", claim:"המסים ירדו לכולם",
+        datum:"חלה עלייה בחלק מהמדרגות (נתון לדוגמה).",
+        source:"רשות המסים · לדוגמה", conf:"0.80", verdict:"contradict" },
+    ]},
+];
+
+const board = document.getElementById('board');
+let MODE = 'demo';
+let DATASET = DEMO_DATA;
+let activeTopic = 'all';
+
+function verdictStamp(v){
+  if(v === 'true') return '<div class="stamp true"><span class="s-main">תּוֹאֵם נְתוּנִים</span><span class="s-sub">VERIFIED · OFFICIAL</span></div>';
+  return '<div class="stamp"><span class="s-main">סוֹתֵר נְתוּנִים רִשְׁמִיִּים</span><span class="s-sub">CONTRADICTED · ON RECORD</span></div>';
+}
+
+function evidenceHTML(ev){
+  return `<div class="ev" data-topic="${ev.topic}">
+    <div class="ev-top"><span class="tag">${ev.topic}</span><span class="ev-date">${ev.date}</span></div>
+    <span class="lbl">הַטְּעָנָה</span>
+    <p class="claim">${ev.claim}</p>
+    <div class="srcline">צוטט מתוך: <a href="#" onclick="return false">צפייה במקור ↗</a> <span style="color:var(--ink-faint)">· (במערכת — קישור אמיתי)</span></div>
+    <div class="ev-mid">
+      <div>
+        <span class="lbl">הַנָּתוֹן הָרִשְׁמִי</span>
+        <div class="datum">${ev.datum}</div>
+        <div class="srcline">מקור: ${ev.source} · <a href="#" onclick="return false">↗</a></div>
+      </div>
+      ${verdictStamp(ev.verdict)}
+    </div>
+    <div class="ev-foot">
+      <span class="conf">ביטחון <span class="num">${ev.conf}</span> · <span class="reviewed">נבדק אנושית ✓</span></span>
+      <a class="appeal" href="#" onclick="return false">ערער על הקביעה</a>
+    </div>
+  </div>`;
+}
+
+function currentRows(){
+  if(MODE !== 'demo') return DATASET;
+  return DATASET.filter(d => activeTopic === 'all' || (d.topics || []).includes(activeTopic));
+}
+
+function render(){
+  board.innerHTML = '';
+  const data = [...currentRows()].sort((a,b) => b.count - a.count);
+  if(!data.length){
+    board.innerHTML = '<p class="empty-note">אין עדיין אמירות שפורסמו. ברגע שיתפרסמו ממצאים מגובי־מקור, הם יופיעו כאן.</p>';
+    return;
+  }
+  const maxCount = Math.max(1, ...data.map(d => d.count));
+
+  data.forEach((d, i) => {
+    const ord = String(i+1).padStart(2,'0');
+    const expandable = MODE === 'demo' && Array.isArray(d.evidence) && d.evidence.length > 0;
+    const row = document.createElement('div');
+    row.className = 'row' + (expandable ? '' : ' static');
+    row.id = 'row-' + i;
+    row.style.animationDelay = (0.06*i) + 's';
+    if(expandable){
+      row.setAttribute('role','button');
+      row.setAttribute('tabindex','0');
+      row.setAttribute('aria-expanded','false');
+    }
+    row.innerHTML = `
+      <div class="ord num">${ord}</div>
+      <div class="who">
+        <div class="name">${d.full_name}</div>
+        <div class="party">${d.party || ''}</div>
+        <div class="bar-wrap">
+          <div class="bar"><i data-w="${Math.round(d.count/maxCount*100)}"></i></div>
+          ${d.margin ? `<span class="marg">— ${d.margin}</span>` : ''}
+        </div>
+      </div>
+      <div class="count"><b class="num">${d.count}</b><span>סתירות</span></div>`;
+    board.appendChild(row);
+
+    if(expandable){
+      const dossier = document.createElement('div');
+      dossier.className = 'dossier';
+      dossier.innerHTML = `<div class="dossier-inner">${d.evidence.map(evidenceHTML).join('')}</div>`;
+      board.appendChild(dossier);
+      const toggle = () => {
+        const open = row.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.row[aria-expanded="true"]').forEach(r => { if(r !== row) r.setAttribute('aria-expanded','false'); });
+        row.setAttribute('aria-expanded', open ? 'false' : 'true');
+      };
+      row.addEventListener('click', toggle);
+      row.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+    }
+    requestAnimationFrame(() => row.classList.add('in'));
+  });
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    board.querySelectorAll('.bar > i').forEach(b => { b.style.width = b.dataset.w + '%'; });
+  }));
+}
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed','false'));
+    chip.setAttribute('aria-pressed','true');
+    activeTopic = chip.dataset.topic;
+    render();
+  });
+});
+
+async function loadData(){
+  try {
+    const res = await fetch('data/leaderboard.json', { cache: 'no-store' });
+    if(res.ok){
+      const j = await res.json();
+      if(j && Array.isArray(j.rows) && j.rows.length){
+        MODE = 'real';
+        DATASET = j.rows.map(r => ({
+          full_name: r.full_name,
+          party: r.party || '',
+          count: r.contradicted_count || 0,
+          margin: '',
+          topics: ['all'],
+          evidence: [],
+        }));
+      }
+    }
+  } catch(e){ /* offline / missing file -> stay in demo mode */ }
+  document.body.dataset.mode = MODE;
+  render();
+}
+
+loadData();
+</script>
 </body>
 </html>
