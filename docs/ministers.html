@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · השרים — current government ministers + portfolios + tenure (Knesset OData). -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · השרים</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--gold:#9a7b2e;--maxw:1040px;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;}
+  header.mast{padding:44px 0 22px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(36px,7vw,68px);line-height:.92;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:14px 0 0;max-width:62ch;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:26px 0;}
+  .m{border:1.5px solid var(--ink);background:var(--paper-edge);padding:16px 18px;box-shadow:10px 12px 0 rgba(27,24,20,.05);}
+  .m .role{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;line-height:1.25;}
+  .m .nm{font-family:"Frank Ruhl Libre",serif;font-size:16px;color:var(--ink);margin-top:6px;}
+  .m .nm a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
+  .m .meta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:8px;letter-spacing:.02em;}
+  .m .perf{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);margin-top:8px;border-top:1px dashed var(--rule);padding-top:8px;}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:40px 8px;}
+  footer{margin:30px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a></span>
+    <span>מקור: API הכנסת הרשמי</span>
+  </div></div>
+  <header class="mast"><div class="wrap">
+    <div class="kicker">הממשלה · נתונים רשמיים</div>
+    <h1 class="wordmark">הַשָּׂרִים</h1>
+    <p class="standfirst">השרים וסגני השרים המכהנים, התיק שהם מחזיקים והמועד שבו נכנסו לתפקיד — נשלף מ-API הרשמי של הכנסת. בקרוב: לכל שר/ה לשונית "ביצועים" — נתוני התחום הרשמיים לאורך תקופת הכהונה, מקושרים למקור (נתונים בלבד, ללא ייחוס אשמה).</p>
+  </div></header>
+  <div class="wrap">
+    <div class="grid" id="grid"></div>
+    <p id="state" class="state">טוען…</p>
+    <footer><p>מרשם עובדתי של חברי הממשלה. לשונית "ביצועים" תציג נתוני תחום רשמיים בתקופת הכהונה — כעובדה מקושרת למקור, ולא כקביעה שהשר/ה אחראי/ת לתוצאה.</p></footer>
+  </div>
+<script>
+function esc(t){return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+fetch('data/ministers.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!d.ministers||!d.ministers.length){ document.getElementById('state').textContent='נתוני השרים אינם זמינים כרגע.'; return; }
+  const g=document.getElementById('grid');
+  g.innerHTML=d.ministers.map(m=>`<div class="m">
+    <div class="role">${esc(m.position)}</div>
+    <div class="nm"><a href="mk.html?id=${m.person_id}">${esc(m.name)}</a></div>
+    <div class="meta">${esc(m.ministry||'')} · נכנס/ה לתפקיד ${String(m.start_date||'').slice(0,10)}</div>
+    <div class="perf">לשונית ביצועים — בקרוב</div>
+  </div>`).join('');
+  document.getElementById('state').style.display='none';
+}).catch(()=>{document.getElementById('state').textContent='שגיאה בטעינה.';});
+</script>
+</body>
+</html>

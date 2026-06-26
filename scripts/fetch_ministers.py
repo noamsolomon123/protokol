@@ -46,34 +46,39 @@ def is_minister(desc: str) -> bool:
 
 def main() -> int:
     enable_utf8_console()
-    positions = odata_all("KNS_Position", {"$select": "Id,Description"})
-    min_pos = {p["Id"]: (p.get("Description") or "") for p in positions if is_minister(p.get("Description") or "")}
-    print(f"{len(min_pos)} minister position types; sample: {list(min_pos.values())[:8]}")
-
+    # Current government office-holders: IsCurrent + a ministry attached. The
+    # specific portfolio is in DutyDesc (e.g. "שרת התחבורה והבטיחות בדרכים").
     holders = odata_all(
         "KNS_PersonToPosition",
-        {"$filter": f"KnessetNum eq {KNESSET} and IsCurrent eq true",
+        {"$filter": "IsCurrent eq true and GovMinistryName ne null",
          "$select": "PersonID,PositionID,GovMinistryName,DutyDesc,StartDate,FinishDate"},
     )
-    cur = [h for h in holders if h.get("PositionID") in min_pos]
-    print(f"{len(cur)} current minister appointments")
+    cur = [h for h in holders if is_minister(h.get("DutyDesc") or "")]
+    print(f"{len(cur)} current minister/deputy appointments")
 
     pids = sorted({h["PersonID"] for h in cur})
-    persons: dict[int, str] = {}
-    for i in range(0, len(pids), 40):
-        chunk = pids[i : i + 40]
-        flt = "(" + " or ".join(f"Id eq {x}" for x in chunk) + ")"
-        for p in odata_all("KNS_Person", {"$filter": flt, "$select": "Id,FirstName,LastName"}):
-            persons[p["Id"]] = f"{p.get('FirstName','')} {p.get('LastName','')}".strip()
+    # Names: reuse the MK roster (most ministers are sitting MKs); fetch any
+    # missing person one-by-one (single-entity fetch avoids the long-OR 400).
+    roster = json.loads((REPO / "docs" / "data" / "mk_roster.json").read_text(encoding="utf-8"))
+    persons: dict[int, str] = {r["person_id"]: r["name"] for r in roster}
+    for pid in pids:
+        if pid in persons:
+            continue
+        try:
+            r = httpx.get(f"{BASE}/KNS_Person({pid})", params={"$format": "json"}, timeout=30)
+            if r.status_code == 200:
+                j = r.json()
+                persons[pid] = f"{j.get('FirstName','')} {j.get('LastName','')}".strip()
+        except httpx.HTTPError:
+            pass
 
     ministers = []
     for h in cur:
         ministers.append({
             "person_id": h["PersonID"],
             "name": persons.get(h["PersonID"], ""),
-            "position": min_pos.get(h["PositionID"], "").strip(),
+            "position": (h.get("DutyDesc") or "").strip(),
             "ministry": (h.get("GovMinistryName") or "").strip(),
-            "duty": (h.get("DutyDesc") or "").strip(),
             "start_date": h.get("StartDate"),
             "source": f"{BASE}/KNS_PersonToPosition",
         })

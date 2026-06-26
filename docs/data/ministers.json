@@ -1,0 +1,287 @@
+{
+  "schema": 1,
+  "knesset": 25,
+  "count": 35,
+  "ministers": [
+    {
+      "person_id": 23564,
+      "name": "דוד אמסלם",
+      "position": "השר המקשר בין הממשלה לבין הכנסת",
+      "ministry": "משרד הקשר בין הממשלה לכנסת",
+      "start_date": "2023-03-28T00:00:00+03:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30811,
+      "name": "איתמר בן גביר",
+      "position": "השר לביטחון לאומי",
+      "ministry": "המשרד לביטחון לאומי",
+      "start_date": "2025-03-19T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "position": "השר לשירותי דת",
+      "ministry": "המשרד לשירותי דת",
+      "start_date": "2025-11-24T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 23564,
+      "name": "דוד אמסלם",
+      "position": "השר לשיתוף פעולה אזורי",
+      "ministry": "המשרד לשיתוף פעולה אזורי",
+      "start_date": "2023-03-28T00:00:00+03:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 1057,
+      "name": "ישראל אייכלר",
+      "position": "סגן שר במשרד התקשורת",
+      "ministry": "משרד התקשורת",
+      "start_date": "2026-01-19T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30833,
+      "name": "אלמוג כהן",
+      "position": "סגן שר במשרד ראש הממשלה",
+      "ministry": "משרד ראש הממשלה",
+      "start_date": "2025-04-02T00:00:00+03:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30118,
+      "name": "שרן מרים השכל",
+      "position": "סגנית שר במשרד החוץ",
+      "ministry": "משרד החוץ",
+      "start_date": "2024-11-11T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 965,
+      "name": "בנימין נתניהו",
+      "position": "ראש הממשלה",
+      "ministry": "משרד ראש הממשלה",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 965,
+      "name": "בנימין נתניהו",
+      "position": "ראש הממשלה",
+      "ministry": "משרד ראש הממשלה",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30055,
+      "name": "בצלאל סמוטריץ'",
+      "position": "שר האוצר",
+      "ministry": "משרד האוצר",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30083,
+      "name": "אלי כהן",
+      "position": "שר האנרגיה והתשתיות",
+      "ministry": "משרד האנרגיה והתשתיות",
+      "start_date": "2024-01-01T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 468,
+      "name": "ישראל כץ",
+      "position": "שר הביטחון",
+      "ministry": "משרד הביטחון",
+      "start_date": "2024-11-08T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 556,
+      "name": "חיים כץ",
+      "position": "שר הבינוי והשיכון",
+      "ministry": "משרד הבינוי והשיכון",
+      "start_date": "2025-09-17T00:00:00+03:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 556,
+      "name": "חיים כץ",
+      "position": "שר הבריאות",
+      "ministry": "משרד הבריאות",
+      "start_date": "2025-11-24T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 1027,
+      "name": "גדעון סער",
+      "position": "שר החוץ",
+      "ministry": "משרד החוץ",
+      "start_date": "2024-11-08T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30057,
+      "name": "יואב קיש",
+      "position": "שר החינוך",
+      "ministry": "משרד החינוך",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 4395,
+      "name": "אבי דיכטר",
+      "position": "שר החקלאות וביטחון המזון",
+      "ministry": "משרד החקלאות וביטחון המזון",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30700,
+      "name": "ניר ברקת",
+      "position": "שר הכלכלה והתעשייה",
+      "ministry": "משרד הכלכלה והתעשייה",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30857,
+      "name": "עמיחי אליהו",
+      "position": "שר המורשת",
+      "ministry": "משרד המורשת",
+      "start_date": "2025-03-19T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "position": "שר המשפטים",
+      "ministry": "משרד המשפטים",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30847,
+      "name": "יצחק שמעון וסרלאוף",
+      "position": "שר הנגב, הגליל והחוסן הלאומי",
+      "ministry": "משרד הנגב, הגליל והחוסן הלאומי",
+      "start_date": "2025-03-19T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "position": "שר העבודה",
+      "ministry": "משרד העבודה",
+      "start_date": "2025-11-24T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30717,
+      "name": "אופיר סופר",
+      "position": "שר העלייה והקליטה",
+      "ministry": "משרד העלייה והקליטה",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 556,
+      "name": "חיים כץ",
+      "position": "שר הרווחה והביטחון החברתי",
+      "ministry": "משרד הרווחה והביטחון החברתי",
+      "start_date": "2025-11-24T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 556,
+      "name": "חיים כץ",
+      "position": "שר התיירות",
+      "ministry": "משרד התיירות",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30786,
+      "name": "עמיחי שיקלי",
+      "position": "שר התפוצות והמאבק באנטישמיות",
+      "ministry": "משרד התפוצות והמאבק באנטישמיות",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30704,
+      "name": "שלמה קרעי",
+      "position": "שר התקשורת",
+      "ministry": "משרד התקשורת",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30058,
+      "name": "מכלוף מיקי זוהר",
+      "position": "שר התרבות והספורט",
+      "ministry": "משרד התרבות והספורט",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "position": "שר ירושלים ומסורת ישראל",
+      "ministry": "משרד ירושלים ומסורת ישראל",
+      "start_date": "2025-11-24T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 4397,
+      "name": "זאב אלקין",
+      "position": "שר נוסף במשרד האוצר",
+      "ministry": "משרד האוצר",
+      "start_date": "2024-11-08T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 30055,
+      "name": "בצלאל סמוטריץ'",
+      "position": "שר נוסף במשרד הביטחון",
+      "ministry": "משרד הביטחון",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 23564,
+      "name": "דוד אמסלם",
+      "position": "שר נוסף במשרד המשפטים",
+      "ministry": "משרד המשפטים",
+      "start_date": "2023-03-28T00:00:00+03:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 23551,
+      "name": "אורית מלכה סטרוק",
+      "position": "שרת ההתיישבות והמשימות הלאומיות",
+      "ministry": "משרד ההתיישבות והמשימות הלאומיות",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 1025,
+      "name": "גילה גמליאל",
+      "position": "שרת החדשנות, המדע והטכנולוגיה",
+      "ministry": "משרד החדשנות, המדע והטכנולוגיה",
+      "start_date": "2024-03-18T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    },
+    {
+      "person_id": 12959,
+      "name": "מירי מרים רגב",
+      "position": "שרת התחבורה והבטיחות בדרכים",
+      "ministry": "משרד התחבורה והבטיחות בדרכים",
+      "start_date": "2022-12-29T00:00:00+02:00",
+      "source": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_PersonToPosition"
+    }
+  ]
+}
