@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 7,
+  "with_interviews": 9,
   "mks": [
     {
       "person_id": 4395,
@@ -23,6 +23,20 @@
       "party": "הליכוד",
       "interview_count": 3,
       "segment_count": 472
+    },
+    {
+      "person_id": 30831,
+      "name": "אלי דלל",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 1579
+    },
+    {
+      "person_id": 30832,
+      "name": "אליהו רביבו",
+      "party": "הליכוד",
+      "interview_count": 3,
+      "segment_count": 482
     },
     {
       "person_id": 4397,
@@ -147,20 +161,6 @@
       "person_id": 30694,
       "name": "אלון שוסטר",
       "party": "כחול לבן - המחנה הממלכתי",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30831,
-      "name": "אלי דלל",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30832,
-      "name": "אליהו רביבו",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
