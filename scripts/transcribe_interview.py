@@ -43,14 +43,23 @@ def main() -> int:
     ap.add_argument("--max-seconds", type=int, default=180, help="cap download length (0 = full)")
     ap.add_argument("--chunk-seconds", type=int, default=300)
     ap.add_argument("--model", default="gemini-2.5-flash")
+    ap.add_argument("--engine", choices=["gemini", "local"], default="gemini",
+                    help="gemini (cloud, 3-key rotation) | local (faster-whisper on this PC)")
+    ap.add_argument("--local-model", default="ivrit-ai/whisper-large-v3-turbo-ct2",
+                    help="HF model id for --engine local (ivrit.ai Hebrew fine-tune)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
-    # Load keys from the git-ignored .env into the environment.
-    for k, v in load_env_file(REPO_ROOT / ".env").items():
-        os.environ.setdefault(k, v)
-    pool = GeminiKeyPool(load_gemini_keys())
-    print(f"Loaded {len(pool)} Gemini key(s): {pool.masked()}")
+    if args.engine == "local":
+        from knesset_osint.ingestion.transcription.local_whisper import LocalWhisperTranscriber
+        transcriber = LocalWhisperTranscriber(model=args.local_model)
+        print(f"Local engine: {transcriber.model_name} on {transcriber.device}/{transcriber.compute_type}")
+    else:
+        for k, v in load_env_file(REPO_ROOT / ".env").items():
+            os.environ.setdefault(k, v)
+        pool = GeminiKeyPool(load_gemini_keys())
+        transcriber = GeminiTranscriber(pool, model=args.model)
+        print(f"Gemini engine: {len(pool)} key(s) {pool.masked()}")
 
     work = Path(tempfile.mkdtemp(prefix="kn_tx_"))
     try:
@@ -61,7 +70,6 @@ def main() -> int:
         chunks = split_audio(mp3, args.chunk_seconds, work / "chunks")
         print(f"Split into {len(chunks)} chunk(s) of <= {args.chunk_seconds}s")
 
-        transcriber = GeminiTranscriber(pool, model=args.model)
         segments: list[dict] = []
         for offset, chunk_path in chunks:
             print(f"  transcribing chunk @ {offset:.0f}s ({chunk_path.name}) ...")
