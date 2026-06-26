@@ -10,10 +10,13 @@ from knesset_osint.models.enums import (
     ContradictionStatus,
     SourceType,
     StatementType,
+    VerdictOutcome,
+    VerdictReviewStatus,
     VerificationStatus,
     VoteResult,
     VoteStance,
 )
+from knesset_osint.models.official_statistic import OfficialStatistic
 from knesset_osint.models.politician import Politician
 from knesset_osint.models.role import Role
 from knesset_osint.models.statement import Statement
@@ -31,6 +34,7 @@ __all__ = [
     "Statement",
     "Action",
     "Contradiction",
+    "OfficialStatistic",
     "SourceType",
     "VoteStance",
     "VoteResult",
@@ -38,4 +42,6 @@ __all__ = [
     "ActionType",
     "VerificationStatus",
     "ContradictionStatus",
+    "VerdictOutcome",
+    "VerdictReviewStatus",
 ]
