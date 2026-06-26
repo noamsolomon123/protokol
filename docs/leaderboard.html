@@ -220,7 +220,7 @@
   <div class="ribbon">תצוגה לדוגמה · נתונים סינתטיים</div>
 
   <div class="filebar"><div class="wrap">
-    <a class="nav-link" href="./">→ כרטיסי הציונים</a>
+    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./">כרטיסי הציונים</a></span>
     <span>מקור־אמת: נתונים ממשלתיים רשמיים <span class="dot"></span></span>
   </div></div>
 
@@ -379,7 +379,10 @@ function render(){
   board.innerHTML = '';
   const data = [...currentRows()].sort((a,b) => b.count - a.count);
   if(!data.length){
-    board.innerHTML = '<p class="empty-note">אין עדיין אמירות שפורסמו. ברגע שיתפרסמו ממצאים מגובי־מקור, הם יופיעו כאן.</p>';
+    board.innerHTML = '<div class="empty-note">' +
+      '<p>עדיין אין אמירות שפורסמו — אנחנו בונים את מאגר הראיות מנתונים רשמיים בלבד, וכל קביעה תיבדק מול מקור אמיתי.</p>' +
+      '<p><strong>120 חברי הכנסת</strong> כבר במעקב. <a href="./directory.html" style="color:var(--stamp);font-weight:700;text-underline-offset:3px">עיינו במרשם המלא ←</a></p>' +
+      '</div>';
     return;
   }
   const maxCount = Math.max(1, ...data.map(d => d.count));
@@ -439,7 +442,10 @@ document.querySelectorAll('.chip').forEach(chip => {
   });
 });
 
+const DEMO_ALLOWED = new URLSearchParams(location.search).get('demo') === '1';
+
 async function loadData(){
+  let haveReal = false;
   try {
     const res = await fetch('data/leaderboard.json', { cache: 'no-store' });
     if(res.ok){
@@ -454,9 +460,16 @@ async function loadData(){
           topics: ['all'],
           evidence: [],
         }));
+        haveReal = true;
       }
     }
-  } catch(e){ /* offline / missing file -> stay in demo mode */ }
+  } catch(e){ /* offline / missing file */ }
+  if(!haveReal){
+    // No real verdicts yet: show the honest empty state by default. The
+    // synthetic showcase appears ONLY when explicitly requested with ?demo=1.
+    if(DEMO_ALLOWED){ MODE = 'demo'; DATASET = DEMO_DATA; }
+    else { MODE = 'real'; DATASET = []; }
+  }
   document.body.dataset.mode = MODE;
   render();
 }
