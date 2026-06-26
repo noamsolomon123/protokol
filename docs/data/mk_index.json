@@ -1,8 +1,22 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 14,
+  "with_interviews": 16,
   "mks": [
+    {
+      "person_id": 30809,
+      "name": "גלית דיסטל אטבריאן",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 512
+    },
+    {
+      "person_id": 23558,
+      "name": "דוד ביטן",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 303
+    },
     {
       "person_id": 4395,
       "name": "אבי דיכטר",
@@ -235,13 +249,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30809,
-      "name": "גלית דיסטל אטבריאן",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30807,
       "name": "גלעד קריב",
       "party": "העבודה",
@@ -252,13 +259,6 @@
       "person_id": 30837,
       "name": "דבי ביטון",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 23558,
-      "name": "דוד ביטן",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
