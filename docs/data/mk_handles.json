@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "note": "MK person_id -> X/Twitter handle. Auto-filled by scripts/worker_tweets.py discovery once an X login is configured (see docs/SETUP_TWEETS.md). Verified seed entries only.",
+  "handles": {
+    "965": "netanyahu"
+  }
+}
