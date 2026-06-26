@@ -32,6 +32,9 @@ Thumbs.db
 
 # Transient build/test artifacts (leading-underscore scratch files), screenshots
 _*
+# ...but never ignore Python package markers (the _* rule above catches __init__.py)
+!**/__init__.py
+!**/__main__.py
 *.log
 .playwright-mcp/
 *.png
