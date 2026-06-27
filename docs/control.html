@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- מרכז בקרה · mission-control board for the agent org + pipeline. Reads data/status.json. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>פְּרוֹטוֹקוֹל · מרכז בקרה</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--edge:#e3d9c2;--ink:#1b1814;--soft:#6a6052;--faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--ok:#3c6446;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+  header{border-bottom:3px double var(--ink);padding:26px 0 16px;}
+  .kick{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;}
+  h1{font-family:"Suez One",serif;font-size:clamp(34px,7vw,60px);margin:6px 0 0;}
+  .upd{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);margin-top:6px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:22px 0;}
+  .card{border:1.5px solid var(--ink);background:var(--edge);padding:16px 18px;box-shadow:8px 10px 0 rgba(27,24,20,.05);}
+  .card .lbl{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--soft);text-transform:uppercase;}
+  .card b{font-family:"Suez One",serif;font-size:40px;line-height:1.05;display:block;margin-top:4px;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-inline-start:6px;}
+  .dot.on{background:var(--ok);animation:blink 2s steps(2) infinite;} .dot.off{background:var(--stamp);}
+  @keyframes blink{50%{opacity:.3;}}
+  h2{font-family:"Suez One",serif;font-size:26px;margin:30px 0 12px;border-bottom:1.5px solid var(--ink);padding-bottom:6px;}
+  .feat{display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px solid var(--rule);}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;border:1.4px solid var(--ink);border-radius:4px;padding:3px 8px;min-width:42px;text-align:center;}
+  .chip.done{background:var(--ok);color:var(--paper);border-color:var(--ok);}
+  .chip.todo{background:transparent;color:var(--soft);}
+  .feat .t{font-size:14.5px;} .feat .t.done{color:var(--faint);text-decoration:line-through;}
+  .agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;}
+  .ag{border:1.4px solid var(--ink);background:var(--paper-2);padding:10px 12px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;}
+  .ag .s{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-inline-start:6px;}
+  footer{margin:30px 0 60px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);border-top:1.5px solid var(--ink);padding-top:14px;}
+  a{color:var(--stamp);}
+</style>
+</head>
+<body>
+  <header><div class="wrap">
+    <div class="kick">פְּרוֹטוֹקוֹל · INTERNAL · מרכז בקרה</div>
+    <h1>מרכז בקרה</h1>
+    <div class="upd" id="upd">טוען…</div>
+  </div></header>
+  <div class="wrap">
+    <div class="grid" id="stats"></div>
+    <h2>צבר משימות · F1–F10</h2>
+    <div id="backlog"></div>
+    <h2>צוות הסוכנים</h2>
+    <div class="agents" id="agents"></div>
+    <footer>
+      ניטור עמוק (מומלץ): <a href="https://github.com/disler/claude-code-hooks-multi-agent-observability" target="_blank">claude-code-hooks-multi-agent-observability</a> ·
+      התקדמות זמן-אמת של workflow: הפקודה <span class="num">/workflows</span> ·
+      נתונים מתוך <span class="num">data/status.json</span> (נכתב כל סבב).
+    </footer>
+  </div>
+<script>
+function card(lbl, val, extra){ return `<div class="card"><div class="lbl">${lbl}</div><b class="num">${val}${extra||''}</b></div>`; }
+async function load(){
+  let s; try{ s = await (await fetch('data/status.json',{cache:'no-store'})).json(); }
+  catch(e){ document.getElementById('upd').textContent='status.json עדיין לא נוצר — הרץ scripts/write_status.py'; return; }
+  const h=s.harvester||{}, c=s.corpus||{}, f=s.findings||{};
+  document.getElementById('upd').textContent = 'עודכן: '+ new Date(s.generated_at).toLocaleString('he-IL');
+  document.getElementById('stats').innerHTML =
+    `<div class="card"><div class="lbl">הרבסטר</div><b style="font-size:26px">${h.active?'פעיל':'מושבת'}<span class="dot ${h.active?'on':'off'}"></span></b></div>`
+    + card('ראיונות תומללו', c.transcripts ?? h.transcribed ?? 0)
+    + card('ח"כ עם ראיונות', c.mks_with_interviews ?? 0)
+    + card('ממצאים', f.total ?? 0)
+    + card('סתירות מאושרות', f.contradicted ?? 0);
+  const bl=s.backlog||[];
+  document.getElementById('backlog').innerHTML = bl.length ? bl.map(b=>
+    `<div class="feat"><span class="chip ${b.done?'done':'todo'}">${b.id}</span><span class="t ${b.done?'done':''}">${b.label.replace(/^F\d+\s*[—-]?\s*/,'')}</span></div>`
+  ).join('') : '<div class="feat">—</div>';
+  document.getElementById('agents').innerHTML = (s.agents||[]).map(a=>`<div class="ag">${a}<span class="s"></span></div>`).join('');
+}
+load(); setInterval(load, 30000);
+</script>
+</body>
+</html>

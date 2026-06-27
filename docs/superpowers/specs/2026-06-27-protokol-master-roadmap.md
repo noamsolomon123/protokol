@@ -24,6 +24,42 @@ and right judged by the same yardstick.
 
 ---
 
+## Locked decisions (2026-06-27)
+
+- **Publishing = multi-model consensus auto-publish.** A finding becomes public
+  (`status: confirmed`, counted on the leaderboard) ONLY when two independent models
+  agree it is a STRICT contradiction backed by a stat that directly measures the exact
+  claimed quantity: a Claude extractor + an independent Claude adversarial verifier,
+  and Gemini as a third vote when quota allows. Anything short of agreement stays a
+  clearly-labeled `candidate` (shown on a candidates view, never on the leaderboard).
+  No human gate required; the user spot-checks. If one model is consistently better, flag it.
+- **Agent budget = go all-out.** Use Claude agents liberally (ultracode on).
+- **Repo = stay in `knesset-osint` for now.** Migration is F10 (later).
+- **X/Twitter (F5):** user will provide a throwaway X account — build the pipeline now,
+  plug credentials in when given.
+
+## Approach per feature (sketch — each gets its own detailed plan when built)
+
+- **F1 Findings at scale:** fact-check Workflow — Claude agents read each transcript +
+  the verified-stats catalog, extract STRICT claims and adjudicate (reusing the
+  `factcheck.py` strict rules); an independent adversarial Claude verifier (+ Gemini when
+  available) forms the consensus → agreeing findings become `confirmed`, else `candidate`.
+- **F2 Minister series:** integrate the verified researched series into
+  `portfolio_series.json` + catalog; research remaining ministries via the verify-workflow.
+- **F3 Review console:** lightweight static page over findings.json to flip
+  candidate→confirmed (optional safety net; consensus already auto-publishes).
+- **F4 Consistency profile:** per-MK RAG over their transcripts; flag only hard measurable
+  reversals (same metric, opposite direction, both dated + sourced).
+- **F5 X/Twitter:** twscrape with the provided account → tweets through the same pipeline.
+- **F6 Submissions + disputes:** static form → free backend (Formspree / GitHub issues);
+  dispute records linked to findings.
+- **F7 Connections engine:** sourced graph (people/claims/topics/outcomes); correlation only.
+- **F8 Polish:** nav, mobile (playwright checks on the live site), share cards, favicons.
+- **F9 Deeper crawl:** YouTube pagination + varied queries beyond the recent-25/MK cap.
+- **F10 Own repo + Pages:** migrate cleanly off the old osint scorecard.
+
+---
+
 ## Done / live
 
 - [x] Parallel transcription ETL — 3 YouTube keys (rotating + quota failover), batched

@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-06-27T04:27:26.480358+00:00",
+  "harvester": {
+    "transcribed": 280,
+    "processed": 303,
+    "active": true,
+    "last_log_min": 0.0
+  },
+  "corpus": {
+    "transcripts": 280,
+    "mks_with_interviews": 43
+  },
+  "findings": {
+    "total": 0,
+    "contradicted": 0,
+    "consistent": 0
+  },
+  "backlog": [
+    {
+      "id": "F1",
+      "done": false,
+      "label": "F1 — Findings at scale** — multi-model agent fact-check: Claude agents (no Gemini"
+    },
+    {
+      "id": "F2",
+      "done": false,
+      "label": "F2 — Integrate verified minister series** — fold the researched GDP/poverty/debt/…"
+    },
+    {
+      "id": "F3",
+      "done": false,
+      "label": "F3 — Human review console** — confirm candidate → published (integrity-critical;"
+    },
+    {
+      "id": "F4",
+      "done": false,
+      "label": "F4 — Consistency profile per MK** — RAG over each MK's own record; flag only hard,"
+    },
+    {
+      "id": "F5",
+      "done": false,
+      "label": "F5 — X/Twitter integration** — tweets via a throwaway X account (user-provided),"
+    },
+    {
+      "id": "F6",
+      "done": false,
+      "label": "F6 — Public submissions + disputes** — public submits clips/claims; MKs can appeal"
+    },
+    {
+      "id": "F7",
+      "done": false,
+      "label": "F7 — Connections engine** — sourced knowledge-graph linking people/claims/topics/"
+    },
+    {
+      "id": "F8",
+      "done": false,
+      "label": "F8 — Polish + ship for voters** — navigation, mobile, share cards, favicons,"
+    },
+    {
+      "id": "F9",
+      "done": false,
+      "label": "F9 — Deeper crawl** — pagination/varied queries beyond the recent-25/MK cap to grow"
+    },
+    {
+      "id": "F10",
+      "done": false,
+      "label": "F10 — Own repo + Pages** — migrate the platform to its own repo, fully separate"
+    }
+  ],
+  "agents": [
+    "etl-agent",
+    "backend-agent",
+    "frontend-agent",
+    "factcheck-agent",
+    "research-agent",
+    "qa-agent",
+    "devops-agent",
+    "efficiency-optimizer"
+  ]
+}
