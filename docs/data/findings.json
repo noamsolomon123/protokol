@@ -1,10 +1,11 @@
 {
   "schema": 1,
-  "status": "candidates_for_review",
+  "status": "candidates_and_confirmed",
   "counts": {
     "total": 0,
     "contradicted": 0,
-    "consistent": 0
+    "consistent": 0,
+    "confirmed": 0
   },
   "findings": []
 }
