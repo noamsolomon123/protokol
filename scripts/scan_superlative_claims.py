@@ -31,6 +31,7 @@ TOPIC = re.compile(
 
 def main() -> int:
     out: list[dict] = []
+    # 1) interview transcripts
     for f in glob.glob(str(DATA / "transcripts" / "person-*" / "*.json")):
         try:
             d = json.loads(Path(f).read_text(encoding="utf-8"))
@@ -40,13 +41,30 @@ def main() -> int:
             t = (s.get("text") or "").strip()
             if RANK.search(t) and TOPIC.search(t):
                 out.append({
-                    "mk_name": d.get("mk_name"), "person_id": d.get("person_id"),
+                    "source": "interview", "mk_name": d.get("mk_name"), "person_id": d.get("person_id"),
                     "video_id": d.get("video_id"), "start": round(s.get("start", 0)), "quote": t,
+                })
+    # 2) tweets — exclude retweets (RT @...): a retweet is not the MK's own claim.
+    for f in glob.glob(str(DATA / "tweets" / "person-*.json")):
+        try:
+            d = json.loads(Path(f).read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        for tw in d.get("tweets", []):
+            t = (tw.get("text") or "").strip()
+            if t.startswith("RT @"):
+                continue
+            if RANK.search(t) and TOPIC.search(t):
+                out.append({
+                    "source": "tweet", "mk_name": d.get("handle"), "person_id": d.get("person_id"),
+                    "url": tw.get("url"), "quote": t,
                 })
     dst = DATA / "findings" / "superlative_candidates.json"
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"{len(out)} ranking-claim candidates across {len({c['video_id'] for c in out})} transcripts -> {dst}")
+    iv = sum(1 for c in out if c["source"] == "interview")
+    tw = sum(1 for c in out if c["source"] == "tweet")
+    print(f"{len(out)} ranking-claim candidates ({iv} interview, {tw} tweet) -> {dst}")
     return 0
 
 
