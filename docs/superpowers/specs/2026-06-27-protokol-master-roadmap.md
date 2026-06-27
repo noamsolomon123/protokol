@@ -107,8 +107,15 @@ and right judged by the same yardstick.
       repo (labels `submission`/`dispute`); the visitor posts it themselves, no server, no
       credentials. Public "what we check / what we don't" rules. Linked from home (card 07)
       + directory nav.
-- [ ] **F7 · Connections engine** — sourced knowledge-graph linking people/claims/topics/
-      outcomes; correlation shown, causation never asserted.
+- [x] **F7 · Connections engine** — DONE: `scripts/build_connections.py` + `connections.html`
+      — a sourced people↔topic↔official-statistic map. For each of the 19 catalog series we
+      count, per MK, how many transcript segments mention the topic (content-phrase keywords,
+      threshold ≥2), link MK→topic, and anchor each topic to its latest official value +
+      source. 95 MKs / 273 edges. Topic-centric explorer (expand a topic → its official stat
+      + ranked MKs, each linking to their page). **Correlation only**, causation never
+      asserted (banner + footer). Tightened keyword precision (e.g. crime: dropped bare
+      "רצח"/"נרצח" that caught political/terror contexts). Linked from home (card 08) +
+      directory nav. Verified live: 0 console errors.
 - [x] **F8 · Polish + ship for voters** — DONE (core): OG/Twitter summary share-cards on
       all 6 share-facing pages (findings, leaderboard, directory, search, ministers, mk) +
       tailored descriptions; favicon + viewport confirmed on every page; nav present on all;

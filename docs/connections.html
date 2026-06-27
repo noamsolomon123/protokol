@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · מפת קשרים (F7) — sourced people↔topic↔official-stat graph. Correlation only. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · מפת הקשרים</title>
+<meta name="description" content="מי מדבר על מה — ומה אומרים הנתונים הרשמיים. מפה מקושרת בין חברי הכנסת, הנושאים, והסטטיסטיקה הרשמית שמודדת כל נושא. מתאם בלבד." />
+<meta property="og:title" content="פְּרוֹטוֹקוֹל · מפת הקשרים" />
+<meta property="og:description" content="מי מדבר על מה — ומה אומרים הנתונים הרשמיים. מפה מקושרת: חברי כנסת ↔ נושאים ↔ סטטיסטיקה רשמית. מתאם בלבד, ללא טענה סיבתית." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://noamsolomon123.github.io/knesset-osint/connections.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="פְּרוֹטוֹקוֹל · מפת הקשרים" />
+<meta name="twitter:description" content="מי מדבר על מה — ומה אומרים הנתונים הרשמיים. מתאם בלבד." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--gold:#9a7b2e;--true:#3c6446;--maxw:1000px;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;white-space:nowrap;}
+  header.mast{padding:44px 0 18px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(32px,7vw,60px);line-height:.92;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:12px 0 0;max-width:64ch;}
+  .totals{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin:18px 0 6px;}
+  .totals b{color:var(--stamp);}
+  .caution{font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-faint);background:var(--paper-edge);border:1px solid var(--rule);border-radius:3px;padding:10px 14px;margin:14px 0 0;}
+  .topic{border:1.5px solid var(--ink);background:var(--paper-edge);margin:16px 0;box-shadow:7px 9px 0 rgba(27,24,20,.05);}
+  .t-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;flex-wrap:wrap;}
+  .t-head:hover{background:#efe7d4;}
+  .t-name{font-family:"Suez One",serif;font-size:22px;}
+  .t-bar{flex:1;min-width:120px;height:10px;background:var(--rule);border-radius:6px;overflow:hidden;}
+  .t-bar i{display:block;height:100%;background:var(--stamp);}
+  .t-cnt{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink-soft);}
+  .t-cnt b{font-family:"Suez One",serif;font-size:20px;color:var(--stamp);}
+  .t-stat{padding:0 18px 4px;font-family:"Frank Ruhl Libre",serif;font-size:14.5px;color:var(--ink-soft);}
+  .t-stat b{color:var(--ink);} .t-stat .v{font-family:"IBM Plex Mono",monospace;color:var(--stamp);font-weight:600;}
+  .t-stat a{color:var(--gold);}
+  .t-body{display:none;padding:6px 18px 18px;border-top:1px solid var(--rule);}
+  .topic.open .t-body{display:block;}
+  .chev{font-family:"IBM Plex Mono",monospace;color:var(--ink-faint);font-size:13px;}
+  .mks{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
+  .mk{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1.3px solid var(--rule);background:var(--paper);border-radius:20px;padding:4px 11px;font-size:13.5px;transition:all .12s;}
+  .mk:hover{border-color:var(--stamp);transform:translateY(-1px);}
+  .mk .w{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--paper);background:var(--ink-soft);border-radius:10px;padding:0 6px;}
+  .mk .pp{font-size:11px;color:var(--ink-faint);}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:36px 8px;}
+  footer{margin:30px 0 70px;padding-top:18px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./home.html">→ הבית</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a></span>
+    <span>מפת קשרים</span>
+  </div></div>
+  <header class="mast"><div class="wrap">
+    <div class="kicker">מי מדבר על מה — ומה אומרים הנתונים</div>
+    <h1 class="wordmark">מַפַּת הַקְּשָׁרִים</h1>
+    <p class="standfirst">לכל נושא ציבורי שמדיד בנתון רשמי — מי מחברי הכנסת מדבר עליו, וכמה. כל קשר נשען על תמלול ראיון אמיתי, וכל נושא מעוגן בסטטיסטיקה הממשלתית שמודדת אותו. <b>מתאם בלבד</b> — שמישהו מרבה לדבר על נושא אינו אומר דבר על הגורם או על האחריות.</p>
+  </div></header>
+  <div class="wrap">
+    <div class="totals" id="totals">טוען…</div>
+    <div id="list"></div>
+    <div class="caution" id="caution"></div>
+    <footer>הקשרים מבוססים על אזכור מפורש של הנושא בתמלול אוטומטי של ראיונות פומביים (סף: שני קטעים ומעלה). ייתכנו שגיאות תמלול ואי-דיוקים — לכן כל ח״כ מקושר לעמודו ולמקור. הנתון הרשמי לכל נושא לקוח מ<a href="./statistics.html">עמוד הנתונים</a>.</footer>
+  </div>
+<script>
+const esc=t=>(t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const heb=n=>(n==null?'':Number(n).toLocaleString('he-IL'));
+fetch('data/connections.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+  const tp=d.topics||[];
+  const maxc=Math.max(1,...tp.map(t=>t.mk_count));
+  document.getElementById('totals').innerHTML =
+    `<b>${tp.length}</b> נושאים · <b>${d.totals.mks_connected}</b> חברי כנסת מקושרים · <b>${heb(d.totals.edges)}</b> קשרים`;
+  document.getElementById('caution').textContent = d.note || '';
+  document.getElementById('list').innerHTML = tp.map((t,i)=>{
+    const st=t.latest||{}, src=t.source||{};
+    const statline = (st.value!=null)
+      ? `<b>הנתון הרשמי:</b> <span class="v">${esc(heb(st.value))} ${esc(t.unit||'')}</span> (${esc(st.year||'')}) · ${esc(t.official_label||'')} ${src.url?`<a href="${esc(src.url)}" target="_blank" rel="noopener">${esc(src.org||'מקור')} ↗</a>`:''}`
+      : '<b>הנתון הרשמי:</b> —';
+    const mks = (t.mks||[]).map(m=>
+      `<a class="mk" href="mk.html?id=${m.person_id}" title="מוזכר ב-${m.weight} קטעי תמלול">
+         <span>${esc(m.name)}</span><span class="pp">${esc(m.party||'')}</span><span class="w">${m.weight}</span></a>`
+    ).join('');
+    return `<div class="topic" data-i="${i}">
+      <div class="t-head" onclick="this.parentNode.classList.toggle('open')">
+        <span class="t-name">${esc(t.label)}</span>
+        <span class="t-bar"><i style="width:${Math.round(100*t.mk_count/maxc)}%"></i></span>
+        <span class="t-cnt"><b>${t.mk_count}</b> ח״כ</span>
+        <span class="chev">▾</span>
+      </div>
+      <div class="t-stat">${statline}</div>
+      <div class="t-body"><div class="mks">${mks||'<span class="state">—</span>'}</div></div>
+    </div>`;
+  }).join('') || '<div class="state">אין עדיין נתוני קשרים.</div>';
+}).catch(()=>{ document.getElementById('totals').textContent='שגיאה בטעינת הקשרים.'; });
+</script>
+</body>
+</html>
