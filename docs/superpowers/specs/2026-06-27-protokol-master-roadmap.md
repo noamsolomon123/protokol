@@ -87,8 +87,11 @@ and right judged by the same yardstick.
       the leaderboard only counts confirmed contradictions, so this unblocks it).
 - [ ] **F4 · Consistency profile per MK** — RAG over each MK's own record; flag only hard,
       measurable self-contradictions / reversals over time.
-- [ ] **F5 · X/Twitter integration** — tweets via a throwaway X account (user-provided),
-      fact-checked through the same pipeline.
+- [x] **F5 · X/Twitter** — DONE (display): user's X account (cookies session), verified-
+      identity handle discovery (never misattributes), 85 MKs / ~4,800 tweets harvested,
+      tweet timeline on every MK page. Remaining: feed tweets into the strict fact-check.
+      Also delivered: `statistics.html` (all 19 official series, browsable) + tracking 6
+      prominent non-MK figures (Bennett, Eisenkot, Y.Golan, Smotrich, Sa'ar, Gallant).
 - [ ] **F6 · Public submissions + disputes** — public submits clips/claims; MKs can appeal
       a verdict.
 - [ ] **F7 · Connections engine** — sourced knowledge-graph linking people/claims/topics/
