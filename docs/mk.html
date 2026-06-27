@@ -48,6 +48,16 @@
   .seg.hit{background:rgba(154,123,46,.16);}
   .seg mark{background:#f3d98a;color:inherit;padding:0 1px;}
   .state{font-family:"Frank Ruhl Libre",serif;font-size:18px;color:var(--ink-soft);padding:48px 8px;}
+  #findings{margin:20px 0 6px;}
+  .contra-h{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;color:var(--stamp);text-transform:uppercase;margin:6px 0 12px;}
+  .no-contra{font-family:"Frank Ruhl Libre",serif;font-size:16px;color:var(--ink-soft);border-inline-start:3px solid #3c6446;padding:9px 14px;margin:6px 0 14px;background:rgba(60,100,70,.06);}
+  .contra{border:1.5px solid var(--stamp);background:var(--paper-edge);padding:18px 18px 14px;margin:0 0 14px;position:relative;box-shadow:8px 10px 0 rgba(180,31,36,.07);}
+  .c-stamp{position:absolute;top:-10px;inset-inline-start:16px;background:var(--stamp);color:var(--paper);font-family:"Suez One",serif;font-size:12px;padding:2px 10px;}
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;color:var(--stamp);text-transform:uppercase;display:block;margin:8px 0 3px;}
+  .c-quote{font-family:"Frank Ruhl Libre",serif;font-style:italic;font-size:18px;margin:0;line-height:1.5;}
+  .c-datum{font-family:"Frank Ruhl Libre",serif;font-size:15px;} .c-datum a{color:var(--gold);}
+  .c-reason{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:6px;}
+  .c-mom{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--stamp);text-decoration:none;display:inline-block;margin-top:8px;border-bottom:1.5px solid var(--stamp);}
   footer{margin:40px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
   .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:14px;}
   @media (max-width:720px){ .iv-body{grid-template-columns:1fr;} .player{border-inline-start:none;border-bottom:1px solid var(--rule);} .transcript{max-height:300px;} }
@@ -66,6 +76,7 @@
   </div></header>
 
   <div class="wrap">
+    <div id="findings"></div>
     <input id="search" class="search" type="search" placeholder="חיפוש בתוך כל הראיונות — מילה או צירוף…" aria-label="חיפוש בתמלול" />
     <div class="hint">לחיצה על שורת תמלול תפעיל את הסרטון מאותה נקודה. כל ראיון מקושר למקור המקורי.</div>
     <div id="list"></div>
@@ -129,26 +140,35 @@ listEl.addEventListener('click', e => {
 });
 searchEl.addEventListener('input', e => render(e.target.value));
 
+const findingsEl=document.getElementById('findings');
+function renderFindings(all){
+  const mine=(all||[]).filter(f=>String(f.person_id)===String(id) && f.outcome==='contradicted');
+  if(!mine.length){ findingsEl.innerHTML='<div class="no-contra">לא נמצאו אמירות הסותרות נתונים רשמיים. להלן הראיונות:</div>'; return; }
+  findingsEl.innerHTML='<div class="contra-h">סתירות שנמצאו מול נתונים רשמיים</div>'+mine.map(f=>{
+    const s=f.stat||{}, t=Math.floor(f.approx_seconds||0), mom=f.url?`${f.url}${f.url.includes('?')?'&':'?'}t=${t}`:'#';
+    return `<div class="contra"><div class="c-stamp">סוֹתֵר נְתוּנִים</div>
+      <span class="lbl">האמירה</span><p class="c-quote">"${esc(f.quote)}"</p>
+      <span class="lbl">הנתון הרשמי</span><div class="c-datum">${esc(String(s.value))} ${esc(s.unit||'')} · ${esc(s.source_org||'')} <a href="${s.source_url}" target="_blank" rel="noopener">↗</a></div>
+      ${f.reason?`<div class="c-reason">${esc(f.reason)}</div>`:''}
+      <a class="c-mom" href="${mom}" target="_blank" rel="noopener">▶ צפייה ברגע</a></div>`;
+  }).join('');
+}
 if(!id){ stateEl.textContent='לא צוין מזהה ח"כ.'; }
-else fetch(`data/mk/${id}.json`, {cache:'no-store'})
-  .then(r => r.ok ? r.json() : null)
-  .then(d => {
-    if(!d){ // no interviews file -> show roster basics
-      stateEl.textContent = 'אין עדיין ראיונות מתומללים עבור ח"כ זה. המערכת אוספת ומתמללת ראיונות באופן רציף.';
-      // try to show name from index
-      return fetch('data/mk_index.json').then(r=>r.json()).then(idx=>{
-        const m=(idx.mks||[]).find(x=>String(x.person_id)===String(id));
-        if(m){ nameEl.textContent=m.name; metaEl.innerHTML=`${m.party||''} · <b>0</b> ראיונות`; }
-      }).catch(()=>{});
-    }
-    DATA = d;
-    nameEl.textContent = d.name;
-    const segs = d.interviews.reduce((a,iv)=>a+(iv.segments||[]).length,0);
-    metaEl.innerHTML = `${d.party||''} · <b>${d.interviews.length}</b> ראיונות · <b>${segs}</b> קטעי תמלול`;
-    stateEl.style.display='none';
-    render('');
-  })
-  .catch(()=>{ stateEl.textContent='שגיאה בטעינת נתוני הח"כ.'; });
+else Promise.all([
+  fetch(`data/mk/${id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([d, fj])=>{
+  renderFindings(fj&&fj.findings);
+  if(!d){
+    stateEl.textContent='אין עדיין ראיונות מתומללים עבור ח"כ זה. המערכת אוספת ומתמללת ראיונות באופן רציף.';
+    return fetch('data/mk_index.json').then(r=>r.json()).then(idx=>{const m=(idx.mks||[]).find(x=>String(x.person_id)===String(id)); if(m){nameEl.textContent=m.name; metaEl.innerHTML=`${m.party||''} · <b>0</b> ראיונות`;}}).catch(()=>{});
+  }
+  DATA=d; nameEl.textContent=d.name;
+  const segs=d.interviews.reduce((a,iv)=>a+(iv.segments||[]).length,0);
+  metaEl.innerHTML=`${d.party||''} · <b>${d.interviews.length}</b> ראיונות · <b>${segs}</b> קטעי תמלול`;
+  stateEl.style.display='none';
+  render('');
+}).catch(()=>{ stateEl.textContent='שגיאה בטעינת נתוני הח"כ.'; });
 </script>
 </body>
 </html>
