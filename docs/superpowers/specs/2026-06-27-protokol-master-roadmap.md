@@ -88,8 +88,15 @@ and right judged by the same yardstick.
       `merge_agent_findings.py --decisions reviewed.json` applies them. Retractions go to a
       blocklist (`retracted.json`) so a re-run can never republish a pulled false positive
       (the Tur-Paz case). Stable `F-####` ids on every finding. Linked from control.html.
-- [ ] **F4 · Consistency profile per MK** — RAG over each MK's own record; flag only hard,
-      measurable self-contradictions / reversals over time.
+- [x] **F4 · Consistency profile per MK** — DONE (mechanism + honest result):
+      `scripts/scan_self_contradictions.py` finds candidate pairs (same MK, same covered
+      metric, conflicting % across DIFFERENT interviews). Ran it → 38 raw candidates;
+      **manually adjudicated all 38 → 0 genuine self-contradictions** (metric-conflation,
+      different sub-populations, different time frames, level-vs-change). Same integrity-
+      correct low yield as the main fact-check — nothing publishable, so nothing shown.
+      `mk.html` renderFindings is now type-aware (`self_contradiction` → "סותר את עצמו",
+      shows both moments), so a future PM/agent-confirmed reversal surfaces per-MK with the
+      right framing. Verified both card types render, 0 console errors.
 - [x] **F5 · X/Twitter** — DONE (display): user's X account (cookies session), verified-
       identity handle discovery (never misattributes), 85 MKs / ~4,800 tweets harvested,
       tweet timeline on every MK page. Remaining: feed tweets into the strict fact-check.

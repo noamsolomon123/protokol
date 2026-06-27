@@ -158,15 +158,28 @@ searchEl.addEventListener('input', e => render(e.target.value));
 
 const findingsEl=document.getElementById('findings');
 function renderFindings(all){
-  const mine=(all||[]).filter(f=>String(f.person_id)===String(id) && f.outcome==='contradicted');
+  // Two kinds, both integrity-gated (confirmed only ever reach this file):
+  //  · vs official data (outcome 'contradicted')  · self-contradiction (type 'self_contradiction', F4)
+  const mine=(all||[]).filter(f=>String(f.person_id)===String(id)
+    && (f.outcome==='contradicted' || f.type==='self_contradiction'));
   if(!mine.length){ findingsEl.innerHTML='<div class="no-contra">לא נמצאו אמירות הסותרות נתונים רשמיים. להלן הראיונות:</div>'; return; }
-  findingsEl.innerHTML='<div class="contra-h">סתירות שנמצאו מול נתונים רשמיים</div>'+mine.map(f=>{
-    const s=f.stat||{}, t=Math.floor(f.approx_seconds||0), mom=f.url?`${f.url}${f.url.includes('?')?'&':'?'}t=${t}`:'#';
+  const mom=(u,t)=> u?`${u}${u.includes('?')?'&':'?'}t=${Math.floor(t||0)}`:'#';
+  findingsEl.innerHTML='<div class="contra-h">סתירות שנמצאו</div>'+mine.map(f=>{
+    if(f.type==='self_contradiction'){
+      const a=f.a||{}, b=f.b||{};
+      return `<div class="contra"><div class="c-stamp">סוֹתֵר אֶת עַצְמוֹ</div>
+        <span class="lbl">אמירה א'${f.metric?` · ${esc(f.metric)}`:''}</span><p class="c-quote">"${esc(a.quote)}"</p>
+        <a class="c-mom" href="${mom(a.url,a.start)}" target="_blank" rel="noopener">▶ צפייה ברגע</a>
+        <span class="lbl">אמירה ב'</span><p class="c-quote">"${esc(b.quote)}"</p>
+        <a class="c-mom" href="${mom(b.url,b.start)}" target="_blank" rel="noopener">▶ צפייה ברגע</a>
+        ${f.reason?`<div class="c-reason">${esc(f.reason)}</div>`:''}</div>`;
+    }
+    const s=f.stat||{};
     return `<div class="contra"><div class="c-stamp">סוֹתֵר נְתוּנִים</div>
       <span class="lbl">האמירה</span><p class="c-quote">"${esc(f.quote)}"</p>
       <span class="lbl">הנתון הרשמי</span><div class="c-datum">${esc(String(s.value))} ${esc(s.unit||'')} · ${esc(s.source_org||'')} <a href="${s.source_url}" target="_blank" rel="noopener">↗</a></div>
       ${f.reason?`<div class="c-reason">${esc(f.reason)}</div>`:''}
-      <a class="c-mom" href="${mom}" target="_blank" rel="noopener">▶ צפייה ברגע</a></div>`;
+      <a class="c-mom" href="${mom(f.url,f.approx_seconds)}" target="_blank" rel="noopener">▶ צפייה ברגע</a></div>`;
   }).join('');
 }
 
