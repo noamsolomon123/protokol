@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "trends": {
+    "30055": {
+      "direction": "good",
+      "label": "אינפלציה — שיעור השינוי השנתי במדד המחירים לצרכן (דצמבר לעומת דצמבר)",
+      "unit": "%",
+      "from_year": 2022,
+      "from_value": 5.3,
+      "to_year": 2025,
+      "to_value": 2.6,
+      "ministry": "משרד האוצר",
+      "key": "inflation"
+    },
+    "556": {
+      "direction": "bad",
+      "label": "מיטות אשפוז כללי ל-1,000 נפש (בתקן, סוף שנה)",
+      "unit": "מיטות ל-1,000",
+      "from_year": 2014,
+      "from_value": 1.863,
+      "to_year": 2024,
+      "to_value": 1.768,
+      "ministry": "משרד הבריאות",
+      "key": "health"
+    },
+    "30057": {
+      "direction": "good",
+      "label": "שיעור הזכאים לתעודת בגרות (מבין תלמידי כיתות י\"ב)",
+      "unit": "%",
+      "from_year": 2022,
+      "from_value": 75.9,
+      "to_year": 2024,
+      "to_value": 76.6,
+      "ministry": "משרד החינוך",
+      "key": "education"
+    },
+    "4395": {
+      "direction": "good",
+      "label": "השינוי השנתי במדד מחירי המזון (קבוצת \"מזון\" ללא ירקות ופירות; דצמבר לעומת דצמבר)",
+      "unit": "% (שינוי שנתי, דצמבר לעומת דצמבר אשתקד)",
+      "from_year": 2022,
+      "from_value": 4.9,
+      "to_year": 2025,
+      "to_value": 3.2,
+      "ministry": "משרד החקלאות וביטחון המזון",
+      "key": "food_price_index"
+    },
+    "30700": {
+      "direction": "good",
+      "label": "אינפלציה — שיעור השינוי השנתי במדד המחירים לצרכן (דצמבר לעומת דצמבר)",
+      "unit": "%",
+      "from_year": 2022,
+      "from_value": 5.3,
+      "to_year": 2025,
+      "to_value": 2.6,
+      "ministry": "משרד הכלכלה והתעשייה",
+      "key": "inflation"
+    },
+    "12951": {
+      "direction": "good",
+      "label": "שיעור האבטלה (בני 15+, ממוצע שנתי)",
+      "unit": "%",
+      "from_year": 2019,
+      "from_value": 3.8,
+      "to_year": 2024,
+      "to_value": 3.0,
+      "ministry": "משרד העבודה",
+      "key": "unemployment"
+    },
+    "30717": {
+      "direction": "bad",
+      "label": "מספר העולים החדשים לישראל (לפי שנה)",
+      "unit": "עולים",
+      "from_year": 2022,
+      "from_value": 76601,
+      "to_year": 2025,
+      "to_value": 22423,
+      "ministry": "משרד העלייה והקליטה",
+      "key": "aliyah"
+    },
+    "4397": {
+      "direction": "good",
+      "label": "אינפלציה — שיעור השינוי השנתי במדד המחירים לצרכן (דצמבר לעומת דצמבר)",
+      "unit": "%",
+      "from_year": 2024,
+      "from_value": 3.2,
+      "to_year": 2025,
+      "to_value": 2.6,
+      "ministry": "משרד האוצר",
+      "key": "inflation"
+    },
+    "1025": {
+      "direction": "good",
+      "label": "ההוצאה הלאומית למחקר ופיתוח אזרחי כאחוז מהתוצר המקומי הגולמי (תמ\"ג)",
+      "unit": "% מהתמ\"ג",
+      "from_year": 2015,
+      "from_value": 4.3,
+      "to_year": 2023,
+      "to_value": 6.3,
+      "ministry": "משרד החדשנות, המדע והטכנולוגיה",
+      "key": "rd_expenditure_gdp"
+    },
+    "12959": {
+      "direction": "bad",
+      "label": "הרוגים בתאונות דרכים בישראל",
+      "unit": "הרוגים",
+      "from_year": 2022,
+      "from_value": 351,
+      "to_year": 2025,
+      "to_value": 459,
+      "ministry": "משרד התחבורה והבטיחות בדרכים",
+      "key": "transport"
+    }
+  }
+}

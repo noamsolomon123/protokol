@@ -55,37 +55,35 @@
   </div>
 <script>
 const qEl=document.getElementById('q'), resEl=document.getElementById('res'), stateEl=document.getElementById('state'), metaEl=document.getElementById('meta');
-let SEGS=[]; // {pid, name, vid, url, title, start, text}
+let IVS=[], SEGS=[]; // interviews[{pid,name,vid,url,title}], segments=[[ivIndex,start,text],...]
 const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const moment=(url,t)=> url ? `${url}${url.includes('?')?'&':'?'}t=${Math.floor(t||0)}` : '#';
 
-fetch('data/mk_index.json',{cache:'no-store'}).then(r=>r.json()).then(async idx=>{
-  const withIv=(idx.mks||[]).filter(m=>m.interview_count>0);
-  metaEl.innerHTML=`טוען ${withIv.length} חברי כנסת…`;
-  const files=await Promise.all(withIv.map(m=>fetch(`data/mk/${m.person_id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
-  let ivCount=0;
-  for(const d of files){ if(!d) continue; for(const iv of (d.interviews||[])){ ivCount++; for(const s of (iv.segments||[])){ SEGS.push({pid:d.person_id,name:d.name,vid:iv.video_id,url:iv.url,title:iv.title,start:s.start,text:s.text}); } } }
-  metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${ivCount} ראיונות · ${withIv.length} ח"כ`;
+fetch('data/search_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(idx=>{
+  if(!idx){ metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }
+  IVS=idx.interviews||[]; SEGS=idx.segments||[];
+  metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${IVS.length} ראיונות`;
   if(qEl.value) run(qEl.value);
-}).catch(()=>{ metaEl.textContent='שגיאה בטעינת התמלולים.'; });
+}).catch(()=>{ metaEl.textContent='שגיאה בטעינת מאגר החיפוש.'; });
 
 let timer;
-qEl.addEventListener('input', e=>{ clearTimeout(timer); timer=setTimeout(()=>run(e.target.value), 180); });
+qEl.addEventListener('input', e=>{ clearTimeout(timer); timer=setTimeout(()=>run(e.target.value), 160); });
 function run(q){
   q=(q||'').trim();
   if(q.length<2){ resEl.innerHTML=''; stateEl.textContent=''; return; }
   const hits=[];
-  for(const s of SEGS){ if(s.text && s.text.includes(q)){ hits.push(s); if(hits.length>=200) break; } }
+  for(const s of SEGS){ if(s[2] && s[2].includes(q)){ hits.push(s); if(hits.length>=200) break; } }
   stateEl.style.display = hits.length? 'none':'';
   stateEl.textContent = hits.length? '' : 'לא נמצאו תוצאות.';
   resEl.innerHTML = hits.map(s=>{
-    const t=Math.floor(s.start||0), mm=String(Math.floor(t/60)).padStart(2,'0'), ss=String(t%60).padStart(2,'0');
-    const txt=esc(s.text).split(q).join('<mark>'+esc(q)+'</mark>');
+    const iv=IVS[s[0]]||{}, start=s[1]||0;
+    const t=Math.floor(start), mm=String(Math.floor(t/60)).padStart(2,'0'), ss=String(t%60).padStart(2,'0');
+    const txt=esc(s[2]).split(q).join('<mark>'+esc(q)+'</mark>');
     return `<div class="res">
-      <div class="top"><span class="who"><a href="mk.html?id=${s.pid}">${esc(s.name)}</a></span>
-        <span class="src">${esc(s.title||'')}</span></div>
+      <div class="top"><span class="who"><a href="mk.html?id=${iv.pid}">${esc(iv.name)}</a></span>
+        <span class="src">${esc(iv.title||'')}</span></div>
       <div class="txt">${txt}</div>
-      <div class="t"><a href="${moment(s.url,s.start)}" target="_blank" rel="noopener">▶ ${mm}:${ss} — צפייה ברגע ↗</a></div>
+      <div class="t"><a href="${moment(iv.url,start)}" target="_blank" rel="noopener">▶ ${mm}:${ss} — צפייה ברגע ↗</a></div>
     </div>`;
   }).join('') + (hits.length>=200?'<p class="state">מוצגות 200 התוצאות הראשונות — צמצמו את החיפוש.</p>':'');
 }

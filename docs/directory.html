@@ -55,7 +55,7 @@
   .party-head .pl{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase;}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-  .card{display:flex;align-items:center;gap:12px;border:1.4px solid var(--rule);background:var(--paper-edge);padding:12px 14px;border-radius:3px;transition:all .15s ease;text-decoration:none;color:inherit;}
+  .card{position:relative;display:flex;align-items:center;gap:12px;border:1.4px solid var(--rule);background:var(--paper-edge);padding:12px 14px;border-radius:3px;transition:all .15s ease;text-decoration:none;color:inherit;}
   .cnt{margin-inline-start:auto;font-family:"Suez One",serif;font-size:20px;color:var(--stamp);line-height:1;}
   .card:hover{border-color:var(--stamp);transform:translateY(-2px);box-shadow:6px 8px 0 rgba(27,24,20,.06);}
   .ava{flex:0 0 auto;width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;}
@@ -63,6 +63,11 @@
   .card .nm{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;line-height:1.15;}
   .card .id{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:2px;}
   .soon{font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:999px;padding:1px 7px;margin-inline-start:auto;align-self:flex-start;}
+  .trend{position:absolute;top:-8px;left:-8px;width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;border:2px solid var(--paper);z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.28);cursor:help;}
+  .trend.g{background:var(--true);} .trend.b{background:var(--stamp);}
+  .legend{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin:2px 0 0;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .legend i{display:inline-flex;width:16px;height:16px;border-radius:50%;color:#fff;font-style:normal;font-weight:800;font-size:9px;align-items:center;justify-content:center;}
+  .legend i.g{background:var(--true);} .legend i.b{background:var(--stamp);}
 
   .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:40px 8px;}
   footer{margin:48px 0 70px;padding-top:22px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:14px;color:var(--ink-soft);}
@@ -88,6 +93,7 @@
       <input id="search" class="search" type="search" placeholder="חיפוש לפי שם או סיעה…" aria-label="חיפוש" />
       <span class="summary" id="summary"></span>
     </div>
+    <p class="legend"><i class="g">▲</i> שיפור · <i class="b">▼</i> הרעה — מגמת הנתון הרשמי של תחום השר/ה בתקופת הכהונה (נתון בלבד, אינו קביעה על תפקודו האישי).</p>
     <div id="list"></div>
     <p id="state" class="state">טוען את מרשם חברי הכנסת…</p>
 
@@ -102,9 +108,18 @@ const listEl = document.getElementById('list');
 const stateEl = document.getElementById('state');
 const summaryEl = document.getElementById('summary');
 const searchEl = document.getElementById('search');
-let ROSTER = [];
+let ROSTER = [], TRENDS = {};
+const esc = t => (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 function firstLetter(name){ const m = (name||'').trim().match(/[֐-׿\w]/); return m ? m[0] : '?'; }
+
+function trendBadge(pid){
+  const t = TRENDS[pid];
+  if(!t || (t.direction!=='good' && t.direction!=='bad')) return '';
+  const good = t.direction==='good';
+  const title = `${t.label}: ${t.from_value} (${t.from_year}) ← ${t.to_value} (${t.to_year}) ${t.unit||''} — מגמת נתון רשמי של התחום בתקופת הכהונה. נתון בלבד, לא קביעה על תפקודו האישי.`;
+  return `<span class="trend ${good?'g':'b'}" title="${esc(title)}">${good?'▲':'▼'}</span>`;
+}
 
 function groupByParty(rows){
   const map = new Map();
@@ -137,6 +152,7 @@ function render(filter){
       <div class="grid">
         ${g.members.map(m => `
           <a class="card" href="mk.html?id=${m.person_id}" title="${m.name}">
+            ${trendBadge(m.person_id)}
             <span class="ava">${firstLetter(m.name)}</span>
             <span class="who"><span class="nm">${m.name}</span><span class="id num">${m.interview_count ? m.interview_count + ' ראיונות' : 'ID ' + m.person_id}</span></span>
             ${m.interview_count ? `<span class="cnt num">${m.interview_count}</span>` : ''}
@@ -145,14 +161,15 @@ function render(filter){
     </section>`).join('');
 }
 
-fetch('data/mk_index.json', { cache: 'no-store' })
-  .then(r => r.ok ? r.json() : null)
-  .then(data => {
-    ROSTER = (data && data.mks) || [];
-    if(!ROSTER.length){ stateEl.textContent = 'מרשם חברי הכנסת אינו זמין כרגע.'; return; }
-    render('');
-  })
-  .catch(() => { stateEl.textContent = 'שגיאה בטעינת מרשם חברי הכנסת.'; });
+Promise.all([
+  fetch('data/mk_index.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null),
+  fetch('data/minister_trends.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null)
+]).then(([data, tr]) => {
+  ROSTER = (data && data.mks) || [];
+  TRENDS = (tr && tr.trends) || {};
+  if(!ROSTER.length){ stateEl.textContent = 'מרשם חברי הכנסת אינו זמין כרגע.'; return; }
+  render('');
+}).catch(() => { stateEl.textContent = 'שגיאה בטעינת מרשם חברי הכנסת.'; });
 
 searchEl.addEventListener('input', e => render(e.target.value));
 </script>
