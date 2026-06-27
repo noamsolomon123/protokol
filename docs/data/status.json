@@ -1,19 +1,20 @@
 {
-  "generated_at": "2026-06-27T04:38:07.140692+00:00",
+  "generated_at": "2026-06-27T04:45:15.384964+00:00",
   "harvester": {
-    "transcribed": 313,
-    "processed": 339,
+    "transcribed": 339,
+    "processed": 366,
     "active": true,
     "last_log_min": 0.0
   },
   "corpus": {
-    "transcripts": 313,
-    "mks_with_interviews": 44
+    "transcripts": 339,
+    "mks_with_interviews": 46
   },
   "findings": {
     "total": 0,
     "contradicted": 0,
-    "consistent": 0
+    "consistent": 0,
+    "confirmed": 0
   },
   "backlog": [
     {

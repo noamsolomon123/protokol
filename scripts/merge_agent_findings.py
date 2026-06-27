@@ -37,7 +37,9 @@ def main() -> int:
     if len(sys.argv) < 2:
         print("usage: merge_agent_findings.py <workflow_result.json>")
         return 1
-    res = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    raw = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    # Workflow output files wrap the script's return value under "result".
+    res = raw.get("result", raw) if isinstance(raw, dict) else raw
     new = res.get("all", [])
     processed = res.get("processed", [])
 
