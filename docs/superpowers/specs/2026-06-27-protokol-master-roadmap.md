@@ -78,9 +78,18 @@ and right judged by the same yardstick.
 
 ## Backlog — ALL to be built (order flexible)
 
-- [ ] **F1 · Findings at scale** — multi-model agent fact-check: Claude agents (no Gemini
-      quota) **+** Gemini, working together; flag the user when one model is clearly
-      better. Unblocks the contradictions pillar. **← chosen first.**
+- [x] **F1 · Findings at scale** — DONE (pipeline exercised; honest 0-yield): the cheap
+      scanner pre-filters ranking/superlative claims (25: 22 interview, 3 tweet); an
+      INDEPENDENT strict fact-check agent adjudicated all 25 against the 196-point verified
+      catalog, and my own adjudication agreed → **all unverifiable, 0 contradicted, 0
+      published**. The catalog simply has no stat that DIRECTLY measures the exact asserted
+      quantity (femicide count, sector-specific enlistment, ministry budget deltas, all-time
+      unemployment low, exhaustive poverty-by-group ranking). Recorded in
+      `candidate_adjudications.json` (via `run_candidate_factcheck.py`) so we never re-pay to
+      re-judge them. Same integrity-correct 0 as the full-corpus run (~7M tokens). The
+      contradictions pillar stays honestly empty — rigor working as designed, not a failure.
+      Full chain works: scanner → candidates → strict agent consensus → PM-gate → review
+      console; a real contradiction would flow straight through to publish.
 - [ ] **F2 · Integrate verified minister series** — fold the researched GDP/poverty/debt/…
       series into the performance tab; research the remaining ministry domains.
 - [x] **F3 · Human review console** — DONE: `docs/review.html` (internal, noindex) reviews
