@@ -1,8 +1,15 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 32,
+  "with_interviews": 34,
   "mks": [
+    {
+      "person_id": 30704,
+      "name": "שלמה קרעי",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 788
+    },
     {
       "person_id": 30861,
       "name": "שלום דנינו",
@@ -205,6 +212,13 @@
       "party": "הימין הממלכתי",
       "interview_count": 2,
       "segment_count": 1051
+    },
+    {
+      "person_id": 30879,
+      "name": "ששון ששי גואטה",
+      "party": "הליכוד",
+      "interview_count": 2,
+      "segment_count": 127
     },
     {
       "person_id": 30880,
@@ -809,13 +823,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30704,
-      "name": "שלמה קרעי",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30812,
       "name": "שמחה רוטמן",
       "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
@@ -833,13 +840,6 @@
       "person_id": 30118,
       "name": "שרן מרים השכל",
       "party": "הימין הממלכתי",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30879,
-      "name": "ששון ששי גואטה",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     }
