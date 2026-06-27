@@ -76,7 +76,7 @@ Promise.all([
   if(!d||!d.ministers||!d.ministers.length){ document.getElementById('state').textContent='נתוני השרים אינם זמינים כרגע.'; return; }
   const series=(ps&&ps.series)||{};
   const TRENDS=(tr&&tr.trends)||{};
-  const badge=m=>{const t=TRENDS[m.person_id]; if(!t||(t.direction!=='good'&&t.direction!=='bad'))return ''; const g=t.direction==='good'; return `<span class="trend ${g?'g':'b'}" title="${esc(t.label+': '+t.from_value+' ('+t.from_year+') ← '+t.to_value+' ('+t.to_year+') '+(t.unit||'')+' — מגמת נתון רשמי בכהונה. נתון בלבד, לא קביעה על תפקודו האישי.')}">${g?'▲':'▼'}</span>`;};
+  const badge=pid=>{const t=TRENDS[pid]; if(!t||(t.direction!=='good'&&t.direction!=='bad'))return ''; const g=t.direction==='good'; return `<span class="trend ${g?'g':'b'}" title="${esc(t.label+': '+t.from_value+' ('+t.from_year+') ← '+t.to_value+' ('+t.to_year+') '+(t.unit||'')+' — מגמת נתון רשמי בכהונה. נתון בלבד, לא קביעה על תפקודו האישי.')}">${g?'▲':'▼'}</span>`;};
   // De-duplicate: one card per PERSON, listing all their portfolios (some ministers
   // hold several). Group by person_id.
   const byId=new Map();
