@@ -33,13 +33,21 @@ def _match(m: dict, series: dict):
     return None, None
 
 
+def _norm(name: str) -> str:
+    return (name or "").strip().replace('"', "").replace("'", "").replace("׳", "").replace("״", "")
+
+
 def main() -> int:
     ministers = json.loads((REPO / "docs" / "data" / "ministers.json").read_text(encoding="utf-8")).get("ministers", [])
     series = json.loads((REPO / "docs" / "data" / "portfolio_series.json").read_text(encoding="utf-8")).get("series", {})
+    # Resolve each minister to the roster's person_id (ministers.json sometimes uses a
+    # different id), matched by name, so the badge attaches to the directory card.
+    roster = json.loads((REPO / "docs" / "data" / "mk_roster.json").read_text(encoding="utf-8"))
+    name2pid = {_norm(r.get("name", "")): str(r.get("person_id")) for r in roster}
 
     trends: dict[str, dict] = {}
     for m in ministers:
-        pid = str(m.get("person_id"))
+        pid = name2pid.get(_norm(m.get("name", "")), str(m.get("person_id")))
         if trends.get(pid, {}).get("direction") in ("good", "bad"):
             continue  # already have a decisive arrow for this person
         key, s = _match(m, series)
