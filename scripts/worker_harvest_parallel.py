@@ -35,10 +35,34 @@ DATA = Path(os.environ.get("KN_DATA_ROOT", r"E:\kn-data"))
 logger = get_logger("worker.harvest_parallel")
 
 
+def _recover_processed_from_disk() -> list[str]:
+    """Rebuild the processed list from transcript filenames (each stem is a video id)."""
+    return sorted({p.stem for p in (DATA / "transcripts").glob("person-*/*.json")})
+
+
 def _load_state(p: Path) -> dict:
     if p.exists():
-        return json.loads(p.read_text(encoding="utf-8"))
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            # Corrupt (e.g. process killed mid-write). Back it up and rebuild the
+            # processed set from the transcripts already on disk, so the 24/7
+            # supervisor recovers instead of crash-looping on a truncated file.
+            try:
+                p.replace(p.with_suffix(".corrupt"))
+            except OSError:
+                pass
+            recovered = _recover_processed_from_disk()
+            print(f"WARNING: corrupt state file; recovered {len(recovered)} video ids from disk.")
+            return {"processed": recovered, "cursor": 0, "transcribed_count": len(recovered)}
     return {"processed": [], "cursor": 0, "transcribed_count": 0}
+
+
+def _atomic_write_json(p: Path, obj: dict) -> None:
+    """Write JSON via a temp file + atomic replace so a crash can't truncate it."""
+    tmp = p.with_suffix(p.suffix + ".tmp")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(p)
 
 
 def main() -> int:
@@ -114,7 +138,7 @@ def main() -> int:
         state["processed"] = processed_sorted
         state["cursor"] = cursor
         state["transcribed_count"] = base_count + transcribed_this_run
-        state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        _atomic_write_json(state_path, state)
 
     stop_event = threading.Event()
     signal.signal(signal.SIGINT, lambda *_a: stop_event.set())
