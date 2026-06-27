@@ -4,6 +4,20 @@
   "with_interviews": 113,
   "mks": [
     {
+      "person_id": 30300,
+      "name": "אמיר אוחנה",
+      "party": "הליכוד",
+      "interview_count": 25,
+      "segment_count": 473
+    },
+    {
+      "person_id": 30835,
+      "name": "בועז ביסמוט",
+      "party": "הליכוד",
+      "interview_count": 25,
+      "segment_count": 820
+    },
+    {
       "person_id": 30657,
       "name": "בנימין גנץ",
       "party": "כחול לבן - המחנה הממלכתי",
@@ -95,6 +109,13 @@
       "segment_count": 635
     },
     {
+      "person_id": 30710,
+      "name": "אריאל קלנר",
+      "party": "הליכוד",
+      "interview_count": 24,
+      "segment_count": 669
+    },
+    {
       "person_id": 30776,
       "name": "ולדימיר בליאק",
       "party": "יש עתיד",
@@ -137,6 +158,13 @@
       "segment_count": 569
     },
     {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "party": "הליכוד",
+      "interview_count": 24,
+      "segment_count": 1428
+    },
+    {
       "person_id": 30851,
       "name": "מטי צרפתי הרכבי",
       "party": "יש עתיד",
@@ -156,6 +184,13 @@
       "party": "יהדות התורה",
       "interview_count": 24,
       "segment_count": 380
+    },
+    {
+      "person_id": 30853,
+      "name": "משה סעדה",
+      "party": "הליכוד",
+      "interview_count": 24,
+      "segment_count": 1010
     },
     {
       "person_id": 30067,
@@ -179,6 +214,20 @@
       "segment_count": 621
     },
     {
+      "person_id": 4395,
+      "name": "אבי דיכטר",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 947
+    },
+    {
+      "person_id": 30876,
+      "name": "אושר שקלים",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 1332
+    },
+    {
       "person_id": 30066,
       "name": "איימן עודה",
       "party": "חד\"ש-תע\"ל",
@@ -191,6 +240,27 @@
       "party": "הימין הממלכתי",
       "interview_count": 23,
       "segment_count": 850
+    },
+    {
+      "person_id": 30809,
+      "name": "גלית דיסטל אטבריאן",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 781
+    },
+    {
+      "person_id": 23558,
+      "name": "דוד ביטן",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 782
+    },
+    {
+      "person_id": 4397,
+      "name": "זאב אלקין",
+      "party": "הימין הממלכתי",
+      "interview_count": 23,
+      "segment_count": 2180
     },
     {
       "person_id": 30683,
@@ -219,6 +289,13 @@
       "party": "ישראל ביתנו",
       "interview_count": 23,
       "segment_count": 1232
+    },
+    {
+      "person_id": 532,
+      "name": "יולי יואל אדלשטיין",
+      "party": "הליכוד",
+      "interview_count": 23,
+      "segment_count": 954
     },
     {
       "person_id": 1056,
@@ -305,6 +382,27 @@
       "segment_count": 209
     },
     {
+      "person_id": 30831,
+      "name": "אלי דלל",
+      "party": "הליכוד",
+      "interview_count": 22,
+      "segment_count": 2279
+    },
+    {
+      "person_id": 965,
+      "name": "בנימין נתניהו",
+      "party": "הליכוד",
+      "interview_count": 22,
+      "segment_count": 2121
+    },
+    {
+      "person_id": 1025,
+      "name": "גילה גמליאל",
+      "party": "הליכוד",
+      "interview_count": 22,
+      "segment_count": 899
+    },
+    {
       "person_id": 30720,
       "name": "יוראי להב הרצנו",
       "party": "יש עתיד",
@@ -347,6 +445,13 @@
       "segment_count": 552
     },
     {
+      "person_id": 30701,
+      "name": "אופיר כץ",
+      "party": "הליכוד",
+      "interview_count": 21,
+      "segment_count": 1414
+    },
+    {
       "person_id": 30811,
       "name": "איתמר בן גביר",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
@@ -366,6 +471,13 @@
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
       "interview_count": 21,
       "segment_count": 197
+    },
+    {
+      "person_id": 468,
+      "name": "ישראל כץ",
+      "party": "הליכוד",
+      "interview_count": 21,
+      "segment_count": 1379
     },
     {
       "person_id": 23632,
@@ -417,6 +529,13 @@
       "segment_count": 592
     },
     {
+      "person_id": 30708,
+      "name": "מאי גולן",
+      "party": "הליכוד",
+      "interview_count": 20,
+      "segment_count": 1509
+    },
+    {
       "person_id": 30691,
       "name": "רם בן ברק",
       "party": "יש עתיד",
@@ -431,11 +550,25 @@
       "segment_count": 546
     },
     {
-      "person_id": 4397,
-      "name": "זאב אלקין",
-      "party": "הימין הממלכתי",
+      "person_id": 30877,
+      "name": "משה פסל",
+      "party": "הליכוד",
       "interview_count": 19,
-      "segment_count": 2056
+      "segment_count": 825
+    },
+    {
+      "person_id": 30839,
+      "name": "דן אילוז",
+      "party": "הליכוד",
+      "interview_count": 18,
+      "segment_count": 1065
+    },
+    {
+      "person_id": 30860,
+      "name": "טלי גוטליב",
+      "party": "הליכוד",
+      "interview_count": 18,
+      "segment_count": 571
     },
     {
       "person_id": 30863,
@@ -508,6 +641,27 @@
       "segment_count": 598
     },
     {
+      "person_id": 30842,
+      "name": "חנוך דב מלביצקי",
+      "party": "הליכוד",
+      "interview_count": 10,
+      "segment_count": 2334
+    },
+    {
+      "person_id": 30832,
+      "name": "אליהו רביבו",
+      "party": "הליכוד",
+      "interview_count": 8,
+      "segment_count": 638
+    },
+    {
+      "person_id": 30702,
+      "name": "חוה אתי עטייה",
+      "party": "הליכוד",
+      "interview_count": 8,
+      "segment_count": 323
+    },
+    {
       "person_id": 30873,
       "name": "ארז מלול",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
@@ -522,32 +676,11 @@
       "segment_count": 360
     },
     {
-      "person_id": 30702,
-      "name": "חוה אתי עטייה",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 205
-    },
-    {
       "person_id": 30843,
       "name": "יאסר חוג'יראת",
       "party": "רע\"ם",
       "interview_count": 5,
       "segment_count": 147
-    },
-    {
-      "person_id": 12951,
-      "name": "יריב לוין",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 935
-    },
-    {
-      "person_id": 468,
-      "name": "ישראל כץ",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 518
     },
     {
       "person_id": 30772,
@@ -578,67 +711,11 @@
       "segment_count": 240
     },
     {
-      "person_id": 30809,
-      "name": "גלית דיסטל אטבריאן",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 512
-    },
-    {
-      "person_id": 23558,
-      "name": "דוד ביטן",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 303
-    },
-    {
-      "person_id": 30839,
-      "name": "דן אילוז",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 780
-    },
-    {
       "person_id": 30752,
       "name": "ווליד טאהא",
       "party": "רע\"ם",
       "interview_count": 4,
       "segment_count": 46
-    },
-    {
-      "person_id": 30842,
-      "name": "חנוך דב מלביצקי",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 1912
-    },
-    {
-      "person_id": 532,
-      "name": "יולי יואל אדלשטיין",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 621
-    },
-    {
-      "person_id": 30708,
-      "name": "מאי גולן",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 1086
-    },
-    {
-      "person_id": 30853,
-      "name": "משה סעדה",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 163
-    },
-    {
-      "person_id": 30877,
-      "name": "משה פסל",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 524
     },
     {
       "person_id": 30894,
@@ -655,88 +732,11 @@
       "segment_count": 150
     },
     {
-      "person_id": 4395,
-      "name": "אבי דיכטר",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 266
-    },
-    {
-      "person_id": 30701,
-      "name": "אופיר כץ",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 942
-    },
-    {
-      "person_id": 30876,
-      "name": "אושר שקלים",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 472
-    },
-    {
-      "person_id": 30831,
-      "name": "אלי דלל",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 1579
-    },
-    {
-      "person_id": 30832,
-      "name": "אליהו רביבו",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 482
-    },
-    {
-      "person_id": 30300,
-      "name": "אמיר אוחנה",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 210
-    },
-    {
-      "person_id": 30710,
-      "name": "אריאל קלנר",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 276
-    },
-    {
       "person_id": 2291,
       "name": "אריה מכלוף דרעי",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 3,
       "segment_count": 29
-    },
-    {
-      "person_id": 30835,
-      "name": "בועז ביסמוט",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 482
-    },
-    {
-      "person_id": 965,
-      "name": "בנימין נתניהו",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 1873
-    },
-    {
-      "person_id": 1025,
-      "name": "גילה גמליאל",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 318
-    },
-    {
-      "person_id": 30860,
-      "name": "טלי גוטליב",
-      "party": "הליכוד",
-      "interview_count": 3,
-      "segment_count": 47
     },
     {
       "person_id": 30847,

@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-27T11:25:37.298755+00:00",
+  "generated_at": "2026-06-27T13:14:03.882786+00:00",
   "harvester": {
-    "transcribed": 1720,
-    "processed": 1838,
+    "transcribed": 2067,
+    "processed": 2210,
     "active": true,
-    "last_log_min": 2.4
+    "last_log_min": 0.2
   },
   "corpus": {
-    "transcripts": 1720,
+    "transcripts": 2067,
     "mks_with_interviews": 113
   },
   "findings": {
