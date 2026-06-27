@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 24,
+  "with_interviews": 25,
   "mks": [
     {
       "person_id": 30702,
@@ -65,6 +65,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 1086
+    },
+    {
+      "person_id": 30853,
+      "name": "משה סעדה",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 163
     },
     {
       "person_id": 4395,
@@ -623,13 +630,6 @@
       "person_id": 30852,
       "name": "משה סולומון",
       "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30853,
-      "name": "משה סעדה",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
