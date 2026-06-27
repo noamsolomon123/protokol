@@ -44,8 +44,9 @@ async def run(args) -> int:
             if h:
                 handles[pid] = h
                 logger.info("discovered @%s for %s", h, r["name"])
-            await asyncio.sleep(1.0)
-        handles_path.write_text(json.dumps({"schema": 1, "handles": handles}, ensure_ascii=False, indent=2), encoding="utf-8")
+                # save incrementally so a rate-limit/interrupt never loses progress
+                handles_path.write_text(json.dumps({"schema": 1, "handles": handles}, ensure_ascii=False, indent=2), encoding="utf-8")
+            await asyncio.sleep(args.sleep)
 
     out_dir = DATA / "tweets"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -59,7 +60,7 @@ async def run(args) -> int:
             )
             total += len(tw)
             print(f"person-{pid} @{handle}: {len(tw)} tweets")
-            await asyncio.sleep(1.0)
+            await asyncio.sleep(args.sleep)
         except Exception as e:  # noqa: BLE001
             logger.warning("fetch failed @%s: %s", handle, e)
     print(f"done — {total} tweets across {len(handles)} handles")
@@ -73,6 +74,7 @@ def main() -> int:
     ap.add_argument("--discover", action="store_true", default=True, help="discover missing handles by MK name")
     ap.add_argument("--no-discover", dest="discover", action="store_false")
     ap.add_argument("--limit", type=int, default=40, help="tweets per MK")
+    ap.add_argument("--sleep", type=float, default=2.0, help="seconds between API calls (protects a fresh account)")
     args = ap.parse_args()
     return asyncio.run(run(args))
 

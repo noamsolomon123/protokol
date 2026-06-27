@@ -27,16 +27,45 @@ async def has_accounts(api) -> bool:
     return bool(accts) and any(a.get("active") for a in accts)
 
 
-async def discover_handle(api, mk_name: str) -> str | None:
-    """Best-effort: search X users by the MK's name and return the top handle."""
-    try:
-        from twscrape import gather
+def _norm(s: str) -> str:
+    return "".join(ch for ch in (s or "") if ch.isalnum()).lower()
 
-        users = await gather(api.search_user(mk_name, limit=3))
-        return users[0].username if users else None
+
+# Bio keywords that mark a real Knesset/public-figure account (Hebrew + English).
+_MK_BIO_KW = (
+    "כנסת", 'ח"כ', "ח״כ", "חבר הכנסת", "חברת הכנסת", "חבר כנסת", "סגן שר",
+    "שר ", "שרת ", "סיעת", "מפלגת", "knesset", "member of knesset", "mk,",
+)
+
+
+async def discover_handle(api, mk_name: str) -> str | None:
+    """Search X users by the MK's name and return a VERIFIED handle, or None.
+
+    Integrity gate: we never attribute tweets to a wrong/parody account. A match
+    is accepted only if the candidate's display name matches the MK's name AND the
+    account looks like a public figure — a Knesset/minister bio, a government/verified
+    badge, or a substantial following.
+    """
+    from twscrape import gather
+
+    try:
+        users = await gather(api.search_user(mk_name, limit=5))
     except Exception as e:  # noqa: BLE001
         logger.warning("handle discovery failed for %s: %s", mk_name, e)
         return None
+
+    target = _norm(mk_name)
+    if not target:
+        return None
+    for u in users:
+        dn = _norm(getattr(u, "displayname", "") or "")
+        bio = (getattr(u, "rawDescription", "") or "").lower()
+        followers = getattr(u, "followersCount", 0) or 0
+        gov = getattr(u, "blueType", "") == "Government" or bool(getattr(u, "verified", False))
+        name_match = bool(dn) and (target in dn or dn in target)
+        if name_match and (any(k.lower() in bio for k in _MK_BIO_KW) or gov or followers >= 5000):
+            return getattr(u, "username", None)
+    return None
 
 
 async def fetch_user_tweets(api, handle: str, *, limit: int = 40) -> list[dict]:
