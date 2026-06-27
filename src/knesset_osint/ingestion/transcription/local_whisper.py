@@ -66,6 +66,7 @@ class LocalWhisperTranscriber:
         language: str = "he",
         device: str | None = None,
         compute_type: str | None = None,
+        batch_size: int | None = None,
     ) -> None:
         _add_nvidia_dll_dirs()
         from faster_whisper import WhisperModel
@@ -75,6 +76,16 @@ class LocalWhisperTranscriber:
         self.compute_type = compute_type or ct
         self.language = language
         self.model_name = model
+        # Batched GPU inference (faster-whisper >=1.1) runs VAD-segmented chunks
+        # through the model in parallel — 2-4x faster on GPU. Opt-in so the serial
+        # harvester's output is unchanged until we deliberately enable it; the
+        # parallel harvester passes batch_size>1. Env KN_WHISPER_BATCH overrides.
+        if batch_size is None:
+            try:
+                batch_size = int(os.environ.get("KN_WHISPER_BATCH", "1") or "1")
+            except ValueError:
+                batch_size = 1
+        self.batch_size = batch_size
 
         logger.info(
             "Loading faster-whisper model=%s device=%s compute=%s", model, self.device, self.compute_type
@@ -89,14 +100,35 @@ class LocalWhisperTranscriber:
             else:
                 raise
 
+        # Batching only helps on GPU; on CPU it can blow up RAM with little gain.
+        self._batched = None
+        if self.batch_size > 1 and self.device == "cuda":
+            try:
+                from faster_whisper import BatchedInferencePipeline
+
+                self._batched = BatchedInferencePipeline(model=self._model)
+                logger.info("Batched inference enabled (batch_size=%d)", self.batch_size)
+            except Exception as e:  # noqa: BLE001 - fall back to sequential
+                logger.warning("Batched pipeline unavailable (%s); using sequential.", e)
+                self._batched = None
+
     def transcribe_file(self, path: str | Path) -> list[Segment]:
         """Transcribe an audio file to timestamped Hebrew segments (sentence-level)."""
-        segments, _info = self._model.transcribe(
-            str(path),
-            language=self.language,
-            vad_filter=True,  # skip silence -> cleaner segments
-            beam_size=5,
-        )
+        if self._batched is not None:
+            # Batched pipeline runs VAD internally; batch_size parallelises chunks.
+            segments, _info = self._batched.transcribe(
+                str(path),
+                language=self.language,
+                batch_size=self.batch_size,
+                beam_size=5,
+            )
+        else:
+            segments, _info = self._model.transcribe(
+                str(path),
+                language=self.language,
+                vad_filter=True,  # skip silence -> cleaner segments
+                beam_size=5,
+            )
         out: list[Segment] = []
         for s in segments:
             text = (s.text or "").strip()
