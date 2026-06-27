@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 25,
+  "with_interviews": 27,
   "mks": [
     {
       "person_id": 30702,
@@ -23,6 +23,13 @@
       "party": "הליכוד",
       "interview_count": 5,
       "segment_count": 518
+    },
+    {
+      "person_id": 30772,
+      "name": "ניסים ואטורי",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 1007
     },
     {
       "person_id": 30809,
@@ -72,6 +79,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 163
+    },
+    {
+      "person_id": 30877,
+      "name": "משה פסל",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 524
     },
     {
       "person_id": 4395,
@@ -634,23 +648,9 @@
       "segment_count": 0
     },
     {
-      "person_id": 30877,
-      "name": "משה פסל",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30854,
       "name": "נאור שירי",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30772,
-      "name": "ניסים ואטורי",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
