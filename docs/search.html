@@ -60,15 +60,25 @@ const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&g
 const moment=(url,t)=> url ? `${url}${url.includes('?')?'&':'?'}t=${Math.floor(t||0)}` : '#';
 const _q=new URLSearchParams(location.search).get('q'); if(_q){ qEl.value=_q; }  // deep-link from home
 
-fetch('data/search_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(idx=>{
-  if(!idx){ metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }
-  IVS=idx.interviews||[]; SEGS=idx.segments||[];
-  metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${IVS.length} ראיונות`;
-  if(qEl.value) run(qEl.value);
-}).catch(()=>{ metaEl.textContent='שגיאה בטעינת מאגר החיפוש.'; });
+// Lazy-load the (multi-MB, growing) index only when the user actually searches —
+// instant page render; no big download for visitors who don't search.
+let _loaded=false,_loading=false;
+function loadIndex(){
+  if(_loaded||_loading) return;
+  _loading=true; metaEl.textContent='טוען מאגר חיפוש…';
+  fetch('data/search_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(idx=>{
+    _loading=false;
+    if(!idx){ metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }
+    IVS=idx.interviews||[]; SEGS=idx.segments||[]; _loaded=true;
+    metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${IVS.length} ראיונות`;
+    if(qEl.value) run(qEl.value);
+  }).catch(()=>{ _loading=false; metaEl.textContent='שגיאה בטעינת מאגר החיפוש.'; });
+}
+qEl.addEventListener('focus', loadIndex);
 
 let timer;
-qEl.addEventListener('input', e=>{ clearTimeout(timer); timer=setTimeout(()=>run(e.target.value), 160); });
+qEl.addEventListener('input', e=>{ loadIndex(); clearTimeout(timer); timer=setTimeout(()=>run(e.target.value), 160); });
+if(qEl.value){ loadIndex(); } else { metaEl.textContent='הקלידו מילה כדי לחפש בכל הראיונות.'; }
 function run(q){
   q=(q||'').trim();
   if(q.length<2){ resEl.innerHTML=''; stateEl.textContent=''; return; }
