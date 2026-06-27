@@ -109,3 +109,37 @@ def adjudicate(gen, claim: str, quote: str, stats: list[dict]) -> dict:
     prompt = _ADJ_PROMPT.format(claim=claim, quote=quote, stats=stat_lines)
     res = gen(prompt)
     return res if isinstance(res, dict) else {"outcome": "unverifiable", "stat_index": None, "confidence": 0, "reason": ""}
+
+
+def build_findings_for_transcript(gen, transcript: dict, stats: list[dict]) -> list[dict]:
+    """Extract claims from one transcript and adjudicate each -> finding dicts.
+
+    Shared by the serial and parallel fact-check drivers. `extract_claims` errors
+    propagate (caller decides whether to retry the transcript); a single failed
+    adjudication only drops that one claim. Only contradicted/consistent verdicts
+    backed by a directly-measuring stat become findings (strict). Findings are
+    CANDIDATES for human review — never auto-published verdicts.
+    """
+    findings: list[dict] = []
+    for c in extract_claims(gen, transcript):
+        tstats = stats_for_topic(stats, c.get("topic", ""))
+        if not tstats:
+            continue
+        try:
+            v = adjudicate(gen, c.get("claim", ""), c.get("quote", ""), tstats)
+        except Exception:  # noqa: BLE001 - drop this claim, keep the rest
+            continue
+        si = v.get("stat_index")
+        if v.get("outcome") in ("contradicted", "consistent") and isinstance(si, int) and 0 <= si < len(tstats):
+            s = tstats[si]
+            findings.append({
+                "person_id": transcript.get("person_id"), "mk_name": transcript.get("mk_name"),
+                "video_id": transcript.get("video_id"), "url": transcript.get("url"),
+                "title": transcript.get("title"),
+                "topic": c.get("topic"), "quote": c.get("quote"), "claim": c.get("claim"),
+                "approx_seconds": c.get("approx_seconds"),
+                "outcome": v.get("outcome"), "confidence": v.get("confidence"), "reason": v.get("reason"),
+                "stat": {k: s.get(k) for k in ("metric", "dimension_value", "value", "unit", "period", "source_org", "source_url", "confirm_quote")},
+                "status": "candidate",
+            })
+    return findings

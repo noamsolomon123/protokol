@@ -61,32 +61,13 @@ def main() -> int:
             processed.add(f)
             continue
         try:
-            claims = fc.extract_claims(gen, d)
-        except Exception as e:  # noqa: BLE001 -> retry next run
+            new_findings = fc.build_findings_for_transcript(gen, d, stats)
+        except Exception as e:  # noqa: BLE001 -> retry next run (don't mark processed)
             print("extract failed", Path(f).name, e)
             continue
-        for c in claims:
-            tstats = fc.stats_for_topic(stats, c.get("topic", ""))
-            if not tstats:
-                continue
-            try:
-                v = fc.adjudicate(gen, c.get("claim", ""), c.get("quote", ""), tstats)
-            except Exception as e:  # noqa: BLE001
-                print("adjudicate failed", e)
-                continue
-            si = v.get("stat_index")
-            if v.get("outcome") in ("contradicted", "consistent") and isinstance(si, int) and 0 <= si < len(tstats):
-                s = tstats[si]
-                findings.append({
-                    "person_id": d.get("person_id"), "mk_name": d.get("mk_name"),
-                    "video_id": d.get("video_id"), "url": d.get("url"), "title": d.get("title"),
-                    "topic": c.get("topic"), "quote": c.get("quote"), "claim": c.get("claim"),
-                    "approx_seconds": c.get("approx_seconds"),
-                    "outcome": v.get("outcome"), "confidence": v.get("confidence"), "reason": v.get("reason"),
-                    "stat": {k: s.get(k) for k in ("metric", "dimension_value", "value", "unit", "period", "source_org", "source_url", "confirm_quote")},
-                    "status": "candidate",
-                })
-                print(f"  FINDING [{v.get('outcome')}] {d.get('mk_name')}: {str(c.get('quote',''))[:60]}")
+        for nf in new_findings:
+            findings.append(nf)
+            print(f"  FINDING [{nf['outcome']}] {nf['mk_name']}: {str(nf.get('quote',''))[:60]}")
         processed.add(f)
 
     counts = {"total": len(findings),
