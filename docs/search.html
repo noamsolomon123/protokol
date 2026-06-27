@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · חיפוש — search a phrase across ALL transcribed interviews, jump to the moment. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · חיפוש בכל הראיונות</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--gold:#9a7b2e;--maxw:980px;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;}
+  header.mast{padding:44px 0 18px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(34px,7vw,64px);line-height:.92;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:12px 0 0;max-width:60ch;}
+  .search{width:100%;font-family:"Heebo";font-size:19px;padding:15px 18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:2px;margin:20px 0 6px;}
+  .search:focus{outline:none;border-color:var(--stamp);}
+  .meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-bottom:18px;}
+  .meta b{color:var(--stamp);}
+  .res{border-bottom:1px solid var(--rule);padding:14px 6px;}
+  .res .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap;}
+  .res .who{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;}
+  .res .who a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
+  .res .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);}
+  .res .txt{font-family:"Frank Ruhl Libre",serif;font-size:16px;margin:6px 0 0;line-height:1.55;}
+  .res .txt mark{background:#f3d98a;color:inherit;padding:0 1px;}
+  .res .t{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--stamp);}
+  .res .t a{text-decoration:none;}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:36px 8px;}
+  footer{margin:30px 0 70px;padding-top:18px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a> &nbsp; <a class="nav-link" href="./ministers.html">השרים</a></span>
+    <span>חיפוש בתמלולי ראיונות</span>
+  </div></div>
+  <header class="mast"><div class="wrap">
+    <div class="kicker">לתפוס אותם על המילים</div>
+    <h1 class="wordmark">חִפּוּשׂ בְּכָל הָרְאָיוֹנוֹת</h1>
+    <p class="standfirst">חיפוש מילה או צירוף בכל הראיונות המתומללים של חברי הכנסת. כל תוצאה מובילה לרגע המדויק בסרטון.</p>
+  </div></header>
+  <div class="wrap">
+    <input id="q" class="search" type="search" placeholder="לדוגמה: גיוס, יוקר המחיה, תאונות דרכים…" aria-label="חיפוש" autofocus />
+    <div class="meta" id="meta">טוען תמלולים…</div>
+    <div id="res"></div>
+    <p id="state" class="state"></p>
+    <footer><p>החיפוש מתבצע על תמלולים אוטומטיים של ראיונות פומביים. ייתכנו שגיאות תמלול — לכן כל תוצאה מקושרת למקור המקורי לאימות.</p></footer>
+  </div>
+<script>
+const qEl=document.getElementById('q'), resEl=document.getElementById('res'), stateEl=document.getElementById('state'), metaEl=document.getElementById('meta');
+let SEGS=[]; // {pid, name, vid, url, title, start, text}
+const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const moment=(url,t)=> url ? `${url}${url.includes('?')?'&':'?'}t=${Math.floor(t||0)}` : '#';
+
+fetch('data/mk_index.json',{cache:'no-store'}).then(r=>r.json()).then(async idx=>{
+  const withIv=(idx.mks||[]).filter(m=>m.interview_count>0);
+  metaEl.innerHTML=`טוען ${withIv.length} חברי כנסת…`;
+  const files=await Promise.all(withIv.map(m=>fetch(`data/mk/${m.person_id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
+  let ivCount=0;
+  for(const d of files){ if(!d) continue; for(const iv of (d.interviews||[])){ ivCount++; for(const s of (iv.segments||[])){ SEGS.push({pid:d.person_id,name:d.name,vid:iv.video_id,url:iv.url,title:iv.title,start:s.start,text:s.text}); } } }
+  metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${ivCount} ראיונות · ${withIv.length} ח"כ`;
+  if(qEl.value) run(qEl.value);
+}).catch(()=>{ metaEl.textContent='שגיאה בטעינת התמלולים.'; });
+
+let timer;
+qEl.addEventListener('input', e=>{ clearTimeout(timer); timer=setTimeout(()=>run(e.target.value), 180); });
+function run(q){
+  q=(q||'').trim();
+  if(q.length<2){ resEl.innerHTML=''; stateEl.textContent=''; return; }
+  const hits=[];
+  for(const s of SEGS){ if(s.text && s.text.includes(q)){ hits.push(s); if(hits.length>=200) break; } }
+  stateEl.style.display = hits.length? 'none':'';
+  stateEl.textContent = hits.length? '' : 'לא נמצאו תוצאות.';
+  resEl.innerHTML = hits.map(s=>{
+    const t=Math.floor(s.start||0), mm=String(Math.floor(t/60)).padStart(2,'0'), ss=String(t%60).padStart(2,'0');
+    const txt=esc(s.text).split(q).join('<mark>'+esc(q)+'</mark>');
+    return `<div class="res">
+      <div class="top"><span class="who"><a href="mk.html?id=${s.pid}">${esc(s.name)}</a></span>
+        <span class="src">${esc(s.title||'')}</span></div>
+      <div class="txt">${txt}</div>
+      <div class="t"><a href="${moment(s.url,s.start)}" target="_blank" rel="noopener">▶ ${mm}:${ss} — צפייה ברגע ↗</a></div>
+    </div>`;
+  }).join('') + (hits.length>=200?'<p class="state">מוצגות 200 התוצאות הראשונות — צמצמו את החיפוש.</p>':'');
+}
+</script>
+</body>
+</html>
