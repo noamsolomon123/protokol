@@ -7,15 +7,14 @@
       "match": ["תחבורה"],
       "note": "נתון רשמי (הגדרת 30 יום). 2025 ארעי.",
       "sources": [
-        {"org": "הלשכה המרכזית לסטטיסטיקה (למ\"ס)", "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/230/27_25_230b.pdf"},
-        {"org": "הרשות הלאומית לבטיחות בדרכים (סיכום 2025)", "url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"}
+        {"org": "למ\"ס", "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/230/27_25_230b.pdf"},
+        {"org": "הרשות הלאומית לבטיחות בדרכים", "url": "https://www.gov.il/BlobFolder/reports/2025_summary_ralbad/he/summry_ralbad_25.pdf"}
       ],
       "points": [
         {"year": 2014, "value": 319}, {"year": 2015, "value": 356}, {"year": 2016, "value": 377},
         {"year": 2017, "value": 364}, {"year": 2018, "value": 316}, {"year": 2019, "value": 355},
         {"year": 2020, "value": 305}, {"year": 2021, "value": 363}, {"year": 2022, "value": 351},
-        {"year": 2023, "value": 361}, {"year": 2024, "value": 439},
-        {"year": 2025, "value": 459, "provisional": true}
+        {"year": 2023, "value": 361}, {"year": 2024, "value": 439}, {"year": 2025, "value": 459, "provisional": true}
       ]
     },
     "housing": {
@@ -23,25 +22,20 @@
       "unit": "נק׳ מדד",
       "match": ["שיכון", "בינוי", "דיור"],
       "note": "מדד מחירי הדירות של הלמ\"ס (מבוסס עסקאות), ערך סוף-שנה. אינו מחיר בשקלים אלא מדד יחסי.",
-      "sources": [
-        {"org": "הלשכה המרכזית לסטטיסטיקה — מדד מחירי דירות", "url": "https://www.cbs.gov.il/he/subjects/Pages/%D7%9E%D7%93%D7%93-%D7%9E%D7%97%D7%99%D7%A8%D7%99-%D7%93%D7%99%D7%A8%D7%95%D7%AA.aspx"}
-      ],
+      "sources": [{"org": "הלשכה המרכזית לסטטיסטיקה", "url": "https://www.cbs.gov.il/he/subjects/Pages/%D7%9E%D7%93%D7%93-%D7%9E%D7%97%D7%99%D7%A8%D7%99-%D7%93%D7%99%D7%A8%D7%95%D7%AA.aspx"}],
       "points": [
         {"year": 2014, "value": 352.5}, {"year": 2015, "value": 380.4}, {"year": 2016, "value": 402.1},
         {"year": 2017, "value": 407.8}, {"year": 2018, "value": 404.7}, {"year": 2019, "value": 421.6},
         {"year": 2020, "value": 438.3}, {"year": 2021, "value": 495.9}, {"year": 2022, "value": 568.7},
-        {"year": 2023, "value": 563.0}, {"year": 2024, "value": 606.2},
-        {"year": 2025, "value": 600.2, "provisional": true}
+        {"year": 2023, "value": 563.0}, {"year": 2024, "value": 606.2}, {"year": 2025, "value": 600.2, "provisional": true}
       ]
     },
     "health": {
       "label": "מיטות אשפוז כללי ל-1,000 נפש (בתקן, סוף שנה)",
       "unit": "מיטות ל-1,000",
       "match": ["בריאות"],
-      "note": "משרד הבריאות — שיעור מיטות אשפוז כללי (קורטיבי) בתקן ל-1,000 תושבים. 2023 עודכן ל-1.746 בדוח דצמבר 2024.",
-      "sources": [
-        {"org": "משרד הבריאות — מיטות אשפוז ברישוי, דצמבר 2024", "url": "https://www.gov.il/BlobFolder/reports/licensed-inpatient-hospital-beds/he/files_publications_units_info_beds2024_dec2024.pdf"}
-      ],
+      "note": "משרד הבריאות — שיעור מיטות אשפוז כללי בתקן ל-1,000 תושבים.",
+      "sources": [{"org": "משרד הבריאות", "url": "https://www.gov.il/BlobFolder/reports/licensed-inpatient-hospital-beds/he/files_publications_units_info_beds2024_dec2024.pdf"}],
       "points": [
         {"year": 2014, "value": 1.863}, {"year": 2015, "value": 1.830}, {"year": 2016, "value": 1.803},
         {"year": 2017, "value": 1.796}, {"year": 2018, "value": 1.780}, {"year": 2019, "value": 1.783},
@@ -53,14 +47,62 @@
       "label": "מספר הנרצחים בישראל (כלל האוכלוסייה)",
       "unit": "נרצחים",
       "match": ["ביטחון לאומי", "משטרה", "פנים"],
-      "note": "נתוני משטרת ישראל ששוחררו בבקשות חופש מידע (הפרסום היזום הופסק). זינוק 2023-2024 מרוכז בחברה הערבית. שנים חסרות הושמטו בכוונה לשמירה על דיוק (פורסם רק כשיעור או כתת-אוכלוסייה).",
+      "note": "נתוני משטרת ישראל בחופש מידע. זינוק 2023-2024 מרוכז בחברה הערבית. שנים חסרות הושמטו לשמירה על דיוק.",
       "sources": [
-        {"org": "מרכז טאוב (נתוני משטרה בחופש מידע)", "url": "https://www.taubcenter.org.il/wp-content/uploads/2024/02/Homicide-2024-HEB-3.pdf"},
+        {"org": "מרכז טאוב", "url": "https://www.taubcenter.org.il/wp-content/uploads/2024/02/Homicide-2024-HEB-3.pdf"},
         {"org": "התנועה לחופש המידע", "url": "https://www.meida.org.il/17864"}
       ],
       "points": [
-        {"year": 2020, "value": 147}, {"year": 2023, "value": 299},
-        {"year": 2024, "value": 282}, {"year": 2025, "value": 295, "provisional": true}
+        {"year": 2020, "value": 147}, {"year": 2023, "value": 299}, {"year": 2024, "value": 282}, {"year": 2025, "value": 295, "provisional": true}
+      ]
+    },
+    "education": {
+      "label": "שיעור הזכאים לתעודת בגרות (מבין תלמידי כיתות י\"ב)",
+      "unit": "%",
+      "match": ["חינוך"],
+      "note": "משרד החינוך — אחוז הזכאים מבין הלומדים בכיתה י\"ב במוסדות המגישים לבגרות (לא מכלל בני הגיל).",
+      "sources": [{"org": "משרד החינוך — התמונה החינוכית", "url": "https://meyda.education.gov.il/files/MinhalCalcala/tmuna_2024.pdf"}],
+      "points": [
+        {"year": 2016, "value": 66.2}, {"year": 2017, "value": 68.2}, {"year": 2018, "value": 69.9},
+        {"year": 2019, "value": 69.7}, {"year": 2020, "value": 73.4}, {"year": 2021, "value": 76.0},
+        {"year": 2022, "value": 75.9}, {"year": 2023, "value": 76.3}, {"year": 2024, "value": 76.6}
+      ]
+    },
+    "inflation": {
+      "label": "אינפלציה — שיעור השינוי השנתי במדד המחירים לצרכן (דצמבר לעומת דצמבר)",
+      "unit": "%",
+      "match": ["אוצר", "כלכלה"],
+      "note": "למ\"ס — שינוי שנתי במדד המחירים לצרכן (אינפלציית כותרת).",
+      "sources": [{"org": "הלשכה המרכזית לסטטיסטיקה", "url": "https://www.cbs.gov.il/he/mediarelease/Madad/DocLib/2026/017/10_26_017b.pdf"}],
+      "points": [
+        {"year": 2014, "value": -0.2}, {"year": 2015, "value": -1.0}, {"year": 2016, "value": -0.2},
+        {"year": 2017, "value": 0.4}, {"year": 2018, "value": 0.8}, {"year": 2019, "value": 0.6},
+        {"year": 2020, "value": -0.7}, {"year": 2021, "value": 2.8}, {"year": 2022, "value": 5.3},
+        {"year": 2023, "value": 3.0}, {"year": 2024, "value": 3.2}, {"year": 2025, "value": 2.6}
+      ]
+    },
+    "aliyah": {
+      "label": "מספר העולים החדשים לישראל (לפי שנה)",
+      "unit": "עולים",
+      "match": ["עלייה", "קליטה"],
+      "note": "ספירת רשומות במאגר הרשמי של משרד העלייה והקליטה (data.gov.il). 2025 ארעי.",
+      "sources": [{"org": "משרד העלייה והקליטה", "url": "https://data.gov.il/dataset/new-olim-by-years"}],
+      "points": [
+        {"year": 2015, "value": 31877}, {"year": 2016, "value": 27763}, {"year": 2017, "value": 29454},
+        {"year": 2018, "value": 30493}, {"year": 2019, "value": 35731}, {"year": 2020, "value": 22034},
+        {"year": 2021, "value": 28757}, {"year": 2022, "value": 76601}, {"year": 2023, "value": 46877},
+        {"year": 2024, "value": 32678}, {"year": 2025, "value": 22423, "provisional": true}
+      ]
+    },
+    "unemployment": {
+      "label": "שיעור האבטלה (בני 15+, ממוצע שנתי)",
+      "unit": "%",
+      "match": ["עבודה", "תעסוקה"],
+      "note": "למ\"ס — סקר כוח אדם, הגדרה צרה. 2014-2018 ו-2025 לא נכללו (לא אומתו ממקור ראשוני).",
+      "sources": [{"org": "הלשכה המרכזית לסטטיסטיקה — סקר כוח אדם", "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/036/20_25_036b.pdf"}],
+      "points": [
+        {"year": 2019, "value": 3.8}, {"year": 2020, "value": 4.3}, {"year": 2021, "value": 5.0},
+        {"year": 2022, "value": 3.8}, {"year": 2023, "value": 3.4}, {"year": 2024, "value": 3.0}
       ]
     }
   }
