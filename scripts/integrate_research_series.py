@@ -53,7 +53,11 @@ def main() -> int:
     # 2) Catalog points for topic-mapped series only.
     cat_path = REPO / "src" / "knesset_osint" / "ingestion" / "catalogs" / "verified_statistics.json"
     cat = json.loads(cat_path.read_text(encoding="utf-8"))
-    points = [p for p in cat["data_points"] if not p.get("from_research")]  # idempotent
+    # Per-metric idempotency: only drop the from_research points for metrics THIS
+    # run re-adds — never wipe unrelated research metrics from earlier runs.
+    run_metrics = {TOPIC_CATALOG_METRIC[s["key"]] for s in verified if s.get("key") in TOPIC_CATALOG_METRIC}
+    points = [p for p in cat["data_points"]
+              if not (p.get("from_research") and p.get("metric") in run_metrics)]
     added = 0
     for s in verified:
         metric = TOPIC_CATALOG_METRIC.get(s["key"])
