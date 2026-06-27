@@ -25,10 +25,10 @@ from pathlib import Path
 
 from knesset_osint.core.console import enable_utf8_console
 from knesset_osint.core.logging import configure_logging, get_logger
-from knesset_osint.ingestion.discovery import search_mk_videos
+from knesset_osint.ingestion.discovery import RotatingYouTubeSearch
 from knesset_osint.ingestion.harvest_pipeline import PipelineConfig, run_harvest
 from knesset_osint.ingestion.transcription.audio import download_audio, probe_duration
-from knesset_osint.ingestion.transcription.keys import load_env_file
+from knesset_osint.ingestion.transcription.keys import load_env_file, load_youtube_keys
 
 REPO = Path(__file__).resolve().parents[1]
 DATA = Path(os.environ.get("KN_DATA_ROOT", r"E:\kn-data"))
@@ -83,10 +83,11 @@ def main() -> int:
     os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
     for k, v in load_env_file(REPO / ".env").items():
         os.environ.setdefault(k, v)
-    yt_key = os.environ.get("YOUTUBE_API_KEY")
-    if not yt_key:
+    yt_keys = load_youtube_keys()
+    if not yt_keys:
         print("No YOUTUBE_API_KEY in .env — cannot discover videos.")
         return 1
+    yt_search = RotatingYouTubeSearch(yt_keys)
 
     roster = json.loads((REPO / "docs" / "data" / "mk_roster.json").read_text(encoding="utf-8"))
     state_path = DATA / "state" / "harvest_state.json"
@@ -96,7 +97,7 @@ def main() -> int:
     base_count = state.get("transcribed_count", 0)
 
     print(f"Parallel harvester: {len(roster)} MKs, {len(processed)} done, "
-          f"{args.download_workers} downloaders. Loading batched Whisper…")
+          f"{args.download_workers} downloaders, {len(yt_keys)} YouTube key(s). Loading batched Whisper…")
     from knesset_osint.ingestion.transcription.local_whisper import LocalWhisperTranscriber
 
     transcriber = LocalWhisperTranscriber(batch_size=args.batch_size)
@@ -104,7 +105,7 @@ def main() -> int:
           f"(batch={transcriber.batch_size}, batched={transcriber._batched is not None})")
 
     def search_fn(mk: dict) -> list[dict]:
-        return search_mk_videos(yt_key, mk.get("name"), max_results=25)
+        return yt_search(mk.get("name"), max_results=25)
 
     def download_fn(v: dict, workdir: Path):
         url = f"https://www.youtube.com/watch?v={v['video_id']}"
@@ -143,13 +144,17 @@ def main() -> int:
     stop_event = threading.Event()
     signal.signal(signal.SIGINT, lambda *_a: stop_event.set())
 
+    # --search-interval is the safe per-KEY cadence (~900s -> ~96 searches/day,
+    # under one key's 100/day quota). With K keys rotating, searches can fire K×
+    # faster while each key stays within budget -> K× discovery throughput.
+    effective_interval = max(args.search_interval / len(yt_keys), 60)
     config = PipelineConfig(
         download_workers=args.download_workers,
         dl_queue_size=args.dl_queue,
         tx_queue_size=args.queue_ahead,
         per_mk=args.per_mk,
         max_seconds=args.max_minutes * 60,
-        search_interval=args.search_interval,
+        search_interval=effective_interval,
         max_videos=args.max_videos,
     )
     done = run_harvest(

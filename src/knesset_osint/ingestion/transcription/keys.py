@@ -13,6 +13,10 @@ from pathlib import Path
 # Env var names checked, in priority order (supports up to 4 keys).
 KEY_ENV_NAMES = ["GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"]
 
+# YouTube Data API keys — each Google project gets its own 10,000 units/day quota,
+# so adding keys multiplies the harvester's daily search budget (the ETL bottleneck).
+YOUTUBE_KEY_ENV_NAMES = ["YOUTUBE_API_KEY", "YOUTUBE_API_KEY_2", "YOUTUBE_API_KEY_3", "YOUTUBE_API_KEY_4"]
+
 
 def load_env_file(path: str | Path) -> dict[str, str]:
     """Parse a simple KEY=VALUE .env file. Ignores blanks and # comments."""
@@ -34,6 +38,17 @@ def load_gemini_keys(env: dict[str, str] | None = None) -> list[str]:
     env = env if env is not None else dict(os.environ)
     keys: list[str] = []
     for name in KEY_ENV_NAMES:
+        v = (env.get(name) or "").strip()
+        if v and v not in keys:
+            keys.append(v)
+    return keys
+
+
+def load_youtube_keys(env: dict[str, str] | None = None) -> list[str]:
+    """Collect configured YouTube Data API keys (deduped, blanks skipped)."""
+    env = env if env is not None else dict(os.environ)
+    keys: list[str] = []
+    for name in YOUTUBE_KEY_ENV_NAMES:
         v = (env.get(name) or "").strip()
         if v and v not in keys:
             keys.append(v)

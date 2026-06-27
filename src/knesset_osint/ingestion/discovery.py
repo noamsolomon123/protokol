@@ -55,3 +55,42 @@ def search_mk_videos(
                 }
             )
     return out
+
+
+class RotatingYouTubeSearch:
+    """Search across several YouTube API keys, round-robin, with quota failover.
+
+    Each Google project key has its own 10,000 units/day budget, so N keys give N
+    independent budgets. We rotate per call and, on a 403 (quota exhausted / key
+    disabled), advance to the next key and retry the same query — only raising if
+    every key is exhausted. ``search_fn`` is injectable for testing.
+    """
+
+    def __init__(self, keys: list[str], *, search_fn=search_mk_videos) -> None:
+        if not keys:
+            raise ValueError("RotatingYouTubeSearch needs at least one API key.")
+        self._keys = list(keys)
+        self._i = 0
+        self._search = search_fn
+
+    def __len__(self) -> int:
+        return len(self._keys)
+
+    def __call__(self, mk_name: str, **kw) -> list[dict]:
+        n = len(self._keys)
+        last_403: Exception | None = None
+        for off in range(n):
+            key = self._keys[(self._i + off) % n]
+            try:
+                res = self._search(key, mk_name, **kw)
+            except httpx.HTTPStatusError as e:  # quota (403) -> try the next key
+                if e.response is not None and e.response.status_code == 403:
+                    last_403 = e
+                    logger.warning("YouTube key #%d quota/403 — failing over.", (self._i + off) % n)
+                    continue
+                raise
+            self._i = (self._i + off + 1) % n  # next call starts on the following key
+            return res
+        if last_403 is not None:
+            raise last_403  # all keys exhausted this round
+        return []
