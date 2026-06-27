@@ -1,0 +1,27 @@
+{
+  "person_id": 526,
+  "handle": "m_gafni",
+  "tweets": [
+    {
+      "date": "2021-01-23T19:01:01+00:00",
+      "text": "מעצר האדמו\"ר רק יוסיף לנו מנדטים",
+      "url": "https://x.com/m_gafni/status/1353055150395580417",
+      "likes": 1,
+      "retweets": 0
+    },
+    {
+      "date": "2021-01-23T17:50:19+00:00",
+      "text": "למה באמת שלא יבואו אליו?",
+      "url": "https://x.com/amit_segal/status/1353037359676350467",
+      "likes": 1473,
+      "retweets": 28
+    },
+    {
+      "date": "2021-01-12T15:53:48+00:00",
+      "text": "התעוררתי \nמישהו חיפש אותי?",
+      "url": "https://x.com/m_gafni/status/1349021769412341763",
+      "likes": 4,
+      "retweets": 1
+    }
+  ]
+}
