@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 22,
+  "with_interviews": 24,
   "mks": [
     {
       "person_id": 30702,
@@ -16,6 +16,13 @@
       "party": "הליכוד",
       "interview_count": 5,
       "segment_count": 935
+    },
+    {
+      "person_id": 468,
+      "name": "ישראל כץ",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 518
     },
     {
       "person_id": 30809,
@@ -51,6 +58,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 621
+    },
+    {
+      "person_id": 30708,
+      "name": "מאי גולן",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 1086
     },
     {
       "person_id": 4395,
@@ -494,23 +508,9 @@
       "segment_count": 0
     },
     {
-      "person_id": 468,
-      "name": "ישראל כץ",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30849,
       "name": "לימור סון הר מלך",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30708,
-      "name": "מאי גולן",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
