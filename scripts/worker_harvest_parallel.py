@@ -25,7 +25,7 @@ from pathlib import Path
 
 from knesset_osint.core.console import enable_utf8_console
 from knesset_osint.core.logging import configure_logging, get_logger
-from knesset_osint.ingestion.discovery import RotatingYouTubeSearch
+from knesset_osint.ingestion.discovery import RotatingYouTubeSearch, deep_search
 from knesset_osint.ingestion.harvest_pipeline import PipelineConfig, run_harvest
 from knesset_osint.ingestion.transcription.audio import download_audio, probe_duration
 from knesset_osint.ingestion.transcription.keys import load_env_file, load_youtube_keys
@@ -77,6 +77,11 @@ def main() -> int:
     ap.add_argument("--per-mk", type=int, default=5, help="max new videos per MK per search pass")
     ap.add_argument("--max-minutes", type=int, default=75, help="skip videos longer than this")
     ap.add_argument("--max-videos", type=int, default=None, help="stop after N transcripts (testing)")
+    ap.add_argument("--deep", action="store_true",
+                    help="F9: run several query/order combos per MK (relevance+viewCount, varied "
+                         "phrasings) and dedupe — grows the historical corpus past the recent-25/MK "
+                         "cap. Costs more quota per MK, so fewer MKs per pass.")
+    ap.add_argument("--search-results", type=int, default=25, help="maxResults per YouTube query")
     args = ap.parse_args()
 
     os.environ.setdefault("HF_HOME", str(DATA / "models"))
@@ -104,8 +109,12 @@ def main() -> int:
     print(f"Engine: {transcriber.model_name} on {transcriber.device}/{transcriber.compute_type} "
           f"(batch={transcriber.batch_size}, batched={transcriber._batched is not None})")
 
-    def search_fn(mk: dict) -> list[dict]:
-        return yt_search(mk.get("name"), max_results=25)
+    if args.deep:
+        def search_fn(mk: dict) -> list[dict]:
+            return deep_search(yt_search, mk.get("name"), max_results=args.search_results)
+    else:
+        def search_fn(mk: dict) -> list[dict]:
+            return yt_search(mk.get("name"), max_results=args.search_results)
 
     def download_fn(v: dict, workdir: Path):
         url = f"https://www.youtube.com/watch?v={v['video_id']}"

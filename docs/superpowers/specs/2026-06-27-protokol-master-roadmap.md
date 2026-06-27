@@ -120,8 +120,16 @@ and right judged by the same yardstick.
       all 6 share-facing pages (findings, leaderboard, directory, search, ministers, mk) +
       tailored descriptions; favicon + viewport confirmed on every page; nav present on all;
       mobile chart clip fixed earlier. Deferred nice-to-have: a raster `og:image` card.
-- [ ] **F9 · Deeper crawl** — pagination/varied queries beyond the recent-25/MK cap to grow
-      the historical corpus.
+- [x] **F9 · Deeper crawl** — DONE (capability, tested; activation = 1-line toggle):
+      `discovery.py` gains `order=` (date/relevance/viewCount) + `deep_search()` which runs a
+      5-combo `DEEP_QUERY_PLAN` (varied phrasings × orders) and dedupes — surfaces the older/
+      different videos the single date query misses. Worker gains `--deep`. Hardened
+      `RotatingYouTubeSearch` to fail over on 429 (rate-limit) too, not just 403. 60 tests
+      pass; **live smoke test: deep found 19 videos the single query missed (union 44 vs 25,
+      ~1.8×)** even while rate-limited (resilient, no crash). **Activation deferred** (not done
+      unsupervised while user away): add `--deep` to `run_harvester.bat` and restart the
+      supervisor — costs ~5× quota/MK (≈60 deep MK-passes/day across 3 keys) so it trades
+      MKs-per-day for depth, appropriate now the recent corpus is saturated.
 - [ ] **F10 · Own repo + Pages** — migrate the platform to its own repo, fully separate
       from the old `knesset-osint` OSINT scorecard.
 

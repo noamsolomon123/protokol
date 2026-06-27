@@ -7,7 +7,7 @@ from __future__ import annotations
 import httpx
 import pytest
 
-from knesset_osint.ingestion.discovery import RotatingYouTubeSearch
+from knesset_osint.ingestion.discovery import DEEP_QUERY_PLAN, RotatingYouTubeSearch, deep_search
 
 
 def _http_error(status: int) -> httpx.HTTPStatusError:
@@ -38,6 +38,16 @@ def test_failover_on_403_quota():
     assert s("x") == [{"video_id": "ok"}]  # 403 on 'dead' -> fail over to 'live'
 
 
+def test_failover_on_429_ratelimit():
+    def fake(key, name, **kw):
+        if key == "limited":
+            raise _http_error(429)
+        return [{"video_id": "ok"}]
+
+    s = RotatingYouTubeSearch(["limited", "live"], search_fn=fake)
+    assert s("x") == [{"video_id": "ok"}]  # 429 on 'limited' -> fail over to 'live'
+
+
 def test_all_keys_exhausted_raises_403():
     def fake(key, name, **kw):
         raise _http_error(403)
@@ -59,3 +69,45 @@ def test_non_403_error_propagates_immediately():
 def test_requires_at_least_one_key():
     with pytest.raises(ValueError):
         RotatingYouTubeSearch([])
+
+
+# --- F9 deeper crawl: deep_search ---
+
+def test_deep_search_runs_every_combo_and_dedupes():
+    seen_combos: list[tuple] = []
+
+    def fake(name, *, max_results, query_suffix, order, **kw):
+        seen_combos.append((query_suffix, order))
+        tag = f"{order}:{query_suffix[:4]}"
+        return [{"video_id": "shared"}, {"video_id": tag}]
+
+    res = deep_search(fake, "מישהו")
+    ids = [v["video_id"] for v in res]
+    assert len(seen_combos) == len(DEEP_QUERY_PLAN)        # every combo issued
+    assert ids.count("shared") == 1                         # deduped to one
+    assert len(res) == 1 + len(set(seen_combos))            # shared + one unique per distinct combo
+
+
+def test_deep_search_skips_failing_combo():
+    def fake(name, *, max_results, query_suffix, order, **kw):
+        if order == "viewCount":
+            raise httpx.HTTPStatusError("quota", request=httpx.Request("GET", "http://x"),
+                                        response=httpx.Response(403))
+        return [{"video_id": order}]
+
+    res = deep_search(fake, "X")
+    ids = {v["video_id"] for v in res}
+    assert "viewCount" not in ids                           # failing combo skipped
+    assert "date" in ids and "relevance" in ids             # others still returned
+
+
+def test_deep_search_passes_order_through_real_signature():
+    # the real search_mk_videos accepts order=; deep_search must call with it
+    captured = []
+
+    def fake(name, *, max_results, query_suffix, order, **kw):
+        captured.append(order)
+        return []
+
+    deep_search(fake, "X", plan=[("a", "date"), ("b", "viewCount")])
+    assert captured == ["date", "viewCount"]

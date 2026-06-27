@@ -16,6 +16,20 @@ logger = get_logger("ingestion.discovery")
 _SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 _DEFAULT_SUFFIX = "ראיון OR נאום OR מליאה OR ועדה"
 
+# F9 deeper crawl: the single date-ordered query saturates at the recent ~25 videos
+# per MK. Running several (suffix, order) combos and deduping surfaces a much larger,
+# more historical pool — relevance/viewCount return different top sets than date, and
+# varied phrasings catch interviews the default query misses. Each combo is one search
+# (100 quota units), so this trades breadth-per-MK for MKs-per-pass; appropriate now
+# that the recent corpus is saturated. None suffix = the bare name.
+DEEP_QUERY_PLAN: list[tuple[str | None, str]] = [
+    (_DEFAULT_SUFFIX, "date"),                 # the original pass (newest)
+    ("ראיון OR ראיון מלא OR בראיון", "relevance"),
+    ("נאום OR דברים OR הצהרה OR מסיבת עיתונאים", "relevance"),
+    ("ראיון OR נאום OR ועדה", "viewCount"),    # most-watched (older, popular)
+    (None, "relevance"),                       # bare name, relevance
+]
+
 
 def search_mk_videos(
     api_key: str,
@@ -23,16 +37,21 @@ def search_mk_videos(
     *,
     max_results: int = 6,
     query_suffix: str = _DEFAULT_SUFFIX,
+    order: str = "date",
     published_after: str | None = None,
     timeout: float = 30.0,
 ) -> list[dict]:
-    """Return [{video_id, title, channel, published_at}] for an MK (newest first)."""
+    """Return [{video_id, title, channel, published_at}] for an MK.
+
+    ``order`` is the YouTube sort: 'date' (newest, default — unchanged behaviour),
+    'relevance', or 'viewCount'. Varying it surfaces different result sets (F9).
+    """
     params = {
         "key": api_key,
         "part": "snippet",
-        "q": f"{mk_name} {query_suffix}",
+        "q": f"{mk_name} {query_suffix}".strip(),
         "type": "video",
-        "order": "date",
+        "order": order,
         "maxResults": max_results,
         "relevanceLanguage": "he",
         "regionCode": "IL",
@@ -78,19 +97,47 @@ class RotatingYouTubeSearch:
 
     def __call__(self, mk_name: str, **kw) -> list[dict]:
         n = len(self._keys)
-        last_403: Exception | None = None
+        last_err: Exception | None = None
         for off in range(n):
             key = self._keys[(self._i + off) % n]
             try:
                 res = self._search(key, mk_name, **kw)
-            except httpx.HTTPStatusError as e:  # quota (403) -> try the next key
-                if e.response is not None and e.response.status_code == 403:
-                    last_403 = e
-                    logger.warning("YouTube key #%d quota/403 — failing over.", (self._i + off) % n)
+            except httpx.HTTPStatusError as e:  # quota (403) / rate-limit (429) -> try the next key
+                if e.response is not None and e.response.status_code in (403, 429):
+                    last_err = e
+                    logger.warning("YouTube key #%d %s — failing over.",
+                                   (self._i + off) % n, e.response.status_code)
                     continue
                 raise
             self._i = (self._i + off + 1) % n  # next call starts on the following key
             return res
-        if last_403 is not None:
-            raise last_403  # all keys exhausted this round
+        if last_err is not None:
+            raise last_err  # all keys exhausted / rate-limited this round
         return []
+
+
+def deep_search(
+    search,
+    mk_name: str,
+    *,
+    plan: list[tuple[str | None, str]] = DEEP_QUERY_PLAN,
+    max_results: int = 25,
+    **kw,
+) -> list[dict]:
+    """F9 deeper crawl: run every (suffix, order) combo in ``plan`` through ``search``
+    (a RotatingYouTubeSearch — so key rotation/quota failover is reused) and dedupe by
+    video id. A combo that fails (e.g. all keys exhausted) is skipped, so we still
+    return whatever the other combos found. Newest-first combos run first, so the
+    deduped order roughly preserves recency."""
+    seen: dict[str, dict] = {}
+    for suffix, order in plan:
+        try:
+            res = search(mk_name, max_results=max_results, query_suffix=(suffix or ""), order=order, **kw)
+        except Exception as e:  # quota exhausted / transient — keep what we have
+            logger.warning("deep_search combo (%s / %s) failed: %s", suffix, order, e)
+            continue
+        for v in res:
+            vid = v.get("video_id")
+            if vid and vid not in seen:
+                seen[vid] = v
+    return list(seen.values())
