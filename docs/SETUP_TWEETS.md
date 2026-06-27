@@ -5,16 +5,31 @@ API is paid). So the tweet pipeline needs **one X account** to read public tweet
 via `twscrape`. Use a **throwaway / secondary** X account — there is a small ban
 risk for automated reading.
 
+> **Security:** the credentials live ONLY in twscrape's local DB on this machine —
+> never paste your password into an AI chat (it would land in the transcript). Run
+> the two `twscrape` commands in your OWN terminal, or via a gitignored file (below).
+> Use an email you control (e.g. Gmail + app-password, IMAP on) so twscrape can read
+> the login confirmation code automatically.
+
 ### Steps (run from the repo root: `C:\Users\noams\knesset-osint`)
 
-1. **Add your X account:**
+1. **Add your X account** — in your own terminal:
    ```
    .venv\Scripts\twscrape add_account <username> <password> <email> <email_password>
+   ```
+   …or via a gitignored file so the password isn't on the command line:
+   ```
+   # put one line "user:pass:email:email_pass" in _x_account.txt  (gitignored by the _* rule)
+   .venv\Scripts\twscrape add_accounts _x_account.txt username:password:email:email_password
+   del _x_account.txt
    ```
 2. **Log it in** (solves the auth flow once):
    ```
    .venv\Scripts\twscrape login_accounts
    ```
+   If login is challenged (2FA/email), the most reliable path in 2026 is cookies:
+   log into X in a browser, export the `auth_token` cookie, and
+   `twscrape add_account ... --cookies "auth_token=...; ct0=..."`.
 3. **Harvest tweets** (auto-discovers each MK's handle by name, then pulls recent tweets):
    ```
    .venv\Scripts\python.exe scripts\worker_tweets.py
