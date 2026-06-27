@@ -32,7 +32,12 @@ and right judged by the same yardstick.
   claimed quantity: a Claude extractor + an independent Claude adversarial verifier,
   and Gemini as a third vote when quota allows. Anything short of agreement stays a
   clearly-labeled `candidate` (shown on a candidates view, never on the leaderboard).
-  No human gate required; the user spot-checks. If one model is consistently better, flag it.
+  **PM-review gate (added 2026-06-27, learned the hard way):** consensus-confirmed
+  findings are NOT auto-merged — the PM reviews each before publish, because the
+  consensus CAN over-reach on semantic precision. (First case: an MK's "100k haredi
+  *not serving*" was flagged contradicted vs the ~66k *formal-deferral* count, but
+  "not serving" is a broader population — so the stat didn't measure the exact
+  quantity. Correctly held back.) The user spot-checks the published set.
 - **Agent budget = go all-out.** Use Claude agents liberally (ultracode on).
 - **Repo = stay in `knesset-osint` for now.** Migration is F10 (later).
 - **X/Twitter (F5):** user will provide a throwaway X account — build the pipeline now,
