@@ -58,6 +58,7 @@ const qEl=document.getElementById('q'), resEl=document.getElementById('res'), st
 let IVS=[], SEGS=[]; // interviews[{pid,name,vid,url,title}], segments=[[ivIndex,start,text],...]
 const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const moment=(url,t)=> url ? `${url}${url.includes('?')?'&':'?'}t=${Math.floor(t||0)}` : '#';
+const _q=new URLSearchParams(location.search).get('q'); if(_q){ qEl.value=_q; }  // deep-link from home
 
 fetch('data/search_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(idx=>{
   if(!idx){ metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }

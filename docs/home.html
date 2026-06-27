@@ -25,6 +25,13 @@
   .wordmark .lo{color:var(--stamp);}
   .subhead{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(20px,3vw,30px);margin:20px 0 0;max-width:30ch;}
   .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);margin:14px 0 0;max-width:58ch;line-height:1.7;}
+  .hero-search{display:flex;gap:10px;margin:26px 0 4px;max-width:580px;}
+  .hero-search input{flex:1;font-family:"Heebo";font-size:17px;padding:14px 18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:2px;}
+  .hero-search input:focus{outline:none;border-color:var(--stamp);}
+  .hero-search button{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;padding:0 22px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;transition:background .15s;white-space:nowrap;}
+  .hero-search button:hover{background:var(--stamp);border-color:var(--stamp);}
+  .hero-hint{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-faint);margin:8px 0 0;}
+  @media(max-width:560px){.hero-search{flex-direction:column;}}
   .stats{display:flex;gap:30px;flex-wrap:wrap;border-bottom:1.5px solid var(--ink);padding:18px 0;}
   .stat b{font-family:"Suez One",serif;font-size:34px;color:var(--stamp);line-height:1;display:block;}
   .stat span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;}
@@ -52,6 +59,11 @@
     <h1 class="wordmark">פְּרוֹטוֹ<span class="lo">קוֹל</span></h1>
     <p class="subhead">מה אמרו בכנסת — ומה אומרים הנתונים הרשמיים.</p>
     <p class="standfirst">פלטפורמה אובייקטיבית שאוספת ומתמללת ראיונות של חברי הכנסת, ומשווה את אמירותיהם לנתונים רשמיים שפרסמה המדינה. ימין ושמאל באותה אמת־מידה. כל קביעה — עם מקור בר־בדיקה.</p>
+    <form class="hero-search" onsubmit="return goSearch(event)">
+      <input id="hq" type="search" placeholder="חפשו מה שאמרו: גיוס, יוקר המחיה, חרדים…" aria-label="חיפוש בכל הראיונות" />
+      <button type="submit">חיפוש בכל הראיונות →</button>
+    </form>
+    <p class="hero-hint">לתפוס אותם על המילים — חיפוש חופשי בכל התמלולים, וקפיצה לרגע המדויק בסרטון.</p>
   </div></header>
 
   <div class="wrap">
@@ -82,6 +94,7 @@
     </footer>
   </div>
 <script>
+function goSearch(e){e.preventDefault();const v=document.getElementById('hq').value.trim();if(v)location.href='search.html?q='+encodeURIComponent(v);return false;}
 Promise.all([
   fetch('data/mk_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
   fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 54,
+  "with_interviews": 68,
   "mks": [
     {
       "person_id": 30807,
@@ -9,6 +9,20 @@
       "party": "העבודה",
       "interview_count": 25,
       "segment_count": 331
+    },
+    {
+      "person_id": 30837,
+      "name": "דבי ביטון",
+      "party": "יש עתיד",
+      "interview_count": 25,
+      "segment_count": 729
+    },
+    {
+      "person_id": 30749,
+      "name": "משה אבוטבול",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 25,
+      "segment_count": 539
     },
     {
       "person_id": 30830,
@@ -25,11 +39,53 @@
       "segment_count": 560
     },
     {
+      "person_id": 11835,
+      "name": "אורי מקלב",
+      "party": "יהדות התורה",
+      "interview_count": 24,
+      "segment_count": 526
+    },
+    {
+      "person_id": 560,
+      "name": "אחמד טיבי",
+      "party": "חד\"ש-תע\"ל",
+      "interview_count": 24,
+      "segment_count": 385
+    },
+    {
       "person_id": 28513,
       "name": "יואב בן צור",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 24,
       "segment_count": 1090
+    },
+    {
+      "person_id": 30672,
+      "name": "יצחק פינדרוס",
+      "party": "יהדות התורה",
+      "interview_count": 24,
+      "segment_count": 569
+    },
+    {
+      "person_id": 526,
+      "name": "משה גפני",
+      "party": "יהדות התורה",
+      "interview_count": 24,
+      "segment_count": 380
+    },
+    {
+      "person_id": 30067,
+      "name": "עאידה תומא סלימאן",
+      "party": "חד\"ש-תע\"ל",
+      "interview_count": 24,
+      "segment_count": 507
+    },
+    {
+      "person_id": 30066,
+      "name": "איימן עודה",
+      "party": "חד\"ש-תע\"ל",
+      "interview_count": 23,
+      "segment_count": 232
     },
     {
       "person_id": 1056,
@@ -60,11 +116,25 @@
       "segment_count": 715
     },
     {
+      "person_id": 30719,
+      "name": "עופר כסיף",
+      "party": "חד\"ש-תע\"ל",
+      "interview_count": 23,
+      "segment_count": 189
+    },
+    {
       "person_id": 30704,
       "name": "שלמה קרעי",
       "party": "הליכוד",
       "interview_count": 23,
       "segment_count": 788
+    },
+    {
+      "person_id": 23641,
+      "name": "יעקב אשר",
+      "party": "יהדות התורה",
+      "interview_count": 22,
+      "segment_count": 1054
     },
     {
       "person_id": 30812,
@@ -88,11 +158,32 @@
       "segment_count": 368
     },
     {
+      "person_id": 23591,
+      "name": "אלעזר שטרן",
+      "party": "יש עתיד",
+      "interview_count": 20,
+      "segment_count": 592
+    },
+    {
+      "person_id": 30776,
+      "name": "ולדימיר בליאק",
+      "party": "יש עתיד",
+      "interview_count": 20,
+      "segment_count": 743
+    },
+    {
       "person_id": 30765,
       "name": "אוריאל בוסו",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 19,
       "segment_count": 546
+    },
+    {
+      "person_id": 563,
+      "name": "מאיר פרוש",
+      "party": "יהדות התורה",
+      "interview_count": 15,
+      "segment_count": 163
     },
     {
       "person_id": 30808,
@@ -214,13 +305,6 @@
       "segment_count": 1086
     },
     {
-      "person_id": 30749,
-      "name": "משה אבוטבול",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 4,
-      "segment_count": 113
-    },
-    {
       "person_id": 30853,
       "name": "משה סעדה",
       "party": "הליכוד",
@@ -233,6 +317,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 524
+    },
+    {
+      "person_id": 30894,
+      "name": "סמיר בן סעיד",
+      "party": "חד\"ש-תע\"ל",
+      "interview_count": 4,
+      "segment_count": 21
     },
     {
       "person_id": 30711,
@@ -368,6 +459,13 @@
       "segment_count": 49
     },
     {
+      "person_id": 30846,
+      "name": "יצחק גולדקנופ",
+      "party": "יהדות התורה",
+      "interview_count": 1,
+      "segment_count": 28
+    },
+    {
       "person_id": 30810,
       "name": "מיכל מרים וולדיגר",
       "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
@@ -396,30 +494,9 @@
       "segment_count": 0
     },
     {
-      "person_id": 11835,
-      "name": "אורי מקלב",
-      "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30685,
       "name": "אורית פרקש הכהן",
       "party": "כחול לבן - המחנה הממלכתי",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 560,
-      "name": "אחמד טיבי",
-      "party": "חד\"ש-תע\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30066,
-      "name": "איימן עודה",
-      "party": "חד\"ש-תע\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -452,23 +529,9 @@
       "segment_count": 0
     },
     {
-      "person_id": 23591,
-      "name": "אלעזר שטרן",
-      "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30657,
       "name": "בנימין גנץ",
       "party": "כחול לבן - המחנה הממלכתי",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30837,
-      "name": "דבי ביטון",
-      "party": "יש עתיד",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -483,13 +546,6 @@
       "person_id": 30752,
       "name": "ווליד טאהא",
       "party": "רע\"ם",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30776,
-      "name": "ולדימיר בליאק",
-      "party": "יש עתיד",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -578,29 +634,8 @@
       "segment_count": 0
     },
     {
-      "person_id": 23641,
-      "name": "יעקב אשר",
-      "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30671,
       "name": "יעקב טסלר",
-      "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30846,
-      "name": "יצחק גולדקנופ",
-      "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30672,
-      "name": "יצחק פינדרוס",
       "party": "יהדות התורה",
       "interview_count": 0,
       "segment_count": 0
@@ -637,13 +672,6 @@
       "person_id": 23597,
       "name": "מאיר כהן",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 563,
-      "name": "מאיר פרוש",
-      "party": "יהדות התורה",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -697,13 +725,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 526,
-      "name": "משה גפני",
-      "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30777,
       "name": "משה טור פז",
       "party": "יש עתיד",
@@ -725,20 +746,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30894,
-      "name": "סמיר בן סעיד",
-      "party": "חד\"ש-תע\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30067,
-      "name": "עאידה תומא סלימאן",
-      "party": "חד\"ש-תע\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30895,
       "name": "עדי עזוז",
       "party": "יש עתיד",
@@ -756,13 +763,6 @@
       "person_id": 30916,
       "name": "עוז חיים",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30719,
-      "name": "עופר כסיף",
-      "party": "חד\"ש-תע\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
