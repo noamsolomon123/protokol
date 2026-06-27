@@ -22,6 +22,8 @@ GOOD_UP = {
     "gdp_growth": True, "poverty_rate": False, "debt_to_gdp": False,
     "defense_budget_gdp": None, "food_price_index": False, "life_expectancy": True,
     "rd_expenditure_gdp": True, "gov_deficit_gdp": False,
+    "renewable_electricity_share": True, "court_pending_cases": False,
+    "mobile_price_index": None,  # %-change series — direction ambiguous, no arrow
 }
 
 
