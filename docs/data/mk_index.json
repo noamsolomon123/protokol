@@ -1,8 +1,15 @@
 {
   "schema": 1,
-  "count": 120,
+  "count": 126,
   "with_interviews": 113,
   "mks": [
+    {
+      "person_id": 30807,
+      "name": "גלעד קריב",
+      "party": "העבודה",
+      "interview_count": 26,
+      "segment_count": 335
+    },
     {
       "person_id": 30300,
       "name": "אמיר אוחנה",
@@ -23,13 +30,6 @@
       "party": "כחול לבן - המחנה הממלכתי",
       "interview_count": 25,
       "segment_count": 408
-    },
-    {
-      "person_id": 30807,
-      "name": "גלעד קריב",
-      "party": "העבודה",
-      "interview_count": 25,
-      "segment_count": 331
     },
     {
       "person_id": 30837,
@@ -58,6 +58,13 @@
       "party": "יש עתיד",
       "interview_count": 25,
       "segment_count": 790
+    },
+    {
+      "person_id": 30875,
+      "name": "צגה מלקו",
+      "party": "הליכוד",
+      "interview_count": 25,
+      "segment_count": 1203
     },
     {
       "person_id": 30814,
@@ -193,6 +200,13 @@
       "segment_count": 1010
     },
     {
+      "person_id": 30700,
+      "name": "ניר ברקת",
+      "party": "הליכוד",
+      "interview_count": 24,
+      "segment_count": 2205
+    },
+    {
       "person_id": 30067,
       "name": "עאידה תומא סלימאן",
       "party": "חד\"ש-תע\"ל",
@@ -212,6 +226,13 @@
       "party": "יש עתיד",
       "interview_count": 24,
       "segment_count": 621
+    },
+    {
+      "person_id": 30704,
+      "name": "שלמה קרעי",
+      "party": "הליכוד",
+      "interview_count": 24,
+      "segment_count": 898
     },
     {
       "person_id": 4395,
@@ -368,13 +389,6 @@
       "segment_count": 189
     },
     {
-      "person_id": 30704,
-      "name": "שלמה קרעי",
-      "party": "הליכוד",
-      "interview_count": 23,
-      "segment_count": 788
-    },
-    {
       "person_id": 30758,
       "name": "אימאן ח'טיב יאסין",
       "party": "רע\"ם",
@@ -410,6 +424,13 @@
       "segment_count": 900
     },
     {
+      "person_id": 30601,
+      "name": "ינון אזולאי",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 22,
+      "segment_count": 379
+    },
+    {
       "person_id": 23641,
       "name": "יעקב אשר",
       "party": "יהדות התורה",
@@ -417,11 +438,25 @@
       "segment_count": 1054
     },
     {
+      "person_id": 30877,
+      "name": "משה פסל",
+      "party": "הליכוד",
+      "interview_count": 22,
+      "segment_count": 996
+    },
+    {
       "person_id": 30857,
       "name": "עמיחי אליהו",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
       "interview_count": 22,
       "segment_count": 310
+    },
+    {
+      "person_id": 30711,
+      "name": "עמית הלוי",
+      "party": "הליכוד",
+      "interview_count": 22,
+      "segment_count": 619
     },
     {
       "person_id": 23635,
@@ -459,13 +494,6 @@
       "segment_count": 444
     },
     {
-      "person_id": 30601,
-      "name": "ינון אזולאי",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 21,
-      "segment_count": 378
-    },
-    {
       "person_id": 30867,
       "name": "יצחק קרויזר",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
@@ -499,6 +527,13 @@
       "party": "יש עתיד",
       "interview_count": 21,
       "segment_count": 557
+    },
+    {
+      "person_id": 30772,
+      "name": "ניסים ואטורי",
+      "party": "הליכוד",
+      "interview_count": 21,
+      "segment_count": 1248
     },
     {
       "person_id": 30106,
@@ -550,13 +585,6 @@
       "segment_count": 546
     },
     {
-      "person_id": 30877,
-      "name": "משה פסל",
-      "party": "הליכוד",
-      "interview_count": 19,
-      "segment_count": 825
-    },
-    {
       "person_id": 30839,
       "name": "דן אילוז",
       "party": "הליכוד",
@@ -583,6 +611,13 @@
       "party": "יש עתיד",
       "interview_count": 17,
       "segment_count": 818
+    },
+    {
+      "person_id": 30808,
+      "name": "אפרת רייטן מרום",
+      "party": "העבודה",
+      "interview_count": 15,
+      "segment_count": 524
     },
     {
       "person_id": 30881,
@@ -618,13 +653,6 @@
       "party": "יש עתיד",
       "interview_count": 12,
       "segment_count": 627
-    },
-    {
-      "person_id": 30808,
-      "name": "אפרת רייטן מרום",
-      "party": "העבודה",
-      "interview_count": 11,
-      "segment_count": 380
     },
     {
       "person_id": 30804,
@@ -683,32 +711,11 @@
       "segment_count": 147
     },
     {
-      "person_id": 30772,
-      "name": "ניסים ואטורי",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 1007
-    },
-    {
-      "person_id": 30700,
-      "name": "ניר ברקת",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 1615
-    },
-    {
       "person_id": 30895,
       "name": "עדי עזוז",
       "party": "יש עתיד",
       "interview_count": 5,
       "segment_count": 233
-    },
-    {
-      "person_id": 30875,
-      "name": "צגה מלקו",
-      "party": "הליכוד",
-      "interview_count": 5,
-      "segment_count": 240
     },
     {
       "person_id": 30752,
@@ -723,13 +730,6 @@
       "party": "חד\"ש-תע\"ל",
       "interview_count": 4,
       "segment_count": 21
-    },
-    {
-      "person_id": 30711,
-      "name": "עמית הלוי",
-      "party": "הליכוד",
-      "interview_count": 4,
-      "segment_count": 150
     },
     {
       "person_id": 2291,
@@ -795,9 +795,44 @@
       "segment_count": 8
     },
     {
+      "person_id": 990004,
+      "name": "בצלאל סמוטריץ'",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
+      "person_id": 990002,
+      "name": "גדי אייזנקוט",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
+      "person_id": 990005,
+      "name": "גדעון סער",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
       "person_id": 30840,
       "name": "ואליד אלהואשלה",
       "party": "רע\"ם",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
+      "person_id": 990003,
+      "name": "יאיר גולן",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
+      "person_id": 990006,
+      "name": "יואב גלנט",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -819,6 +854,13 @@
       "person_id": 30682,
       "name": "מיכאל מרדכי ביטון",
       "party": "כחול לבן - המחנה הממלכתי",
+      "interview_count": 0,
+      "segment_count": 0
+    },
+    {
+      "person_id": 990001,
+      "name": "נפתלי בנט",
+      "party": "דמויות פוליטיות בולטות · אינם ח״כ מכהנים",
       "interview_count": 0,
       "segment_count": 0
     },

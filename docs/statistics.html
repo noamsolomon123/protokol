@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · הנתונים הרשמיים — browsable view of every official statistic we collected
+     (docs/data/portfolio_series.json). Each series shows a chart + its government source. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · הנתונים הרשמיים</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<meta name="description" content="כל הנתונים הרשמיים שאספנו ממקורות ממשלתיים (למ\"ס, בנק ישראל, משרדי הממשלה) — מוצגים כגרפים עם קישור למקור לבדיקה עצמאית." />
+<meta property="og:type" content="website" /><meta property="og:site_name" content="פְּרוֹטוֹקוֹל" />
+<meta property="og:title" content="פְּרוֹטוֹקוֹל · הנתונים הרשמיים של מדינת ישראל" />
+<meta property="og:description" content="גרפים של הנתונים הרשמיים שמדינת ישראל פרסמה — כלכלה, חברה, ביטחון, דיור — כל אחד עם מקור בר-בדיקה." />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--stamp-deep:#8b1216;--true:#3c6446;--gold:#9a7b2e;--maxw:1080px;}
+  *{box-sizing:border-box;} html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/></svg>");}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;flex-wrap:wrap;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;white-space:nowrap;}
+  header.mast{padding:44px 0 22px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(34px,7vw,64px);line-height:.92;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:14px 0 0;max-width:64ch;}
+  .toolbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:22px 0 4px;}
+  .search{flex:1;min-width:240px;font-family:"Heebo";font-size:16px;padding:12px 16px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:2px;}
+  .search:focus{outline:none;border-color:var(--stamp);}
+  .count{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}.count b{color:var(--stamp);font-size:15px;}
+  .cat{font-family:"Suez One",serif;font-size:clamp(22px,4vw,32px);margin:36px 0 4px;border-bottom:2px solid var(--ink);padding-bottom:6px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;margin:16px 0;}
+  .stat{border:1.5px solid var(--ink);background:var(--paper-edge);padding:16px 18px;box-shadow:8px 10px 0 rgba(27,24,20,.05);display:flex;flex-direction:column;}
+  .stat h3{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;line-height:1.3;margin:0 0 2px;}
+  .stat .unit{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-soft);margin-bottom:10px;}
+  .chart{display:flex;align-items:flex-end;gap:3px;height:96px;border-bottom:2px solid var(--ink);}
+  .bar{flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .bar i{width:78%;background:var(--ink-faint);display:block;}
+  .bar:last-child i{background:var(--stamp);}
+  .bar .v{font-family:"IBM Plex Mono",monospace;font-size:8px;color:var(--ink-soft);margin-bottom:2px;}
+  .labels{display:flex;gap:3px;margin-top:3px;}
+  .labels span{flex:1;min-width:0;overflow:hidden;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:8px;color:var(--ink-faint);}
+  .delta{font-family:"Frank Ruhl Libre",serif;font-size:14px;margin-top:10px;color:var(--ink-soft);}
+  .delta b{font-family:"IBM Plex Mono",monospace;color:var(--ink);}
+  .arrow{font-weight:800;} .arrow.up{color:var(--stamp);} .arrow.down{color:var(--true);}
+  .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:auto;padding-top:10px;border-top:1px dashed var(--rule);}
+  .src a{color:var(--gold);}
+  .note{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink-faint);margin-top:8px;line-height:1.5;max-height:3.6em;overflow:hidden;cursor:pointer;}
+  .note.open{max-height:none;}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);padding:40px 8px;}
+  footer{margin:40px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
+  .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:16px;text-align:center;}
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./home.html">בית</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./ministers.html">שרים</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח</a></span>
+    <span>מקורות ממשלתיים רשמיים</span>
+  </div></div>
+  <header class="mast"><div class="wrap">
+    <div class="kicker">המספרים — לבדיקה עצמאית</div>
+    <h1 class="wordmark">הַנְּתוּנִים הָרִשְׁמִיִּים</h1>
+    <p class="standfirst">כל הנתונים הרשמיים שאספנו ואימתנו — ישירות ממקורות המדינה (הלשכה המרכזית לסטטיסטיקה, בנק ישראל, המוסד לביטוח לאומי, משרדי הממשלה). אלה אותם הנתונים שמולם נבדקות אמירות הפוליטיקאים. כל גרף מקושר למקור — אל תאמינו לנו, בדקו בעצמכם.</p>
+  </div></header>
+  <div class="wrap">
+    <div class="toolbar">
+      <input id="q" class="search" type="search" placeholder="סינון: עוני, אבטלה, תחבורה, חרדים…" aria-label="סינון נתונים" />
+      <span class="count" id="count"></span>
+    </div>
+    <div id="cats"></div>
+    <p id="state" class="state">טוען נתונים…</p>
+    <footer>
+      <p>מאגר נתונים אובייקטיבי. כל סדרה נשלפה ואומתה ממקור ממשלתי רשמי, עם קישור לבדיקה. הנתונים מוצגים כעובדה — ללא פרשנות וללא ייחוס אשמה לאדם זה או אחר.</p>
+      <div class="colophon">פְּרוֹטוֹקוֹל · בקרת עובדות · אתר סטטי חינמי</div>
+    </footer>
+  </div>
+<script>
+const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// domain grouping for the 19 series
+const CATS=[
+  ['כלכלה ויוקר המחיה', ['gdp_growth','inflation','unemployment','debt_to_gdp','gov_deficit_gdp','food_price_index','mobile_price_index']],
+  ['חברה, רווחה וחינוך', ['poverty_rate','education','aliyah','life_expectancy','health','rd_expenditure_gdp']],
+  ['ביטחון, פשיעה ומשפט', ['crime','defense_budget_gdp','court_pending_cases']],
+  ['דיור, תחבורה ואנרגיה', ['housing','transport','renewable_electricity_share']],
+];
+let SERIES={};
+
+function statCard(key){
+  const s=SERIES[key]; if(!s) return '';
+  const pts=s.points||[]; if(!pts.length) return '';
+  const max=Math.max(...pts.map(p=>p.value),1);
+  const bars=pts.map(p=>`<div class="bar" title="${p.year}: ${p.value}"><span class="v num">${p.value}${p.provisional?'*':''}</span><i style="height:${Math.round(p.value/max*100)}%"></i></div>`).join('');
+  const labels=pts.map(p=>`<span class="num">'${String(p.year).slice(2)}</span>`).join('');
+  const first=pts[0], last=pts[pts.length-1];
+  const up=last.value>first.value, same=last.value===first.value;
+  const delta=`<div class="delta">מ-<b class="num">${first.value}</b> (${first.year}) ל-<b class="num">${last.value}${last.provisional?'*':''}</b> (${last.year}) <span class="arrow ${up?'up':'down'}">${same?'':(up?'▲':'▼')}</span></div>`;
+  const srcs=(s.sources||[]).map(x=>`<a href="${x.url}" target="_blank" rel="noopener">${esc(x.org)} ↗</a>`).join(' · ');
+  const note=s.note?`<div class="note" onclick="this.classList.toggle('open')">${esc(s.note)}</div>`:'';
+  return `<div class="stat" data-t="${esc((s.label||'')+' '+key)}">
+    <h3>${esc(s.label)}</h3><div class="unit">${esc(s.unit||'')}</div>
+    <div class="chart">${bars}</div><div class="labels">${labels}</div>
+    ${delta}${note}
+    <div class="src">מקור: ${srcs||'—'}</div>
+  </div>`;
+}
+
+function render(filter){
+  const q=(filter||'').trim();
+  let shown=0, html='';
+  for(const [cat,keys] of CATS){
+    const cards=keys.filter(k=>SERIES[k]).map(statCard).filter(Boolean);
+    // apply text filter
+    const filtered=q ? cards.filter(c=>c.includes(q)) : cards;
+    if(!filtered.length) continue;
+    shown+=filtered.length;
+    html+=`<h2 class="cat">${cat}</h2><div class="grid">${filtered.join('')}</div>`;
+  }
+  document.getElementById('cats').innerHTML=html || '<p class="state">לא נמצאו נתונים לסינון.</p>';
+  document.getElementById('count').innerHTML=`<b>${shown}</b> סדרות נתונים רשמיות`;
+}
+
+fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!d.series){ document.getElementById('state').textContent='הנתונים אינם זמינים כרגע.'; return; }
+  SERIES=d.series;
+  document.getElementById('state').style.display='none';
+  render('');
+}).catch(()=>{ document.getElementById('state').textContent='שגיאה בטעינת הנתונים.'; });
+document.getElementById('q').addEventListener('input',e=>render(e.target.value));
+</script>
+</body>
+</html>

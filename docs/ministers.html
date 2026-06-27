@@ -24,7 +24,11 @@
   .trend{position:absolute;top:-9px;left:-9px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;border:2px solid var(--paper);z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.28);cursor:help;}
   .trend.g{background:var(--true);} .trend.b{background:var(--stamp);}
   .m .role{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;line-height:1.25;}
-  .m .nm{font-family:"Frank Ruhl Libre",serif;font-size:16px;color:var(--ink);margin-top:6px;}
+  .m .nm{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:20px;line-height:1.2;color:var(--ink);}
+  .m .roles{display:flex;flex-direction:column;gap:5px;margin:9px 0 2px;}
+  .m .role-item{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.4;}
+  .m .role-item .role-t{color:var(--ink);font-weight:600;display:block;}
+  .m .role-item .role-m{color:var(--ink-faint);}
   .m .nm a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
   .m .meta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:8px;letter-spacing:.02em;}
   .m .perf{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-faint);margin-top:8px;border-top:1px dashed var(--rule);padding-top:8px;}
@@ -49,7 +53,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a></span>
+    <span><a class="nav-link" href="./directory.html">→ מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים הרשמיים</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a></span>
     <span>מקור: API הכנסת הרשמי</span>
   </div></div>
   <header class="mast"><div class="wrap">
@@ -73,28 +77,41 @@ Promise.all([
   const series=(ps&&ps.series)||{};
   const TRENDS=(tr&&tr.trends)||{};
   const badge=m=>{const t=TRENDS[m.person_id]; if(!t||(t.direction!=='good'&&t.direction!=='bad'))return ''; const g=t.direction==='good'; return `<span class="trend ${g?'g':'b'}" title="${esc(t.label+': '+t.from_value+' ('+t.from_year+') ← '+t.to_value+' ('+t.to_year+') '+(t.unit||'')+' — מגמת נתון רשמי בכהונה. נתון בלבד, לא קביעה על תפקודו האישי.')}">${g?'▲':'▼'}</span>`;};
-  document.getElementById('grid').innerHTML=d.ministers.map(m=>{
-    const tyn=parseInt(String(m.start_date||'').slice(0,4))||null;
-    let matched=null;
-    for(const key in series){ const s=series[key]; if((s.match||[]).some(k=>(m.position||'').includes(k)||(m.ministry||'').includes(k))){matched=s;break;} }
+  // De-duplicate: one card per PERSON, listing all their portfolios (some ministers
+  // hold several). Group by person_id.
+  const byId=new Map();
+  for(const m of d.ministers){
+    if(!byId.has(m.person_id)) byId.set(m.person_id,{person_id:m.person_id,name:m.name,roles:[]});
+    byId.get(m.person_id).roles.push({position:m.position,ministry:m.ministry,start_date:m.start_date});
+  }
+  const matchSeries=roles=>{
+    for(const r of roles){ for(const key in series){ const s=series[key];
+      if((s.match||[]).some(k=>(r.position||'').includes(k)||(r.ministry||'').includes(k))) return {s,role:r}; } }
+    return null;
+  };
+  const cards=[...byId.values()].map(p=>{
+    const mm=matchSeries(p.roles);
+    const rolesHtml=p.roles.map(r=>`<div class="role-item"><span class="role-t">${esc(r.position)}</span><span class="role-m">${esc(r.ministry||'')} · נכנס/ה ${String(r.start_date||'').slice(0,10)}</span></div>`).join('');
     let perf='<div class="perf">לשונית ביצועים — בקרוב</div>';
-    if(matched){
-      const pts=matched.points||[], max=Math.max(...pts.map(p=>p.value),1);
-      const bars=pts.map(p=>{const h=Math.round(p.value/max*100),ten=tyn&&p.year>=tyn;return `<div class="bar ${ten?'ten':''}"><span class="v">${p.value}${p.provisional?'*':''}</span><i style="height:${h}%"></i></div>`;}).join('');
-      const labels=pts.map(p=>`<span class="${tyn&&p.year>=tyn?'ten':''}">'${String(p.year).slice(2)}</span>`).join('');
-      const startPt=pts.find(p=>p.year===tyn)||pts.find(p=>tyn&&p.year>=tyn), lastPt=pts[pts.length-1];
+    if(mm){
+      const matched=mm.s, tyn=parseInt(String(mm.role.start_date||'').slice(0,4))||null;
+      const pts=matched.points||[], max=Math.max(...pts.map(x=>x.value),1);
+      const bars=pts.map(x=>{const h=Math.round(x.value/max*100),ten=tyn&&x.year>=tyn;return `<div class="bar ${ten?'ten':''}"><span class="v">${x.value}${x.provisional?'*':''}</span><i style="height:${h}%"></i></div>`;}).join('');
+      const labels=pts.map(x=>`<span class="${tyn&&x.year>=tyn?'ten':''}">'${String(x.year).slice(2)}</span>`).join('');
+      const startPt=pts.find(x=>x.year===tyn)||pts.find(x=>tyn&&x.year>=tyn), lastPt=pts[pts.length-1];
       let cap='';
-      if(startPt&&lastPt){const up=lastPt.value>startPt.value;cap=`בתקופת הכהונה (משנת ${tyn}): מ-<b>${startPt.value}</b> ל-<b class="${up?'red':''}">${lastPt.value}${lastPt.provisional?'*':''}</b> ${esc(matched.unit)}${up?' — עלייה':''}.`;}
+      if(startPt&&lastPt){cap=`בתקופת הכהונה (משנת ${tyn}): מ-<b>${startPt.value}</b> ל-<b>${lastPt.value}${lastPt.provisional?'*':''}</b> ${esc(matched.unit)}.`;}
       const srcs=(matched.sources||[]).map(x=>`<a href="${x.url}" target="_blank" rel="noopener">${esc(x.org)} ↗</a>`).join(' · ');
-      perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה (מודגש באדום). אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
+      perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה. אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
     }
-    return `<div class="m${matched?' perf-card':''}">
-      ${badge(m)}
-      <div class="role">${esc(m.position)}</div>
-      <div class="nm"><a href="mk.html?id=${m.person_id}">${esc(m.name)}</a></div>
-      <div class="meta">${esc(m.ministry||'')} · נכנס/ה לתפקיד ${String(m.start_date||'').slice(0,10)}</div>
-      ${perf}</div>`;
-  }).join('');
+    return {perf:!!mm, html:`<div class="m${mm?' perf-card':''}">
+      ${badge(p.person_id)}
+      <div class="nm"><a href="mk.html?id=${p.person_id}">${esc(p.name)}</a></div>
+      <div class="roles">${rolesHtml}</div>
+      ${perf}</div>`};
+  });
+  cards.sort((a,b)=>(b.perf?1:0)-(a.perf?1:0));  // performance cards first
+  document.getElementById('grid').innerHTML=cards.map(c=>c.html).join('');
   document.getElementById('state').style.display='none';
 }).catch(()=>{document.getElementById('state').textContent='שגיאה בטעינה.';});
 </script>

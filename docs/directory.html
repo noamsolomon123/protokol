@@ -78,14 +78,14 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./search.html">→ חיפוש</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a> &nbsp; <a class="nav-link" href="./ministers.html">השרים</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a></span>
+    <span><a class="nav-link" href="./search.html">→ חיפוש</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./ministers.html">השרים</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a></span>
     <span>מקור: API הכנסת הרשמי <span class="dot"></span></span>
   </div></div>
 
   <header class="mast"><div class="wrap">
     <div class="kicker">הכנסת ה-25 · נתונים רשמיים</div>
     <h1 class="wordmark">מִרְשַׁם חַבְרֵי הַ<span class="lo">כְּנֶסֶת</span></h1>
-    <p class="standfirst">כל 120 חברי הכנסת המכהנים, נשלפו ישירות מ-API הרשמי של הכנסת (ParliamentInfo OData). מקובצים לפי סיעה. בהמשך — לכל ח"כ עמוד מלא עם אמירות, הצבעות ובדיקת עובדות.</p>
+    <p class="standfirst">כל 120 חברי הכנסת המכהנים — וכן דמויות פוליטיות בולטות שאינן מכהנות (ראשי ממשלה לשעבר ומנהיגי מפלגות) — נשלפו מ-API הרשמי של הכנסת. מקובצים לפי סיעה. לכל אחד עמוד עם הראיונות, התמלולים ובדיקת העובדות.</p>
   </div></header>
 
   <div class="wrap">
@@ -93,7 +93,6 @@
       <input id="search" class="search" type="search" placeholder="חיפוש לפי שם או סיעה…" aria-label="חיפוש" />
       <span class="summary" id="summary"></span>
     </div>
-    <p class="legend"><i class="g">▲</i> שיפור · <i class="b">▼</i> הרעה — מגמת הנתון הרשמי של תחום השר/ה בתקופת הכהונה (נתון בלבד, אינו קביעה על תפקודו האישי).</p>
     <div id="list"></div>
     <p id="state" class="state">טוען את מרשם חברי הכנסת…</p>
 
@@ -152,7 +151,6 @@ function render(filter){
       <div class="grid">
         ${g.members.map(m => `
           <a class="card" href="mk.html?id=${m.person_id}" title="${m.name}">
-            ${trendBadge(m.person_id)}
             <span class="ava">${firstLetter(m.name)}</span>
             <span class="who"><span class="nm">${m.name}</span><span class="id num">${m.interview_count ? m.interview_count + ' ראיונות' : 'ID ' + m.person_id}</span></span>
             ${m.interview_count ? `<span class="cnt num">${m.interview_count}</span>` : ''}
