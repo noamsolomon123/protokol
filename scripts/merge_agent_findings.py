@@ -71,6 +71,21 @@ def main() -> int:
         })
         added += 1
 
+    # Claims-harvest: hard quantitative claims that lacked a catalog stat -> the
+    # research backlog (internal). Dedupe by person+video+quote.
+    sw = res.get("stats_wanted", [])
+    if sw:
+        swpath = DATA / "findings" / "stats_wanted.json"
+        existing = json.loads(swpath.read_text(encoding="utf-8")) if swpath.exists() else []
+        seen_sw = {(x.get("person_id"), x.get("video_id"), x.get("quote")) for x in existing}
+        for u in sw:
+            k = (u.get("person_id"), u.get("video_id"), u.get("quote"))
+            if k not in seen_sw:
+                existing.append(u)
+                seen_sw.add(k)
+        swpath.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"stats_wanted: +{len(sw)} this run, {len(existing)} total (research backlog)")
+
     # Record processed transcripts (agent path) so future runs skip them.
     apath = DATA / "findings" / "agent_processed.json"
     ap = set(json.loads(apath.read_text(encoding="utf-8"))) if apath.exists() else set()
