@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 46,
+  "with_interviews": 54,
   "mks": [
     {
       "person_id": 30807,
@@ -23,6 +23,27 @@
       "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
       "interview_count": 24,
       "segment_count": 560
+    },
+    {
+      "person_id": 28513,
+      "name": "יואב בן צור",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 24,
+      "segment_count": 1090
+    },
+    {
+      "person_id": 1056,
+      "name": "יעקב מרגי",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 23,
+      "segment_count": 914
+    },
+    {
+      "person_id": 30470,
+      "name": "מיכאל מלכיאלי",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 23,
+      "segment_count": 735
     },
     {
       "person_id": 23565,
@@ -53,6 +74,13 @@
       "segment_count": 552
     },
     {
+      "person_id": 30601,
+      "name": "ינון אזולאי",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 21,
+      "segment_count": 378
+    },
+    {
       "person_id": 30106,
       "name": "נעמה לזימי",
       "party": "העבודה",
@@ -74,6 +102,13 @@
       "segment_count": 380
     },
     {
+      "person_id": 30804,
+      "name": "חיים ביטון",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 11,
+      "segment_count": 148
+    },
+    {
       "person_id": 30861,
       "name": "שלום דנינו",
       "party": "הליכוד",
@@ -86,6 +121,13 @@
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 7,
       "segment_count": 339
+    },
+    {
+      "person_id": 30770,
+      "name": "יוסף טייב",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 7,
+      "segment_count": 360
     },
     {
       "person_id": 30702,
@@ -172,6 +214,13 @@
       "segment_count": 1086
     },
     {
+      "person_id": 30749,
+      "name": "משה אבוטבול",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 4,
+      "segment_count": 113
+    },
+    {
       "person_id": 30853,
       "name": "משה סעדה",
       "party": "הליכוד",
@@ -240,6 +289,13 @@
       "party": "הליכוד",
       "interview_count": 3,
       "segment_count": 276
+    },
+    {
+      "person_id": 2291,
+      "name": "אריה מכלוף דרעי",
+      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
+      "interview_count": 3,
+      "segment_count": 29
     },
     {
       "person_id": 30835,
@@ -403,13 +459,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 2291,
-      "name": "אריה מכלוף דרעי",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30657,
       "name": "בנימין גנץ",
       "party": "כחול לבן - המחנה הממלכתי",
@@ -441,13 +490,6 @@
       "person_id": 30776,
       "name": "ולדימיר בליאק",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30804,
-      "name": "חיים ביטון",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -494,13 +536,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 28513,
-      "name": "יואב בן צור",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30695,
       "name": "יואב סגלוביץ'",
       "party": "יש עתיד",
@@ -522,23 +557,9 @@
       "segment_count": 0
     },
     {
-      "person_id": 30770,
-      "name": "יוסף טייב",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30720,
       "name": "יוראי להב הרצנו",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30601,
-      "name": "ינון אזולאי",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -567,13 +588,6 @@
       "person_id": 30671,
       "name": "יעקב טסלר",
       "party": "יהדות התורה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 1056,
-      "name": "יעקב מרגי",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -641,13 +655,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30470,
-      "name": "מיכאל מלכיאלי",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30682,
       "name": "מיכאל מרדכי ביטון",
       "party": "כחול לבן - המחנה הממלכתי",
@@ -686,13 +693,6 @@
       "person_id": 30713,
       "name": "מנסור עבאס",
       "party": "רע\"ם",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30749,
-      "name": "משה אבוטבול",
-      "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
       "interview_count": 0,
       "segment_count": 0
     },
