@@ -66,10 +66,14 @@ let _loaded=false,_loading=false;
 function loadIndex(){
   if(_loaded||_loading) return;
   _loading=true; metaEl.textContent='טוען מאגר חיפוש…';
-  fetch('data/search_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(idx=>{
-    _loading=false;
-    if(!idx){ metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }
-    IVS=idx.interviews||[]; SEGS=idx.segments||[]; _loaded=true;
+  fetch('data/search_index.json.gz',{cache:'no-store'}).then(async res=>{
+    if(!res.ok){ _loading=false; metaEl.textContent='מאגר החיפוש אינו זמין כרגע.'; return; }
+    const buf=await res.arrayBuffer();
+    let text;
+    try{ text=await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).text(); }
+    catch(e){ text=new TextDecoder().decode(buf); }  // CDN already decompressed / no DecompressionStream
+    const idx=JSON.parse(text);
+    _loading=false; IVS=idx.interviews||[]; SEGS=idx.segments||[]; _loaded=true;
     metaEl.innerHTML=`מחפש בתוך <b>${SEGS.length.toLocaleString('he')}</b> קטעי תמלול · ${IVS.length} ראיונות`;
     if(qEl.value) run(qEl.value);
   }).catch(()=>{ _loading=false; metaEl.textContent='שגיאה בטעינת מאגר החיפוש.'; });

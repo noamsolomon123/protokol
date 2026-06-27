@@ -10,6 +10,7 @@ Compact shape (metadata deduped via an interview index):
 from __future__ import annotations
 
 import glob
+import gzip
 import json
 from pathlib import Path
 
@@ -32,11 +33,18 @@ def main() -> int:
                 if text:
                     segments.append([idx, round(float(s.get("start", 0)), 1), text])
 
-    out_path = REPO / "docs" / "data" / "search_index.json"
-    out_path.write_text(json.dumps({"schema": 1, "interviews": interviews, "segments": segments},
-                                   ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    mb = out_path.stat().st_size / 1e6
-    print(f"search_index.json: {len(interviews)} interviews, {len(segments)} segments, {mb:.1f} MB")
+    payload = json.dumps({"schema": 1, "interviews": interviews, "segments": segments},
+                         ensure_ascii=False, separators=(",", ":"))
+    # Store gzipped (~1/4 the size) — keeps the repo lean; the browser decompresses
+    # client-side via DecompressionStream.
+    gz_path = REPO / "docs" / "data" / "search_index.json.gz"
+    with gzip.open(gz_path, "wt", encoding="utf-8") as fh:
+        fh.write(payload)
+    old = REPO / "docs" / "data" / "search_index.json"
+    if old.exists():
+        old.unlink()  # superseded by the .gz
+    print(f"search_index.json.gz: {len(interviews)} interviews, {len(segments)} segments, "
+          f"{gz_path.stat().st_size/1e6:.1f} MB gz (raw {len(payload.encode('utf-8'))/1e6:.1f} MB)")
     return 0
 
 
