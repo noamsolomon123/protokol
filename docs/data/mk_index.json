@@ -1,14 +1,49 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 34,
+  "with_interviews": 39,
   "mks": [
+    {
+      "person_id": 30807,
+      "name": "גלעד קריב",
+      "party": "העבודה",
+      "interview_count": 25,
+      "segment_count": 331
+    },
+    {
+      "person_id": 30830,
+      "name": "אוהד טל",
+      "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
+      "interview_count": 24,
+      "segment_count": 415
+    },
+    {
+      "person_id": 23565,
+      "name": "מרב מיכאלי",
+      "party": "העבודה",
+      "interview_count": 23,
+      "segment_count": 162
+    },
     {
       "person_id": 30704,
       "name": "שלמה קרעי",
       "party": "הליכוד",
       "interview_count": 23,
       "segment_count": 788
+    },
+    {
+      "person_id": 30106,
+      "name": "נעמה לזימי",
+      "party": "העבודה",
+      "interview_count": 21,
+      "segment_count": 368
+    },
+    {
+      "person_id": 30808,
+      "name": "אפרת רייטן מרום",
+      "party": "העבודה",
+      "interview_count": 11,
+      "segment_count": 380
     },
     {
       "person_id": 30861,
@@ -256,13 +291,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30830,
-      "name": "אוהד טל",
-      "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30717,
       "name": "אופיר סופר",
       "party": "הציונות הדתית בראשות בצלאל סמוטריץ'",
@@ -347,13 +375,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30808,
-      "name": "אפרת רייטן מרום",
-      "party": "העבודה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30873,
       "name": "ארז מלול",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
@@ -371,13 +392,6 @@
       "person_id": 30657,
       "name": "בנימין גנץ",
       "party": "כחול לבן - המחנה הממלכתי",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30807,
-      "name": "גלעד קריב",
-      "party": "העבודה",
       "interview_count": 0,
       "segment_count": 0
     },
@@ -662,13 +676,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 23565,
-      "name": "מרב מיכאלי",
-      "party": "העבודה",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30749,
       "name": "משה אבוטבול",
       "party": "התאחדות הספרדים שומרי תורה תנועתו של מרן הרב עובדיה יוסף זצ\"ל",
@@ -700,13 +707,6 @@
       "person_id": 30854,
       "name": "נאור שירי",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30106,
-      "name": "נעמה לזימי",
-      "party": "העבודה",
       "interview_count": 0,
       "segment_count": 0
     },
