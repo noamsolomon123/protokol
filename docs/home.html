@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · בית — landing page for the fact-check platform (separate project; does NOT link the old scorecard index.html). -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · בקרת עובדות על חברי הכנסת</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<meta name="description" content="פְּרוֹטוֹקוֹל — פלטפורמה אובייקטיבית לבקרת אמירות של חברי הכנסת מול נתונים רשמיים. ללא צד פוליטי, כל קביעה ממקור." />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--stamp-deep:#8b1216;--gold:#9a7b2e;--maxw:1040px;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.65;overflow-x:hidden;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/></svg>");}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .filebar .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--stamp);margin-inline-start:7px;vertical-align:middle;animation:blink 2.4s steps(2) infinite;} @keyframes blink{50%{opacity:.25;}}
+  header.hero{position:relative;padding:70px 0 36px;border-bottom:3px double var(--ink);overflow:hidden;}
+  header.hero::before{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;background:linear-gradient(90deg,transparent 30%,var(--ink) 30% 62%,transparent 62%) 0 24%/100% 12px no-repeat,linear-gradient(90deg,transparent 12%,var(--ink) 12% 40%,transparent 40%) 0 73%/100% 12px no-repeat;}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.34em;color:var(--stamp);text-transform:uppercase;margin-bottom:14px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(58px,14vw,150px);line-height:.84;margin:0;}
+  .wordmark .lo{color:var(--stamp);}
+  .subhead{font-family:"Frank Ruhl Libre",serif;font-weight:500;font-size:clamp(20px,3vw,30px);margin:20px 0 0;max-width:30ch;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);margin:14px 0 0;max-width:58ch;line-height:1.7;}
+  .stats{display:flex;gap:30px;flex-wrap:wrap;border-bottom:1.5px solid var(--ink);padding:18px 0;}
+  .stat b{font-family:"Suez One",serif;font-size:34px;color:var(--stamp);line-height:1;display:block;}
+  .stat span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:30px 0;}
+  .card{display:block;text-decoration:none;border:1.5px solid var(--ink);background:var(--paper-edge);padding:22px;box-shadow:10px 12px 0 rgba(27,24,20,.05);transition:transform .15s,box-shadow .15s;}
+  .card:hover{transform:translateY(-3px);box-shadow:14px 18px 0 rgba(180,31,36,.1);}
+  .card .c-k{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--stamp);letter-spacing:.1em;}
+  .card h3{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:23px;margin:8px 0 8px;}
+  .card p{font-family:"Frank Ruhl Libre",serif;font-size:15px;color:var(--ink-soft);margin:0;line-height:1.55;}
+  .card .go{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink);margin-top:14px;display:inline-block;border-bottom:1.5px solid var(--stamp);}
+  .tenets{display:grid;grid-template-columns:repeat(3,1fr);border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);}
+  .tenet{padding:22px;border-inline-start:1px solid var(--rule);} .tenet:first-child{border-inline-start:none;}
+  .tenet .t-no{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--stamp);}
+  .tenet h4{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;margin:8px 0 6px;}
+  .tenet p{margin:0;font-size:13.5px;color:var(--ink-soft);}
+  footer{margin:30px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
+  .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:16px;text-align:center;}
+  @media(max-width:680px){ .tenets{grid-template-columns:1fr;} .tenet{border-inline-start:none;border-top:1px solid var(--rule);} }
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap"><span>פְּרוֹטוֹקוֹל · בקרת עובדות</span><span>נתונים ממשלתיים רשמיים <span class="dot"></span></span></div></div>
+  <header class="hero"><div class="wrap">
+    <div class="kicker">ללא צד פוליטי · רק עובדות</div>
+    <h1 class="wordmark">פְּרוֹטוֹ<span class="lo">קוֹל</span></h1>
+    <p class="subhead">מה אמרו בכנסת — ומה אומרים הנתונים הרשמיים.</p>
+    <p class="standfirst">פלטפורמה אובייקטיבית שאוספת ומתמללת ראיונות של חברי הכנסת, ומשווה את אמירותיהם לנתונים רשמיים שפרסמה המדינה. ימין ושמאל באותה אמת־מידה. כל קביעה — עם מקור בר־בדיקה.</p>
+  </div></header>
+
+  <div class="wrap">
+    <div class="stats" id="stats">
+      <div class="stat"><b class="num" id="s-iv">—</b><span>ראיונות תומללו</span></div>
+      <div class="stat"><b class="num" id="s-mk">—</b><span>ח"כ במאגר</span></div>
+      <div class="stat"><b class="num" id="s-find">—</b><span>ממצאים לבדיקה</span></div>
+      <div class="stat"><b class="num">120</b><span>חברי כנסת</span></div>
+    </div>
+
+    <div class="cards">
+      <a class="card" href="search.html"><div class="c-k">01 · לתפוס על המילים</div><h3>חיפוש בכל הראיונות</h3><p>חפשו מילה או צירוף בכל התמלולים — וקפצו לרגע המדויק בסרטון.</p><span class="go">חיפוש ←</span></a>
+      <a class="card" href="findings.html"><div class="c-k">02 · אמירה מול נתון</div><h3>ממצאים לבדיקה</h3><p>אמירות שנבדקו אוטומטית מול נתונים רשמיים — סותר / תואם, עם מקור.</p><span class="go">לממצאים ←</span></a>
+      <a class="card" href="directory.html"><div class="c-k">03 · 120 חברי הכנסת</div><h3>מרשם חברי הכנסת</h3><p>כל ח"כ — הראיונות שלו, התמלולים, והבדיקות. מקובץ לפי סיעה.</p><span class="go">למרשם ←</span></a>
+      <a class="card" href="ministers.html"><div class="c-k">04 · ביצועים בכהונה</div><h3>השרים והתחום שלהם</h3><p>לכל שר/ה — מגמת התחום בתקופת הכהונה (נתונים בלבד, ללא ייחוס אשמה).</p><span class="go">לשרים ←</span></a>
+      <a class="card" href="leaderboard.html"><div class="c-k">05 · הדירוג</div><h3>לוח הסתירות</h3><p>חברי הכנסת מדורגים לפי מספר האמירות שנמצאו סותרות נתונים רשמיים.</p><span class="go">ללוח ←</span></a>
+    </div>
+
+    <section class="tenets">
+      <div class="tenet"><div class="t-no">01</div><h4>ללא צד פוליטי</h4><p>ימין ושמאל נבדקים באותה אמת־מידה. אין דירוג "טוב/רע".</p></div>
+      <div class="tenet"><div class="t-no">02</div><h4>כל קביעה — מקור</h4><p>לצד כל אמירה מוצג הנתון הרשמי וקישור אליו, לבדיקה עצמאית.</p></div>
+      <div class="tenet"><div class="t-no">03</div><h4>סתירה, לא "שקר"</h4><p>אנו מציגים אמירות שסותרות נתונים — ומאפשרים לכל אחד לבדוק.</p></div>
+    </section>
+
+    <footer>
+      <p>מאגר עובדתי, אובייקטיבי. התמלול אוטומטי וייתכנו שגיאות — לכן כל פריט מקושר למקורו לאימות. ממצאים אוטומטיים מסומנים כ"מועמדים לבדיקה" עד אימות אנושי.</p>
+      <div class="colophon">פְּרוֹטוֹקוֹל · בקרת עובדות · אתר סטטי חינמי</div>
+    </footer>
+  </div>
+<script>
+Promise.all([
+  fetch('data/mk_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([idx,f])=>{
+  if(idx){ const iv=(idx.mks||[]).reduce((a,m)=>a+(m.interview_count||0),0); document.getElementById('s-iv').textContent=iv; document.getElementById('s-mk').textContent=idx.with_interviews||0; }
+  if(f){ document.getElementById('s-find').textContent=(f.counts&&f.counts.total)||0; }
+});
+</script>
+</body>
+</html>
