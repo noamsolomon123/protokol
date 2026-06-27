@@ -58,6 +58,13 @@
   .c-datum{font-family:"Frank Ruhl Libre",serif;font-size:15px;} .c-datum a{color:var(--gold);}
   .c-reason{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:6px;}
   .c-mom{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--stamp);text-decoration:none;display:inline-block;margin-top:8px;border-bottom:1.5px solid var(--stamp);}
+  .tw-h{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;color:var(--ink-soft);text-transform:uppercase;margin:24px 0 10px;border-top:1px solid var(--rule);padding-top:18px;}
+  .tw-h a{color:var(--gold);text-decoration:none;}
+  .tweets{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:6px;}
+  .tweet{border:1.4px solid var(--rule);background:var(--paper-edge);padding:12px 14px;border-radius:3px;display:flex;flex-direction:column;}
+  .tweet .tw-text{font-family:"Frank Ruhl Libre",serif;font-size:14.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word;}
+  .tweet .tw-meta{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:auto;padding-top:9px;display:flex;justify-content:space-between;gap:8px;align-items:center;}
+  .tweet .tw-meta a{color:var(--gold);text-decoration:none;white-space:nowrap;}
   footer{margin:40px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-soft);}
   .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:14px;}
   @media (max-width:720px){ .iv-body{grid-template-columns:1fr;} .player{border-inline-start:none;border-bottom:1px solid var(--rule);} .transcript{max-height:300px;} }
@@ -77,6 +84,7 @@
 
   <div class="wrap">
     <div id="findings"></div>
+    <div id="tweets"></div>
     <input id="search" class="search" type="search" placeholder="חיפוש בתוך כל הראיונות — מילה או צירוף…" aria-label="חיפוש בתמלול" />
     <div class="hint">לחיצה על שורת תמלול תפעיל את הסרטון מאותה נקודה. כל ראיון מקושר למקור המקורי.</div>
     <div id="list"></div>
@@ -153,12 +161,25 @@ function renderFindings(all){
       <a class="c-mom" href="${mom}" target="_blank" rel="noopener">▶ צפייה ברגע</a></div>`;
   }).join('');
 }
+
+const tweetsEl=document.getElementById('tweets');
+function renderTweets(tj){
+  if(!tj||!tj.tweets||!tj.tweets.length){ tweetsEl.innerHTML=''; return; }
+  const items=tj.tweets.slice(0,15).map(t=>{
+    const d=t.date?String(t.date).slice(0,10):'';
+    return `<div class="tweet"><div class="tw-text">${esc(t.text||'')}</div><div class="tw-meta"><span class="num">${d} · ♥ ${t.likes||0} · ↻ ${t.retweets||0}</span><a href="${t.url}" target="_blank" rel="noopener">לציוץ ↗</a></div></div>`;
+  }).join('');
+  tweetsEl.innerHTML=`<div class="tw-h">🐦 ציוצים אחרונים — <a href="https://x.com/${esc(tj.handle)}" target="_blank" rel="noopener">@${esc(tj.handle)} ↗</a> · נאספים ומקושרים למקור</div><div class="tweets">${items}</div>`;
+}
+
 if(!id){ stateEl.textContent='לא צוין מזהה ח"כ.'; }
 else Promise.all([
   fetch(`data/mk/${id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-  fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
-]).then(([d, fj])=>{
+  fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch(`data/tweets/${id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([d, fj, tj])=>{
   renderFindings(fj&&fj.findings);
+  renderTweets(tj);
   if(!d){
     stateEl.textContent='אין עדיין ראיונות מתומללים עבור ח"כ זה. המערכת אוספת ומתמללת ראיונות באופן רציף.';
     return fetch('data/mk_index.json').then(r=>r.json()).then(idx=>{const m=(idx.mks||[]).find(x=>String(x.person_id)===String(id)); if(m){nameEl.textContent=m.name; metaEl.innerHTML=`${m.party||''} · <b>0</b> ראיונות`;}}).catch(()=>{});

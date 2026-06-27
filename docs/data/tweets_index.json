@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "mks": {
+    "1025": {
+      "handle": "GilaGamliel",
+      "count": 56
+    },
+    "23558": {
+      "handle": "davidbitan",
+      "count": 42
+    },
+    "30300": {
+      "handle": "AmirOhana",
+      "count": 60
+    },
+    "30701": {
+      "handle": "OfirKatzMK",
+      "count": 58
+    },
+    "30708": {
+      "handle": "GolanMay",
+      "count": 63
+    },
+    "30710": {
+      "handle": "ArielKallner",
+      "count": 65
+    },
+    "30799": {
+      "handle": "BuskilaMishel",
+      "count": 42
+    },
+    "30809": {
+      "handle": "GalitDistel",
+      "count": 57
+    },
+    "30831": {
+      "handle": "elidallal32",
+      "count": 43
+    },
+    "30832": {
+      "handle": "revivoeliyahu",
+      "count": 43
+    },
+    "30839": {
+      "handle": "dillouz",
+      "count": 64
+    },
+    "30853": {
+      "handle": "MosheSaada1",
+      "count": 63
+    },
+    "30860": {
+      "handle": "TallyGotliv",
+      "count": 53
+    },
+    "30876": {
+      "handle": "OsherShkalim",
+      "count": 61
+    },
+    "4395": {
+      "handle": "avidichter",
+      "count": 62
+    },
+    "468": {
+      "handle": "Israel_katz",
+      "count": 60
+    },
+    "965": {
+      "handle": "netanyahu",
+      "count": 61
+    }
+  }
+}
