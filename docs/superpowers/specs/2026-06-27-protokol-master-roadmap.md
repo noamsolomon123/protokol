@@ -102,8 +102,10 @@ and right judged by the same yardstick.
       + directory nav.
 - [ ] **F7 · Connections engine** — sourced knowledge-graph linking people/claims/topics/
       outcomes; correlation shown, causation never asserted.
-- [ ] **F8 · Polish + ship for voters** — navigation, mobile, share cards, favicons,
-      unified-hub UX.
+- [x] **F8 · Polish + ship for voters** — DONE (core): OG/Twitter summary share-cards on
+      all 6 share-facing pages (findings, leaderboard, directory, search, ministers, mk) +
+      tailored descriptions; favicon + viewport confirmed on every page; nav present on all;
+      mobile chart clip fixed earlier. Deferred nice-to-have: a raster `og:image` card.
 - [ ] **F9 · Deeper crawl** — pagination/varied queries beyond the recent-25/MK cap to grow
       the historical corpus.
 - [ ] **F10 · Own repo + Pages** — migrate the platform to its own repo, fully separate
