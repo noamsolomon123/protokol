@@ -83,8 +83,11 @@ and right judged by the same yardstick.
       better. Unblocks the contradictions pillar. **← chosen first.**
 - [ ] **F2 · Integrate verified minister series** — fold the researched GDP/poverty/debt/…
       series into the performance tab; research the remaining ministry domains.
-- [ ] **F3 · Human review console** — confirm candidate → published (integrity-critical;
-      the leaderboard only counts confirmed contradictions, so this unblocks it).
+- [x] **F3 · Human review console** — DONE: `docs/review.html` (internal, noindex) reviews
+      published findings; PM affirms or **retracts** each, exports a decisions JSON, and
+      `merge_agent_findings.py --decisions reviewed.json` applies them. Retractions go to a
+      blocklist (`retracted.json`) so a re-run can never republish a pulled false positive
+      (the Tur-Paz case). Stable `F-####` ids on every finding. Linked from control.html.
 - [ ] **F4 · Consistency profile per MK** — RAG over each MK's own record; flag only hard,
       measurable self-contradictions / reversals over time.
 - [x] **F5 · X/Twitter** — DONE (display): user's X account (cookies session), verified-
@@ -92,8 +95,11 @@ and right judged by the same yardstick.
       tweet timeline on every MK page. Remaining: feed tweets into the strict fact-check.
       Also delivered: `statistics.html` (all 19 official series, browsable) + tracking 6
       prominent non-MK figures (Bennett, Eisenkot, Y.Golan, Smotrich, Sa'ar, Gallant).
-- [ ] **F6 · Public submissions + disputes** — public submits clips/claims; MKs can appeal
-      a verdict.
+- [x] **F6 · Public submissions + disputes** — DONE: `docs/submit.html` — backend-free
+      form (submission + dispute tabs) that builds a prefilled GitHub issue on the project
+      repo (labels `submission`/`dispute`); the visitor posts it themselves, no server, no
+      credentials. Public "what we check / what we don't" rules. Linked from home (card 07)
+      + directory nav.
 - [ ] **F7 · Connections engine** — sourced knowledge-graph linking people/claims/topics/
       outcomes; correlation shown, causation never asserted.
 - [ ] **F8 · Polish + ship for voters** — navigation, mobile, share cards, favicons,

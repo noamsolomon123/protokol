@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · קונסולת ביקורת (INTERNAL) — PM review of candidate findings before publish.
+     Reads data/findings.json; reviewer flips candidate→confirm/reject and exports a decisions JSON the PM commits.
+     Static & backend-free: decisions are applied by re-running the merge script with the exported file. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>פְּרוֹטוֹקוֹל · קונסולת ביקורת</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--edge:#e3d9c2;--ink:#1b1814;--soft:#6a6052;--faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--ok:#3c6446;--maxw:1000px;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px;}
+  header{border-bottom:3px double var(--ink);padding:26px 0 16px;}
+  .kick{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;}
+  h1{font-family:"Suez One",serif;font-size:clamp(32px,7vw,56px);margin:6px 0 0;}
+  .upd{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);margin-top:6px;}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0;font-family:"IBM Plex Mono",monospace;font-size:12px;}
+  .pill{border:1.4px solid var(--ink);border-radius:20px;padding:5px 13px;color:var(--soft);}
+  .pill b{color:var(--ink);}
+  .btn{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;padding:9px 16px;border:1.5px solid var(--ink);border-radius:3px;background:var(--ink);color:var(--paper);cursor:pointer;}
+  .btn.ghost{background:transparent;color:var(--ink);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .card{border:1.5px solid var(--ink);background:var(--edge);padding:16px 18px;margin:14px 0;box-shadow:7px 9px 0 rgba(27,24,20,.05);}
+  .card .who{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;}
+  .card .meta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);margin:2px 0 10px;}
+  .quote{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;border-inline-start:3px solid var(--stamp);padding-inline-start:12px;margin:8px 0;}
+  .kv{font-family:"Frank Ruhl Libre",serif;font-size:15px;margin:6px 0;color:var(--soft);}
+  .kv b{color:var(--ink);}
+  .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;border-top:1px solid var(--rule);padding-top:12px;}
+  .dec{font-family:"IBM Plex Mono",monospace;font-size:12px;padding:7px 14px;border:1.5px solid var(--ink);border-radius:3px;background:var(--paper);cursor:pointer;}
+  .dec.confirm.on{background:var(--ok);color:var(--paper);border-color:var(--ok);}
+  .dec.reject.on{background:var(--stamp);color:var(--paper);border-color:var(--stamp);}
+  .rnote{flex:1;min-width:200px;font-family:"Heebo";font-size:14px;padding:7px 10px;border:1.4px solid var(--rule);border-radius:3px;background:var(--paper);}
+  .state{font-family:"Frank Ruhl Libre",serif;font-size:18px;color:var(--soft);padding:40px 8px;}
+  .confirmed-tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;background:var(--ok);color:var(--paper);padding:2px 8px;border-radius:3px;}
+  footer{margin:30px 0 60px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);border-top:1.5px solid var(--ink);padding-top:14px;line-height:1.8;}
+  a{color:var(--stamp);}
+</style>
+</head>
+<body>
+  <header><div class="wrap">
+    <div class="kick">פְּרוֹטוֹקוֹל · INTERNAL · קונסולת ביקורת</div>
+    <h1>ביקורת ממצאים</h1>
+    <div class="upd" id="upd">טוען…</div>
+  </div></header>
+  <div class="wrap">
+    <div class="bar">
+      <span class="pill">ממצאים שפורסמו: <b id="n-cand">0</b></span>
+      <span class="pill">סומנו לאישור: <b id="n-yes">0</b></span>
+      <span class="pill">סומנו למשיכה: <b id="n-no">0</b></span>
+      <button class="btn" id="export" disabled>ייצוא החלטות (JSON) ↓</button>
+    </div>
+    <div id="list"></div>
+    <footer>
+      שער ה-PM: ממצא קונצנזוס אינו מתפרסם אוטומטית — מסמנים כאן אישור/דחייה, מייצאים את קובץ ההחלטות,
+      וה-PM מריץ מחדש את <span class="num">scripts/merge_agent_findings.py --decisions reviewed.json</span> כדי להחיל אותן.
+      קונסולה זו אינה כותבת לשרת — היא רק מכינה את ההחלטות. ·
+      חזרה ל<a href="./control.html">מרכז הבקרה</a>.
+    </footer>
+  </div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=t=>(t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const decisions={}; // id -> {decision, note}
+let CAND=[];
+
+function fid(f,i){ return f.id || f.finding_id || ('cand-'+i); }
+function url(f){ return f.source_url || f.url || f.video_url || ''; }
+function quote(f){ return f.quote || f.claim || f.statement || f.text || ''; }
+function who(f){ return f.mk_name || f.person || f.name || 'לא ידוע'; }
+function stat(f){ return f.stat || f.metric || f.official_stat || f.measure || ''; }
+function verdict(f){ return f.verdict || f.status || ''; }
+function reason(f){ return f.reason || f.rationale || f.explanation || ''; }
+
+function recount(){
+  let yes=0,no=0;
+  for(const k in decisions){ if(decisions[k].decision==='confirm') yes++; else if(decisions[k].decision==='reject') no++; }
+  $('n-yes').textContent=yes; $('n-no').textContent=no;
+  $('export').disabled = (yes+no)===0;
+}
+function setDec(id,d){
+  decisions[id]=decisions[id]||{}; decisions[id].decision = (decisions[id].decision===d? null : d);
+  render(); recount();
+}
+function setNote(id,v){ decisions[id]=decisions[id]||{}; decisions[id].note=v; }
+
+function card(f,i){
+  const id=fid(f,i), u=url(f), dec=(decisions[id]||{}).decision;
+  return `<div class="card">
+    <div class="who">${esc(who(f))}</div>
+    <div class="meta">${esc(id)} · ${esc(verdict(f)||'candidate')}${f.source?(' · '+esc(f.source)):''}</div>
+    ${quote(f)?`<div class="quote">${esc(quote(f))}</div>`:''}
+    ${stat(f)?`<div class="kv"><b>הנתון הרשמי:</b> ${esc(stat(f))}</div>`:''}
+    ${reason(f)?`<div class="kv"><b>נימוק:</b> ${esc(reason(f))}</div>`:''}
+    ${u?`<div class="kv"><a href="${esc(u)}" target="_blank" rel="noopener">▶ מקור ↗</a></div>`:''}
+    <div class="acts">
+      <button class="dec confirm ${dec==='confirm'?'on':''}" onclick="setDec('${esc(id)}','confirm')">✓ אשר</button>
+      <button class="dec reject ${dec==='reject'?'on':''}" onclick="setDec('${esc(id)}','reject')">✕ משוך (retract)</button>
+      <input class="rnote" placeholder="הערת ביקורת (לא חובה)" value="${esc((decisions[id]||{}).note||'')}" oninput="setNote('${esc(id)}',this.value)" />
+    </div>
+  </div>`;
+}
+function render(){
+  $('list').innerHTML = CAND.length ? CAND.map(card).join('')
+    : '<div class="state">אין כרגע ממצאים שפורסמו לביקורת. הצינור קפדני ודל-תפוקה במכוון — ממצא נוצר רק כששני מודלים מסכימים שזו סתירה מול נתון שמודד בדיוק את הכמות שנטענה. כאן ה-PM מאשר ממצא קיים או מושך אותו (retract) אם נפלה בו טעות סמנטית.</div>';
+}
+fetch('data/findings.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+  CAND=d.findings||[];   // public findings.json carries only confirmed/published findings — review them for affirm/retract
+  $('n-cand').textContent=CAND.length;
+  $('upd').textContent='נטען · '+(d.counts? ('סה״כ '+(d.counts.total||0)+' ממצאים שפורסמו') : '');
+  render(); recount();
+}).catch(()=>{ $('upd').textContent='שגיאה בטעינת findings.json'; $('list').innerHTML='<div class="state">לא ניתן לטעון את הממצאים.</div>'; });
+
+$('export').addEventListener('click',()=>{
+  const out=Object.entries(decisions).filter(([,v])=>v.decision).map(([id,v])=>({id, decision:v.decision, note:v.note||''}));
+  const blob=new Blob([JSON.stringify({reviewed_at:new Date().toISOString(), decisions:out},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='reviewed.json'; a.click();
+});
+</script>
+</body>
+</html>

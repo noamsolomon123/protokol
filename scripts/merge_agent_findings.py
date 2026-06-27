@@ -1,9 +1,21 @@
-"""Merge F1 multi-model fact-check workflow output into findings.json + leaderboard.
+"""Merge F1 multi-model fact-check workflow output into findings.json + leaderboard,
+and apply human (PM) review decisions exported from the review console (F3).
 
+    # merge a fact-check workflow result
     python scripts/merge_agent_findings.py <workflow_result.json>
 
-Agent findings carry a consensus `status`: 'confirmed' (Claude extractor + adversarial
-verifier agreed) feeds the public leaderboard; everything else is a labeled candidate.
+    # apply PM review decisions (affirm / retract) exported by docs/review.html
+    python scripts/merge_agent_findings.py --decisions reviewed.json
+
+Agent findings carry a consensus `status`: only 'confirmed' (Claude extractor +
+adversarial verifier agreed it is a STRICT contradiction backed by a stat that
+directly measures the claimed quantity) is stored and feeds the public leaderboard.
+
+The PM-review gate (F3): a published finding can be **retracted** by the PM via the
+review console. Retracted findings are dropped AND recorded in a blocklist
+(retracted.json) so a later re-run of the fact-check can never republish them — this
+is exactly what caught the Tur-Paz "100k not serving" false positive.
+
 Idempotent (dedupes by person+video+quote); records processed transcripts so we don't
 re-check them. Never fabricates — it only carries through stats the agents copied from
 the sourced catalog.
@@ -21,6 +33,12 @@ from knesset_osint.verification.leaderboard import build_leaderboard_rows
 
 REPO = Path(__file__).resolve().parents[1]
 DATA = Path(os.environ.get("KN_DATA_ROOT", r"E:\kn-data"))
+FPATH = DATA / "findings" / "findings.json"
+RETRACTED = DATA / "findings" / "retracted.json"
+
+
+def _key(f: dict) -> tuple:
+    return (f.get("person_id"), f.get("video_id"), f.get("quote"))
 
 
 def _counts(findings: list[dict]) -> dict:
@@ -32,33 +50,116 @@ def _counts(findings: list[dict]) -> dict:
     }
 
 
-def main() -> int:
-    enable_utf8_console()
-    if len(sys.argv) < 2:
-        print("usage: merge_agent_findings.py <workflow_result.json>")
-        return 1
-    raw = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+def _assign_ids(findings: list[dict]) -> None:
+    """Give every stored finding a stable human-friendly id (F-0001…). Existing ids
+    are preserved so the console / disputes can reference them across runs."""
+    mx = 0
+    for f in findings:
+        i = f.get("id", "")
+        if isinstance(i, str) and i.startswith("F-"):
+            try:
+                mx = max(mx, int(i[2:]))
+            except ValueError:
+                pass
+    for f in findings:
+        if not f.get("id"):
+            mx += 1
+            f["id"] = f"F-{mx:04d}"
+
+
+def _load_store() -> dict:
+    return json.loads(FPATH.read_text(encoding="utf-8")) if FPATH.exists() else {"processed": [], "findings": []}
+
+
+def _load_retracted() -> set:
+    if not RETRACTED.exists():
+        return set()
+    return {tuple(x) for x in json.loads(RETRACTED.read_text(encoding="utf-8"))}
+
+
+def _write_outputs(store: dict) -> int:
+    """Write the internal store + the PUBLIC docs files. Only PM-affirmed/confirmed
+    findings reach the public findings.json + leaderboard."""
+    findings = store["findings"]
+    _assign_ids(findings)
+    counts = _counts(findings)
+    FPATH.parent.mkdir(parents=True, exist_ok=True)
+    FPATH.write_text(json.dumps({"processed": store.get("processed", []), "findings": findings, "counts": counts},
+                                ensure_ascii=False, indent=2), encoding="utf-8")
+
+    public = [f for f in findings if f.get("status") == "confirmed"]
+    pub_counts = _counts(public)
+    (REPO / "docs" / "data" / "findings.json").write_text(
+        json.dumps({"schema": 1, "status": "candidates_and_confirmed", "counts": pub_counts, "findings": public},
+                   ensure_ascii=False, indent=2), encoding="utf-8")
+
+    roster = json.loads((REPO / "docs" / "data" / "mk_roster.json").read_text(encoding="utf-8"))
+    rows = build_leaderboard_rows(public, roster)
+    (REPO / "docs" / "data" / "leaderboard.json").write_text(
+        json.dumps({"schema_version": 1, "metric": "statements_contradicted_by_official_data", "rows": rows},
+                   ensure_ascii=False, indent=2), encoding="utf-8")
+    return len(rows)
+
+
+def apply_decisions(path: str) -> int:
+    """Apply PM review decisions exported by docs/review.html.
+    {decisions:[{id, decision: 'confirm'|'reject', note}]}
+    confirm -> affirm (mark pm_affirmed, keep published); reject -> retract + blocklist."""
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    decisions = raw.get("decisions", raw if isinstance(raw, list) else [])
+    by_id = {d["id"]: d for d in decisions if d.get("id")}
+
+    store = _load_store()
+    findings = store["findings"]
+    retracted = _load_retracted()
+
+    kept, dropped, affirmed = [], 0, 0
+    for f in findings:
+        d = by_id.get(f.get("id"))
+        if d and d.get("decision") == "reject":
+            retracted.add(_key(f))
+            dropped += 1
+            continue
+        if d and d.get("decision") == "confirm":
+            f["pm_affirmed"] = True
+            if d.get("note"):
+                f["pm_note"] = d["note"]
+            affirmed += 1
+        kept.append(f)
+    store["findings"] = kept
+
+    RETRACTED.parent.mkdir(parents=True, exist_ok=True)
+    RETRACTED.write_text(json.dumps(sorted(retracted), ensure_ascii=False, indent=2), encoding="utf-8")
+    rows = _write_outputs(store)
+    print(f"decisions applied: affirmed {affirmed}, retracted {dropped}; "
+          f"blocklist={len(retracted)}; leaderboard rows={rows}")
+    return 0
+
+
+def merge(path: str) -> int:
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
     # Workflow output files wrap the script's return value under "result".
     res = raw.get("result", raw) if isinstance(raw, dict) else raw
     new = res.get("all", [])
     processed = res.get("processed", [])
 
-    fpath = DATA / "findings" / "findings.json"
-    fpath.parent.mkdir(parents=True, exist_ok=True)
-    store = json.loads(fpath.read_text(encoding="utf-8")) if fpath.exists() else {"processed": [], "findings": []}
-    findings = store.get("findings", [])
-    seen = {(f.get("person_id"), f.get("video_id"), f.get("quote")) for f in findings}
+    store = _load_store()
+    findings = store["findings"]
+    seen = {_key(f) for f in findings}
+    retracted = _load_retracted()
 
     added = 0
     for f in new:
         # Consensus is the gate: only findings BOTH models agreed are valid
         # (status 'confirmed') are stored. Anything the adversarial verifier
         # rejected (misattribution, normative, indirect stat) is dropped — never
-        # shown, not even as a candidate. Integrity over volume.
+        # shown. Integrity over volume.
         if f.get("status") != "confirmed":
             continue
-        key = (f.get("person_id"), f.get("video_id"), f.get("quote"))
+        key = _key(f)
         if key in seen:
+            continue
+        if key in retracted:  # PM retracted this before — never republish.
             continue
         seen.add(key)
         stat = f.get("stat", {}) or {}
@@ -98,22 +199,24 @@ def main() -> int:
     ap.update(processed)
     apath.write_text(json.dumps(sorted(ap), ensure_ascii=False, indent=2), encoding="utf-8")
 
-    counts = _counts(findings)
-    fpath.write_text(json.dumps({"processed": store.get("processed", []), "findings": findings, "counts": counts},
-                                ensure_ascii=False, indent=2), encoding="utf-8")
-    (REPO / "docs" / "data" / "findings.json").write_text(
-        json.dumps({"schema": 1, "status": "candidates_and_confirmed", "counts": counts, "findings": findings},
-                   ensure_ascii=False, indent=2), encoding="utf-8")
-
-    # Rebuild the public leaderboard from findings (confirmed contradictions only).
-    roster = json.loads((REPO / "docs" / "data" / "mk_roster.json").read_text(encoding="utf-8"))
-    rows = build_leaderboard_rows(findings, roster)
-    (REPO / "docs" / "data" / "leaderboard.json").write_text(
-        json.dumps({"schema_version": 1, "metric": "statements_contradicted_by_official_data", "rows": rows},
-                   ensure_ascii=False, indent=2), encoding="utf-8")
-
-    print(f"merged +{added} findings; counts={counts}; leaderboard rows={len(rows)}")
+    rows = _write_outputs(store)
+    print(f"merged +{added} findings; counts={_counts(findings)}; leaderboard rows={rows}")
     return 0
+
+
+def main() -> int:
+    enable_utf8_console()
+    args = sys.argv[1:]
+    if "--decisions" in args:
+        i = args.index("--decisions")
+        if i + 1 >= len(args):
+            print("usage: merge_agent_findings.py --decisions <reviewed.json>")
+            return 1
+        return apply_decisions(args[i + 1])
+    if not args:
+        print("usage: merge_agent_findings.py <workflow_result.json> | --decisions <reviewed.json>")
+        return 1
+    return merge(args[0])
 
 
 if __name__ == "__main__":

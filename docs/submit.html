@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · הגשות + עררים — public submits a clip/claim for review; an MK can dispute a finding.
+     Backend-free: builds a prefilled GitHub issue on the project repo (the submitter clicks through and posts it). -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · הגשת טענה לבדיקה</title>
+<meta name="description" content="הגישו ציטוט או טענה של נבחר ציבור לבדיקה מול הנתונים הרשמיים — או הגישו ערר על ממצא קיים." />
+<meta property="og:title" content="פְּרוֹטוֹקוֹל · הגשת טענה לבדיקה" />
+<meta property="og:description" content="ראיתם פוליטיקאי טוען טענה מספרית? הגישו אותה לבדיקה מול הסטטיסטיקה הרשמית." />
+<meta property="og:type" content="website" /><meta name="twitter:card" content="summary" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--gold:#9a7b2e;--ok:#3c6446;--maxw:760px;}
+  *{box-sizing:border-box;} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.6;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;} .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;}
+  header.mast{padding:42px 0 18px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(30px,6vw,52px);line-height:.95;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:12px 0 0;max-width:60ch;}
+  .tabs{display:flex;gap:0;margin:24px 0 4px;border:1.5px solid var(--ink);width:fit-content;}
+  .tab{font-family:"IBM Plex Mono",monospace;font-size:13px;padding:9px 18px;cursor:pointer;background:transparent;border:none;color:var(--ink-soft);border-inline-end:1.5px solid var(--ink);}
+  .tab:last-child{border-inline-end:none;}
+  .tab.on{background:var(--ink);color:var(--paper);}
+  form{margin:18px 0 0;}
+  label{display:block;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase;margin:18px 0 6px;}
+  label .req{color:var(--stamp);}
+  input,textarea,select{width:100%;font-family:"Heebo";font-size:16px;padding:11px 13px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:2px;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--stamp);}
+  textarea{min-height:120px;resize:vertical;line-height:1.55;}
+  .hint{font-family:"Frank Ruhl Libre",serif;font-size:13.5px;color:var(--ink-faint);margin:5px 0 0;}
+  .btn{margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;letter-spacing:.04em;padding:13px 26px;border:1.5px solid var(--ink);background:var(--stamp);color:var(--paper);border-radius:2px;cursor:pointer;}
+  .btn:disabled{background:var(--rule);border-color:var(--rule);color:var(--ink-faint);cursor:not-allowed;}
+  .note{font-family:"Frank Ruhl Libre",serif;font-size:14px;color:var(--ink-soft);background:var(--paper-edge);border:1px solid var(--rule);border-radius:3px;padding:13px 15px;margin:20px 0 0;}
+  .note b{color:var(--ink);}
+  .rules{font-family:"Frank Ruhl Libre",serif;font-size:14.5px;color:var(--ink-soft);margin:8px 0 0;padding-inline-start:20px;}
+  .rules li{margin:5px 0;}
+  footer{margin:34px 0 70px;padding-top:18px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./home.html">→ הבית</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a></span>
+    <span>הגשות · עררים</span>
+  </div></div>
+  <header class="mast"><div class="wrap">
+    <div class="kicker">השתתפו ברישום הציבורי</div>
+    <h1 class="wordmark">הַגָּשַׁת טַעֲנָה לִבְדִיקָה</h1>
+    <p class="standfirst">ראיתם נבחר ציבור טוען טענה שאפשר למדוד אותה מול נתון רשמי? שלחו אותה. נבדוק רק טענות קשות, כמותיות ובנות-הפרכה — מול סטטיסטיקה ישראלית פומבית, באותה אמת-מידה לכל הצדדים.</p>
+  </div></header>
+  <div class="wrap">
+    <div class="tabs">
+      <button class="tab on" data-mode="submission">הגשת טענה</button>
+      <button class="tab" data-mode="dispute">ערר על ממצא</button>
+    </div>
+
+    <form id="f">
+      <div id="dispute-extra" style="display:none">
+        <label>מספר/כותרת הממצא שעליו מוגש הערר <span class="req">*</span></label>
+        <input id="finding" placeholder="לדוגמה: F-0042 או כותרת הממצא כפי שמופיעה באתר" />
+        <p class="hint">מי שמגיש ערר על ממצא קיים — ציינו אותו במדויק כדי שנוכל לקשר.</p>
+      </div>
+
+      <label>שם נבחר/ת הציבור <span class="req">*</span></label>
+      <input id="person" placeholder="לדוגמה: שם ח״כ או שר/ה" required />
+
+      <label>הטענה / הציטוט המדויק <span class="req">*</span></label>
+      <textarea id="claim" placeholder="צטטו את הטענה הכמותית במדויק. לדוגמה: &quot;האבטלה היום היא הנמוכה ביותר בהיסטוריה&quot;" required></textarea>
+      <p class="hint">ככל שהציטוט מדויק ומספרי יותר — כך קל יותר לבדוק אותו.</p>
+
+      <label>קישור למקור <span class="req">*</span></label>
+      <input id="source" type="url" placeholder="https://… (יוטיוב, X/טוויטר, אתר חדשות, פרוטוקול כנסת)" required />
+      <p class="hint">חובה. בלי מקור שניתן לאמת — לא נבדוק. עדיף קישור עם חותמת-זמן לרגע המדויק.</p>
+
+      <label>הערה (לא חובה)</label>
+      <textarea id="note" placeholder="הקשר, תאריך, או למה לדעתכם הטענה ניתנת לבדיקה מול נתון רשמי."></textarea>
+
+      <button class="btn" id="go" type="submit">פתחו את ההגשה ב-GitHub ↗</button>
+      <div class="note" id="why">
+        <b>איך זה עובד?</b> הטופס בונה הגשה מוכנה מראש ופותח אותה ב-GitHub — שם היא נרשמת בפומבי וגלויה לכולם.
+        אין כאן שרת שאוסף נתונים: ההגשה נשלחת ישירות מהדפדפן שלכם אל מאגר הפרויקט הציבורי. דרושה כניסה לחשבון GitHub (חינמי).
+      </div>
+    </form>
+
+    <p style="font-family:'Suez One',serif;font-size:20px;margin:34px 0 6px">מה נבדק — ומה לא</p>
+    <ul class="rules">
+      <li><b>כן:</b> טענה מספרית, מדידה ובת-הפרכה, שיש לה נתון רשמי המודד בדיוק את אותה כמות (גיוס, אבטלה, אינפלציה, עוני, פשיעה, דיור…).</li>
+      <li><b>לא:</b> דעות, הבטחות לעתיד, אמירות ערכיות, או טענות שאין להן נתון רשמי ישיר. אלה יסומנו &quot;לא ניתן לאימות&quot;.</li>
+      <li><b>שקיפות:</b> כל ממצא שמתפרסם נקשר למקור הציטוט וגם לנתון הרשמי. שמאל וימין נמדדים באותה אמת-מידה.</li>
+    </ul>
+
+    <footer>הגשות הן מועמדות לבדיקה — לא ממצא ולא פסק-דין. בדיקה אנושית קודמת לכל פרסום. אין באתר זה האשמה אישית; רק השוואה בין אמירה פומבית לנתון פומבי.</footer>
+  </div>
+<script>
+const REPO='noamsolomon123/knesset-osint';
+const $=id=>document.getElementById(id);
+let mode='submission';
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on'); mode=t.dataset.mode;
+  $('dispute-extra').style.display = mode==='dispute' ? 'block' : 'none';
+  $('finding').required = mode==='dispute';
+  $('go').textContent = (mode==='dispute' ? 'פתחו את הערר ב-GitHub ↗' : 'פתחו את ההגשה ב-GitHub ↗');
+}));
+$('f').addEventListener('submit',e=>{
+  e.preventDefault();
+  const person=$('person').value.trim(), claim=$('claim').value.trim(), source=$('source').value.trim(), note=$('note').value.trim();
+  const isDispute = mode==='dispute', finding=$('finding').value.trim();
+  const label = isDispute ? 'dispute' : 'submission';
+  const title = (isDispute ? '[ערר] ' : '[הגשה] ') + person + ' — ' + claim.slice(0,80);
+  const body = [
+    isDispute ? '**ערר על ממצא:** '+(finding||'(לא צוין)') : '**הגשת טענה לבדיקה**',
+    '', '**נבחר/ת הציבור:** '+person,
+    '', '**הטענה / הציטוט:**', '> '+claim.replace(/\n/g,'\n> '),
+    '', '**מקור:** '+source,
+    note ? '\n**הערה:** '+note : '',
+    '', '---', '_נשלח מטופס ההגשות הציבורי של פְּרוֹטוֹקוֹל. מועמד לבדיקה — לא ממצא._'
+  ].join('\n');
+  const url='https://github.com/'+REPO+'/issues/new'
+    +'?labels='+encodeURIComponent(label)
+    +'&title='+encodeURIComponent(title)
+    +'&body='+encodeURIComponent(body);
+  window.open(url,'_blank','noopener');
+});
+</script>
+</body>
+</html>
