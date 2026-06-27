@@ -20,7 +20,9 @@
   .wordmark{font-family:"Suez One",serif;font-size:clamp(36px,7vw,68px);line-height:.92;margin:0;}
   .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:16.5px;color:var(--ink-soft);margin:14px 0 0;max-width:62ch;}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:26px 0;}
-  .m{border:1.5px solid var(--ink);background:var(--paper-edge);padding:16px 18px;box-shadow:10px 12px 0 rgba(27,24,20,.05);}
+  .m{position:relative;border:1.5px solid var(--ink);background:var(--paper-edge);padding:16px 18px;box-shadow:10px 12px 0 rgba(27,24,20,.05);}
+  .trend{position:absolute;top:-9px;left:-9px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;border:2px solid var(--paper);z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.28);cursor:help;}
+  .trend.g{background:var(--true);} .trend.b{background:var(--stamp);}
   .m .role{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;line-height:1.25;}
   .m .nm{font-family:"Frank Ruhl Libre",serif;font-size:16px;color:var(--ink);margin-top:6px;}
   .m .nm a{text-decoration:none;border-bottom:1.5px solid var(--rule);}
@@ -64,10 +66,13 @@
 const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 Promise.all([
   fetch('data/ministers.json',{cache:'no-store'}).then(r=>r.ok?r.json():null),
-  fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():{series:{}}).catch(()=>({series:{}}))
-]).then(([d, ps])=>{
+  fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():{series:{}}).catch(()=>({series:{}})),
+  fetch('data/minister_trends.json',{cache:'no-store'}).then(r=>r.ok?r.json():{trends:{}}).catch(()=>({trends:{}}))
+]).then(([d, ps, tr])=>{
   if(!d||!d.ministers||!d.ministers.length){ document.getElementById('state').textContent='נתוני השרים אינם זמינים כרגע.'; return; }
   const series=(ps&&ps.series)||{};
+  const TRENDS=(tr&&tr.trends)||{};
+  const badge=m=>{const t=TRENDS[m.person_id]; if(!t||(t.direction!=='good'&&t.direction!=='bad'))return ''; const g=t.direction==='good'; return `<span class="trend ${g?'g':'b'}" title="${esc(t.label+': '+t.from_value+' ('+t.from_year+') ← '+t.to_value+' ('+t.to_year+') '+(t.unit||'')+' — מגמת נתון רשמי בכהונה. נתון בלבד, לא קביעה על תפקודו האישי.')}">${g?'▲':'▼'}</span>`;};
   document.getElementById('grid').innerHTML=d.ministers.map(m=>{
     const tyn=parseInt(String(m.start_date||'').slice(0,4))||null;
     let matched=null;
@@ -84,6 +89,7 @@ Promise.all([
       perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה (מודגש באדום). אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
     }
     return `<div class="m${matched?' perf-card':''}">
+      ${badge(m)}
       <div class="role">${esc(m.position)}</div>
       <div class="nm"><a href="mk.html?id=${m.person_id}">${esc(m.name)}</a></div>
       <div class="meta">${esc(m.ministry||'')} · נכנס/ה לתפקיד ${String(m.start_date||'').slice(0,10)}</div>
