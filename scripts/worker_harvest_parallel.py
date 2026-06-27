@@ -48,6 +48,7 @@ def main() -> int:
     ap.add_argument("--download-workers", type=int, default=3, help="parallel yt-dlp downloads")
     ap.add_argument("--batch-size", type=int, default=8, help="GPU transcription batch size (>1 = batched)")
     ap.add_argument("--queue-ahead", type=int, default=4, help="downloaded files buffered ahead of the GPU")
+    ap.add_argument("--dl-queue", type=int, default=12, help="max videos queued for download (backpressure)")
     ap.add_argument("--search-interval", type=int, default=900, help="seconds between YouTube searches (quota)")
     ap.add_argument("--per-mk", type=int, default=5, help="max new videos per MK per search pass")
     ap.add_argument("--max-minutes", type=int, default=75, help="skip videos longer than this")
@@ -120,6 +121,7 @@ def main() -> int:
 
     config = PipelineConfig(
         download_workers=args.download_workers,
+        dl_queue_size=args.dl_queue,
         tx_queue_size=args.queue_ahead,
         per_mk=args.per_mk,
         max_seconds=args.max_minutes * 60,

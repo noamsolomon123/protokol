@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 29,
+  "with_interviews": 31,
   "mks": [
     {
       "person_id": 30702,
@@ -37,6 +37,13 @@
       "party": "הליכוד",
       "interview_count": 5,
       "segment_count": 1615
+    },
+    {
+      "person_id": 30875,
+      "name": "צגה מלקו",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 240
     },
     {
       "person_id": 30809,
@@ -205,6 +212,13 @@
       "party": "הימין הממלכתי",
       "interview_count": 1,
       "segment_count": 49
+    },
+    {
+      "person_id": 30893,
+      "name": "עפיף עבד",
+      "party": "הליכוד",
+      "interview_count": 1,
+      "segment_count": 8
     },
     {
       "person_id": 30814,
@@ -732,13 +746,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30893,
-      "name": "עפיף עבד",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 23635,
       "name": "פנינה תמנו",
       "party": "כחול לבן - המחנה הממלכתי",
@@ -756,13 +763,6 @@
       "person_id": 30859,
       "name": "צביקה פוגל",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30875,
-      "name": "צגה מלקו",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },

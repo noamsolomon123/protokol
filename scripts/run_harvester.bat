@@ -8,7 +8,9 @@ set HF_HOME=E:\kn-data\models
 set HF_HUB_DISABLE_SYMLINKS_WARNING=1
 :loop
 echo [%date% %time%] starting parallel harvester >> E:\kn-data\logs\harvest.log
-".venv\Scripts\python.exe" scripts\worker_harvest_parallel.py --download-workers 3 --batch-size 8 >> E:\kn-data\logs\harvest.log 2>&1
+REM per-mk 25 = take ALL new results per search: batched GPU is ~75x realtime, so the
+REM YouTube search quota (100/day) is the bottleneck — grab the max per search to feed it.
+".venv\Scripts\python.exe" scripts\worker_harvest_parallel.py --download-workers 3 --batch-size 8 --per-mk 25 --dl-queue 30 >> E:\kn-data\logs\harvest.log 2>&1
 echo [%date% %time%] harvester exited (code %errorlevel%), restarting in 30s >> E:\kn-data\logs\harvest.log
 timeout /t 30 /nobreak >nul
 goto loop
