@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 27,
+  "with_interviews": 29,
   "mks": [
     {
       "person_id": 30702,
@@ -30,6 +30,13 @@
       "party": "הליכוד",
       "interview_count": 5,
       "segment_count": 1007
+    },
+    {
+      "person_id": 30700,
+      "name": "ניר ברקת",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 1615
     },
     {
       "person_id": 30809,
@@ -86,6 +93,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 524
+    },
+    {
+      "person_id": 30711,
+      "name": "עמית הלוי",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 150
     },
     {
       "person_id": 4395,
@@ -655,13 +669,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 30700,
-      "name": "ניר ברקת",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 30106,
       "name": "נעמה לזימי",
       "party": "העבודה",
@@ -721,13 +728,6 @@
       "person_id": 30857,
       "name": "עמיחי אליהו",
       "party": "עוצמה יהודית בראשות איתמר בן גביר",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 30711,
-      "name": "עמית הלוי",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
