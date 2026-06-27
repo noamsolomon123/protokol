@@ -51,6 +51,12 @@ def main() -> int:
 
     added = 0
     for f in new:
+        # Consensus is the gate: only findings BOTH models agreed are valid
+        # (status 'confirmed') are stored. Anything the adversarial verifier
+        # rejected (misattribution, normative, indirect stat) is dropped — never
+        # shown, not even as a candidate. Integrity over volume.
+        if f.get("status") != "confirmed":
+            continue
         key = (f.get("person_id"), f.get("video_id"), f.get("quote"))
         if key in seen:
             continue
