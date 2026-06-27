@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "count": 120,
-  "with_interviews": 20,
+  "with_interviews": 22,
   "mks": [
     {
       "person_id": 30702,
@@ -9,6 +9,13 @@
       "party": "הליכוד",
       "interview_count": 5,
       "segment_count": 205
+    },
+    {
+      "person_id": 12951,
+      "name": "יריב לוין",
+      "party": "הליכוד",
+      "interview_count": 5,
+      "segment_count": 935
     },
     {
       "person_id": 30809,
@@ -37,6 +44,13 @@
       "party": "הליכוד",
       "interview_count": 4,
       "segment_count": 1912
+    },
+    {
+      "person_id": 532,
+      "name": "יולי יואל אדלשטיין",
+      "party": "הליכוד",
+      "interview_count": 4,
+      "segment_count": 621
     },
     {
       "person_id": 4395,
@@ -375,13 +389,6 @@
       "segment_count": 0
     },
     {
-      "person_id": 532,
-      "name": "יולי יואל אדלשטיין",
-      "party": "הליכוד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
       "person_id": 23560,
       "name": "יוליה מלינובסקי",
       "party": "ישראל ביתנו",
@@ -483,13 +490,6 @@
       "person_id": 30881,
       "name": "ירון לוי",
       "party": "יש עתיד",
-      "interview_count": 0,
-      "segment_count": 0
-    },
-    {
-      "person_id": 12951,
-      "name": "יריב לוין",
-      "party": "הליכוד",
       "interview_count": 0,
       "segment_count": 0
     },
