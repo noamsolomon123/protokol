@@ -37,6 +37,10 @@ _*
 !**/__main__.py
 *.log
 .playwright-mcp/
+# Research/verification scratch (downloaded source PDFs, screenshots) — never commit
+/verify/
+/verify_tmp/
+/_scratch/
 *.png
 !docs/og.png
 # ...but DO keep the site's committed data

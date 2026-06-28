@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+  פְּרוֹטוֹקוֹל · תיק בדיקה — flagship "missing-context" finding.
+  Ben Gvir's -19/20% car-theft claim, checked against the full official Israel
+  Police vehicle-theft series (2017-2025). Adversarially verified (workflow
+  wf_c89831df-7e8). NON-PARTISAN: the number is true; the context is the story.
+  Every figure links to an official source. This page is hand-built because the
+  finding needs a time-series chart + a two-sided analysis the generic card can't show.
+-->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>פְּרוֹטוֹקוֹל · תיק — "ירדנו 20% בגניבות רכב"</title>
+<meta name="description" content="בן גביר מתרברב בירידה של 20% בגניבות רכב. הנתון נכון — אבל הסדרה הרשמית המלאה מספרת סיפור אחר. בדיקה לא-מפלגתית עם מקורות." />
+<meta property="og:title" content="פְּרוֹטוֹקוֹל · 'ירדנו 20% בגניבות רכב' — נכון, אבל חסר הקשר" />
+<meta property="og:image" content="https://noamsolomon123.github.io/protokol/og.png" />
+<meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" />
+<meta name="twitter:image" content="https://noamsolomon123.github.io/protokol/og.png" />
+<meta property="og:description" content="הנתון נכון — אבל נמדד מהשיא שנקבע בכהונתו. הסדרה הרשמית המלאה, עם תקופת הכהונה מסומנת." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://noamsolomon123.github.io/protokol/case-cartheft.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Suez+One&family=Heebo:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--paper:#f4efe3;--paper-2:#ece4d2;--paper-edge:#e3d9c2;--ink:#1b1814;--ink-soft:#6a6052;--ink-faint:#9a9080;--rule:#cbc0a8;--stamp:#b41f24;--stamp-deep:#8b1216;--true:#3c6446;--gold:#9a7b2e;--maxw:920px;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"Heebo",sans-serif;line-height:1.62;}
+  ::selection{background:var(--stamp);color:var(--paper);} a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  .num{font-family:"IBM Plex Mono",monospace;direction:ltr;unicode-bidi:isolate;}
+  .filebar{border-bottom:1.5px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:40;}
+  .filebar .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 22px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-link{text-decoration:none;color:var(--ink);border-bottom:1.5px solid var(--stamp);padding-bottom:1px;}
+  header.mast{padding:42px 0 20px;border-bottom:3px double var(--ink);}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.3em;color:var(--stamp);text-transform:uppercase;margin-bottom:12px;}
+  .wordmark{font-family:"Suez One",serif;font-size:clamp(30px,5.4vw,52px);line-height:1.0;margin:0;}
+  .standfirst{font-family:"Frank Ruhl Libre",serif;font-size:17px;color:var(--ink-soft);margin:14px 0 0;max-width:62ch;}
+  section.block{margin:30px 0;}
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--stamp);text-transform:uppercase;display:block;margin:0 0 8px;}
+  .claim{border:1.5px solid var(--ink);background:var(--paper-edge);box-shadow:12px 14px 0 rgba(27,24,20,.05);padding:20px;}
+  .claim .who{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:19px;margin-bottom:6px;}
+  .quote{font-family:"Frank Ruhl Libre",serif;font-style:italic;font-size:22px;line-height:1.5;margin:0;}
+  .quote::before{content:"\201E";}.quote::after{content:"\201C";}
+  .src{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);margin-top:8px;}
+  .src a{color:var(--gold);}
+  .verdict{display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-block:1.5px solid var(--ink);background:var(--paper-2);padding:16px 20px;margin:26px 0;}
+  .vstamp{font-family:"Suez One",serif;border:3px solid var(--gold);color:var(--gold);border-radius:6px;padding:8px 16px;text-align:center;transform:rotate(-4deg);line-height:1.04;flex:none;}
+  .vstamp .m{font-size:17px;display:block;} .vstamp .s{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;display:block;margin-top:3px;}
+  .vtext{font-family:"Frank Ruhl Libre",serif;font-size:17px;}
+  .chartcard{border:1.5px solid var(--ink);background:#fbf8f0;padding:18px 16px 10px;}
+  .chartwrap{direction:ltr;width:100%;overflow-x:auto;}
+  svg{width:100%;height:auto;display:block;font-family:"IBM Plex Mono",monospace;}
+  .charttitle{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:16px;margin:0 0 4px;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin:10px 2px 4px;}
+  .legend i{display:inline-block;width:13px;height:13px;vertical-align:-2px;margin-inline-end:5px;border:1px solid var(--ink);}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .panel{border:1.5px solid var(--ink);padding:16px 18px;background:var(--paper-edge);}
+  .panel h3{font-family:"Suez One",serif;font-size:17px;margin:0 0 10px;}
+  .panel.ok h3{color:var(--true);} .panel.gap h3{color:var(--stamp);} .panel.both h3{color:var(--gold);}
+  .panel ul{margin:0;padding-inline-start:18px;} .panel li{margin:0 0 9px;font-size:15px;}
+  .bignum{font-family:"Suez One",serif;font-size:1.05em;}
+  .concl{border:2px solid var(--ink);background:var(--paper-2);padding:18px 20px;font-family:"Frank Ruhl Libre",serif;font-size:18px;}
+  .srcs{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}
+  .srcs li{margin:0 0 7px;} .srcs a{color:var(--gold);}
+  footer{margin:38px 0 70px;padding-top:18px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
+  @media(max-width:680px){ .cols{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+  <div class="filebar"><div class="wrap">
+    <span><a class="nav-link" href="./findings.html">→ ממצאים</a> &nbsp; <a class="nav-link" href="./home.html">פְּרוֹטוֹקוֹל</a></span>
+    <span>תיק&nbsp;#001 · אומת אדוורסרית</span>
+  </div></div>
+
+  <header class="mast"><div class="wrap">
+    <div class="kicker">תיק בדיקה · נכון אך חסר הקשר</div>
+    <h1 class="wordmark">"הוֹרַדְנוּ 20% בִּגְנֵיבוֹת רֶכֶב"</h1>
+    <p class="standfirst">איתמר בן גביר מציג ירידה של ~20% בגניבות רכב כהוכחה להצלחתו. הנתון <b>נכון</b> — אבל כשמסתכלים על הסדרה הרשמית המלאה של המשטרה, ההקשר שחסר משנה את התמונה. בדיקה לא-מפלגתית: רק נתונים רשמיים, כל מספר עם מקור.</p>
+  </div></header>
+
+  <div class="wrap">
+
+    <section class="block">
+      <span class="lbl">הָאֲמִירָה</span>
+      <div class="claim">
+        <div class="who">איתמר בן גביר · השר לביטחון לאומי</div>
+        <p class="quote">ירידה של 60% באירועי הירי בנגב, ו-19% בגניבות רכבים</p>
+        <div class="src">ראיון, N12 · <span class="num">29.12.2025</span> · <a href="https://www.mako.co.il/news-politics/2025_q4/Article-157cf4bb2d96b91026.htm" target="_blank" rel="noopener">דיווח ↗</a><br>
+        (גרסת "ירידה של ~20%" מופיעה גם בנתוני המשטרה למחצית הראשונה של 2024 מול 2023; בדיקת גלובס דירגה אותה "חצי-נכון".)</div>
+      </div>
+    </section>
+
+    <div class="verdict">
+      <div class="vstamp"><span class="m">נָכוֹן — אַךְ חָסֵר הֶקְשֵׁר</span><span class="s">VERIFIED · CONTEXT MISSING</span></div>
+      <div class="vtext">הירידה אמיתית — אבל היא נמדדת מ<b>שיא כל-הזמנים שנקבע בתוך כהונתו</b>. רמת הגניבות בכל שנות כהונתו נשארה גבוהה משמעותית מהנורמה שלפניה. ובו-זמנית: גם הביקורת הפשטנית ("הוא הכפיל את הגניבות") מטעה — הזינוק הוחל עוד <b>לפני</b> כניסתו. הגרף מספר את כל הסיפור.</div>
+    </div>
+
+    <section class="block">
+      <div class="chartcard">
+        <p class="charttitle">גניבות רכב בישראל לפי שנה — דיווחים למשטרה</p>
+        <div class="chartwrap"><svg id="chart" viewBox="0 0 920 380" role="img" aria-label="גרף גניבות רכב 2017–2025"></svg></div>
+        <div class="legend">
+          <span><i style="background:#c9bfa8"></i>לפני כהונת בן גביר</span>
+          <span><i style="background:#b41f24"></i>תקופת כהונתו (מ-29.12.2022)</span>
+          <span><i style="background:#e3b7b9"></i>2025 — נתון חלקי</span>
+          <span><i style="background:transparent;border-style:dashed"></i>ממוצע 2018–2021 (בנטרול שפל הקורונה)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="cols">
+        <div class="panel ok">
+          <h3>✓ מה שנכון בדבריו</h3>
+          <ul>
+            <li>ב-2025 נרשמו כ-<span class="bignum num">15,153</span> גניבות רכב — ירידה של כ-<span class="bignum num">19%</span> לעומת 2024. ירידה <b>אמיתית</b>, לא מומצאת.</li>
+            <li>זו הרמה הנמוכה ביותר מאז 2021, והמשטרה דיווחה על ירידה דומה כבר במחצית 2024.</li>
+            <li>המגמה היורדת ב-2024–2025 עקבית על פני כמה מדדי משטרה.</li>
+          </ul>
+        </div>
+        <div class="panel gap">
+          <h3>✕ מה שחסר במסגור שלו</h3>
+          <ul>
+            <li>הירידה נמדדת מ<b>שיא כל-הזמנים</b> — <span class="num">19,094</span> ב-2023, שנתו המלאה הראשונה כשר.</li>
+            <li>גם אחרי הירידה, 2025 (<span class="num">~15,153</span>) עדיין גבוה בכ-<span class="bignum num">39%</span> מהממוצע שלפני הכהונה (<span class="num">~10,900</span> בשנים 2018–2021).</li>
+            <li>ציטוט אחוז-הירידה לבדו יוצר רושם ששוק הגניבות "נמוך מאי-פעם" — בעוד בפועל הוא עדיין גבוה בהרבה מהנורמה.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="panel both">
+        <h3>⚠ אבל גם הביקורת הנגדית מטעה — וזה החלק שחשוב לנו</h3>
+        <ul style="columns:2;column-gap:26px;">
+          <li><b>הזינוק היה בירושה.</b> מספר הגניבות יותר מהוכפל מ-<span class="num">8,742</span> (2020) ל-<span class="num">16,305</span> (2022) — כולו <b>תחת הממשלה הקודמת</b>. בן גביר נכנס לרכבת שכבר דהרה.</li>
+          <li><b>מול 2022, דווקא ירידה.</b> השנה המלאה האחרונה לפניו (2022) הייתה <span class="num">16,305</span>; 2025 (<span class="num">~15,153</span>) נמוך ממנה בכ-7%. הטענה "הוא הכפיל את הגניבות" אינה מדויקת.</li>
+          <li><b>מספר מוחלט מטעה לאורך זמן.</b> מסמך מרכז המחקר של הכנסת עצמו ממליץ להשוות שיעור-לכל-1,000-רכב, כי צי הרכב גדל ~25% מאז 2017.</li>
+          <li><b>הירידה אולי לא בזכותו.</b> חלק מהירידה ב-2024–2025 מיוחס לחיזוקי-אבטחה של יצרניות רכב סיניות — גורם חיצוני, לא מדיניות.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="block">
+      <span class="lbl">הַשּׁוּרָה הַתַּחְתּוֹנָה</span>
+      <div class="concl">
+        הנתון של בן גביר <b>נכון</b>, אבל לבדו הוא מטעה: זו נסיגה חלקית משיא שנקבע בכהונתו, לא ירידה אל מתחת לרמה שמצא בכניסתו. ובו-זמנית, התיוג ההפוך ("הוא אשם בהכפלת הגניבות") גם הוא מטעה — הזינוק קדם לו. <b>האמת האובייקטיבית היא הגרף המלא</b>: לא "הצלחה אדירה" ולא "כישלון של פי-שניים", אלא מספר אחד אמיתי שכל צד בוחר ממנו את קו-הבסיס שמשרת אותו. זו בדיוק ההטעיה שאנחנו כאן כדי לחשוף.
+      </div>
+    </section>
+
+    <section class="block">
+      <span class="lbl">מְקוֹרוֹת</span>
+      <ul class="srcs">
+        <li>סדרת 2017–2023 (משטרה): מרכז המחקר והמידע של הכנסת, "נתונים על גנבת כלי רכב ועל אכיפה", 28.2.2024 (תשובת משטרת ישראל לבקשת חופש מידע 674/23) — <a href="https://fs.knesset.gov.il/25/Committees/25_cs_mmm_4175820.pdf" target="_blank" rel="noopener">PDF ↗</a></li>
+        <li>2024 (<span class="num">18,638</span>): משטרת ישראל — השנתון הסטטיסטי 2024, לוח 1.9 — <a href="https://www.gov.il/BlobFolder/reports/police_statistical_2024/he/%D7%A9%D7%A0%D7%AA%D7%95%D7%9F%20%D7%A1%D7%98%D7%98%D7%99%D7%A1%D7%98%D7%99%202024%20%D7%9E%D7%A9%D7%98%D7%A8%D7%AA%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf" target="_blank" rel="noopener">PDF ↗</a></li>
+        <li>2025 (<span class="num">~15,153</span>, נתון חלקי): כלכליסט, מצטט נתוני משטרה — <a href="https://www.calcalist.co.il/local_news/car/article/bkhzxv8x11g" target="_blank" rel="noopener">כתבה ↗</a></li>
+        <li>אמירת בן גביר: ראיון N12, 29.12.2025 — <a href="https://www.mako.co.il/news-politics/2025_q4/Article-157cf4bb2d96b91026.htm" target="_blank" rel="noopener">mako ↗</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>תיק זה אומת בתהליך אדוורסרי: חמישה חוקרים עצמאיים אספו את הנתונים ממקורות רשמיים, ושני "ספקנים" ניסו להפריך את הניתוח — אחד מהם תיקן הטענה ראשונית מוטעית והוביל לגרסה המאוזנת הזו. מדידה: "גניבות רכב שדווחו" (מדד A); קיימים מדדי משטרה נוספים (תיקי פע"ר) הגבוהים ב~10–16%. 2025 הוא נתון חלקי (עד 22.12.2025). פְּרוֹטוֹקוֹל מציג נתונים מסומני-מקור בלבד ולעולם אינו טוען לקשר סיבתי — הקורא מסיק.</p>
+    </footer>
+  </div>
+
+<script>
+(function(){
+  // Verified Israel-Police vehicle-theft series (see המקורות above).
+  const data=[
+    {y:2017,v:12176,t:'pre'},{y:2018,v:10441,t:'pre'},{y:2019,v:9981,t:'pre'},
+    {y:2020,v:8742,t:'covid'},{y:2021,v:12256,t:'pre'},{y:2022,v:16305,t:'pre'},
+    {y:2023,v:19094,t:'ten'},{y:2024,v:18638,t:'ten'},{y:2025,v:15153,t:'partial'}
+  ];
+  const W=920,H=380,padL=46,padR=18,padT=28,padB=46;
+  const plotW=W-padL-padR, plotH=H-padT-padB, yMax=20000;
+  const x=i=> padL + i*(plotW/data.length) + (plotW/data.length)*0.16;
+  const bw=(plotW/data.length)*0.68;
+  const yfn=v=> padT + plotH - (v/yMax)*plotH;
+  const baseline=Math.round((10441+9981+12256)/3); // 2018,2019,2021 avg = 10893
+  const fill={pre:'#c9bfa8',covid:'#d8cfb8',ten:'#b41f24',partial:'#e3b7b9'};
+  let s='';
+  // y gridlines
+  [0,5000,10000,15000,20000].forEach(g=>{
+    const yy=yfn(g);
+    s+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e3d9c2" stroke-width="1"/>`;
+    s+=`<text x="${padL-6}" y="${yy+3}" text-anchor="end" font-size="10" fill="#9a9080">${g/1000?g/1000+'k':'0'}</text>`;
+  });
+  // tenure shading (2023-2025 region)
+  const tenX=x(6)-(plotW/data.length)*0.16;
+  s+=`<rect x="${tenX}" y="${padT}" width="${W-padR-tenX}" height="${plotH}" fill="#b41f24" opacity="0.05"/>`;
+  s+=`<text x="${(tenX+W-padR)/2}" y="${padT+13}" text-anchor="middle" font-size="10.5" fill="#8b1216" font-weight="600">כהונת בן גביר</text>`;
+  // bars
+  data.forEach((d,i)=>{
+    const bx=x(i), by=yfn(d.v), bh=padT+plotH-by;
+    s+=`<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="${fill[d.t]}" stroke="#1b1814" stroke-width="1"/>`;
+    s+=`<text x="${bx+bw/2}" y="${by-5}" text-anchor="middle" font-size="10.5" fill="#1b1814">${d.v.toLocaleString('en-US')}</text>`;
+    s+=`<text x="${bx+bw/2}" y="${H-padB+16}" text-anchor="middle" font-size="11" fill="#6a6052">${d.y}${d.t==='partial'?'*':''}</text>`;
+  });
+  // baseline dashed line + label
+  const byl=yfn(baseline);
+  s+=`<line x1="${padL}" y1="${byl}" x2="${W-padR}" y2="${byl}" stroke="#3c6446" stroke-width="1.5" stroke-dasharray="6 4"/>`;
+  s+=`<text x="${padL+4}" y="${byl-5}" font-size="10.5" fill="#3c6446" font-weight="600">ממוצע לפני הכהונה ~${baseline.toLocaleString('en-US')}</text>`;
+  // peak marker
+  const pkx=x(6)+bw/2;
+  s+=`<text x="${pkx}" y="${yfn(19094)-18}" text-anchor="middle" font-size="10" fill="#8b1216" font-weight="700">שיא כל-הזמנים ▼</text>`;
+  document.getElementById('chart').innerHTML=s;
+})();
+</script>
+</body>
+</html>

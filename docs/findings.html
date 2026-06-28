@@ -44,6 +44,12 @@
   .counts{display:flex;gap:26px;margin:22px 0 8px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);}
   .counts b{font-family:"Suez One",serif;font-size:24px;}
   .counts .c-red b{color:var(--stamp);} .counts .c-grn b{color:var(--true);}
+  .feature{display:flex;gap:18px;align-items:center;text-decoration:none;color:inherit;border:2px solid var(--ink);background:var(--paper-2);box-shadow:14px 18px 0 rgba(27,24,20,.06);margin:22px 0 10px;padding:18px 20px;transition:transform .12s ease;}
+  .feature:hover{transform:translate(-2px,-2px);}
+  .fstamp{flex:none;font-family:"Suez One",serif;font-size:14px;line-height:1.05;text-align:center;border:3px solid var(--gold);color:var(--gold);border-radius:6px;padding:8px 12px;transform:rotate(-4deg);}
+  .fkick{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--stamp);text-transform:uppercase;}
+  .ftitle{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:21px;margin:4px 0 6px;}
+  .fsub{font-family:"Frank Ruhl Libre",serif;font-size:15px;color:var(--ink-soft);}
   .find{border:1.5px solid var(--ink);background:var(--paper-edge);box-shadow:14px 18px 0 rgba(27,24,20,.05);margin:0 0 22px;padding:20px 20px 16px;position:relative;}
   .f-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
   .who{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:20px;}
@@ -81,6 +87,14 @@
   <div class="banner"><div class="wrap">⚠ אלה <b>ממצאים אוטומטיים מועמדים לבדיקה אנושית</b> — אינם קביעות סופיות. התמלול אוטומטי ועלול לכלול שגיאות; כל ממצא יאומת ידנית לפני פרסום כקביעה.</div></div>
 
   <div class="wrap">
+    <a class="feature" href="case-cartheft.html">
+      <div class="fstamp">נָכוֹן<br>אַךְ חָסֵר<br>הֶקְשֵׁר</div>
+      <div>
+        <div class="fkick">תיק #001 · בדיקת מסגור</div>
+        <div class="ftitle">בן גביר: "ירידה של 20% בגניבות רכב"</div>
+        <div class="fsub">הנתון נכון — אך נמדד מ<b>שיא כל-הזמנים שנקבע בכהונתו</b>, והרמה עדיין ~39% מעל הנורמה שלפניו (וגם הביקורת ההפוכה מטעה: הזינוק היה בירושה). הגרף הרשמי המלא, עם תקופת הכהונה מסומנת ←</div>
+      </div>
+    </a>
     <div class="counts" id="counts"></div>
     <div id="list"></div>
     <p id="state" class="state">טוען ממצאים…</p>
@@ -120,7 +134,7 @@ function card(f){
   </section>`;
 }
 fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
-  if(!d||!d.findings||!d.findings.length){ stateEl.textContent='עדיין אין ממצאים. המערכת מעבדת ראיונות ברציפות — ממצאים יופיעו כאן.'; return; }
+  if(!d||!d.findings||!d.findings.length){ stateEl.textContent='התיק הראשון מוצג למעלה ↑ — ממצאים אוטומטיים נוספים יתווספו כאן ככל שהמערכת מעבדת ראיונות.'; return; }
   const c=d.counts||{};
   countsEl.innerHTML=`<span class="c-red"><b>${c.contradicted||0}</b> סותרים</span><span class="c-grn"><b>${c.consistent||0}</b> תואמים</span><span><b>${c.total||0}</b> סה״כ ממצאים</span>`;
   // contradictions first
