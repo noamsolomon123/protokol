@@ -38,5 +38,6 @@ _*
 *.log
 .playwright-mcp/
 *.png
+!docs/og.png
 # ...but DO keep the site's committed data
 !docs/data/*.json
