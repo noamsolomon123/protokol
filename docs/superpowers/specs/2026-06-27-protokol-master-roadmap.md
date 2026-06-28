@@ -90,6 +90,10 @@ and right judged by the same yardstick.
       contradictions pillar stays honestly empty — rigor working as designed, not a failure.
       Full chain works: scanner → candidates → strict agent consensus → PM-gate → review
       console; a real contradiction would flow straight through to publish.
+- [x] **F9 ACTIVATED (2026-06-28, supervised):** `run_harvester.bat` now passes `--deep`;
+      restarted the supervisor cleanly (consolidated to one worker + its child helper). Deep
+      combos (relevance/viewCount) firing, initial 429 burst settled within ~2 min, **22
+      transcripts in the first 10 min** — corpus growing past the recent-25/MK cap as intended.
 - [ ] **F2 · Integrate verified minister series** — fold the researched GDP/poverty/debt/…
       series into the performance tab; research the remaining ministry domains.
 - [x] **F3 · Human review console** — DONE: `docs/review.html` (internal, noindex) reviews
