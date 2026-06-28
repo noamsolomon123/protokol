@@ -143,8 +143,14 @@ and right judged by the same yardstick.
       unsupervised while user away): add `--deep` to `run_harvester.bat` and restart the
       supervisor — costs ~5× quota/MK (≈60 deep MK-passes/day across 3 keys) so it trades
       MKs-per-day for depth, appropriate now the recent corpus is saturated.
-- [ ] **F10 · Own repo + Pages** — migrate the platform to its own repo, fully separate
-      from the old `knesset-osint` OSINT scorecard.
+- [x] **F10 · Own repo + Pages** — DONE (2026-06-28): platform migrated to its own public
+      repo **`noamsolomon123/protokol`**, live at **https://noamsolomon123.github.io/protokol/**.
+      Verified history was secret-free before the public push. Bare URL now redirects to the
+      platform (`index.html` → `home.html`); the legacy OSINT scorecard stays ONLY at the old
+      `knesset-osint` repo/URL (frozen, untouched). Local `origin` repointed to protokol;
+      old remote kept as `knesset-osint-legacy`. All self-references (og:url/canonical, the
+      submit-form GitHub-issue repo) repointed to protokol. Pages built; home, connections
+      (live data), statistics all verified 200 with 0 console errors.
 
 Each backlog item gets its own brainstorm → spec → plan when its turn comes. This file
 is the source of truth for "what's left"; update the checkboxes as items ship.
