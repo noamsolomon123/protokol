@@ -7,6 +7,8 @@ transcription happens downstream (we never rehost media).
 
 from __future__ import annotations
 
+import time
+
 import httpx
 
 from knesset_osint.core.logging import get_logger
@@ -122,15 +124,23 @@ def deep_search(
     *,
     plan: list[tuple[str | None, str]] = DEEP_QUERY_PLAN,
     max_results: int = 25,
+    combo_delay: float = 1.2,
+    _sleep=time.sleep,
     **kw,
 ) -> list[dict]:
     """F9 deeper crawl: run every (suffix, order) combo in ``plan`` through ``search``
     (a RotatingYouTubeSearch — so key rotation/quota failover is reused) and dedupe by
     video id. A combo that fails (e.g. all keys exhausted) is skipped, so we still
     return whatever the other combos found. Newest-first combos run first, so the
-    deduped order roughly preserves recency."""
+    deduped order roughly preserves recency.
+
+    ``combo_delay`` paces the combos (default 1.2s) so the burst of N requests per MK
+    doesn't trip YouTube's short-window rate limit (429). It runs in the discovery
+    thread only, so it never blocks transcription. ``_sleep`` is injectable for tests."""
     seen: dict[str, dict] = {}
-    for suffix, order in plan:
+    for i, (suffix, order) in enumerate(plan):
+        if i and combo_delay:
+            _sleep(combo_delay)
         try:
             res = search(mk_name, max_results=max_results, query_suffix=(suffix or ""), order=order, **kw)
         except Exception as e:  # quota exhausted / transient — keep what we have

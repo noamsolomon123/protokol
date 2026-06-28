@@ -81,7 +81,7 @@ def test_deep_search_runs_every_combo_and_dedupes():
         tag = f"{order}:{query_suffix[:4]}"
         return [{"video_id": "shared"}, {"video_id": tag}]
 
-    res = deep_search(fake, "מישהו")
+    res = deep_search(fake, "מישהו", combo_delay=0)
     ids = [v["video_id"] for v in res]
     assert len(seen_combos) == len(DEEP_QUERY_PLAN)        # every combo issued
     assert ids.count("shared") == 1                         # deduped to one
@@ -95,7 +95,7 @@ def test_deep_search_skips_failing_combo():
                                         response=httpx.Response(403))
         return [{"video_id": order}]
 
-    res = deep_search(fake, "X")
+    res = deep_search(fake, "X", combo_delay=0)
     ids = {v["video_id"] for v in res}
     assert "viewCount" not in ids                           # failing combo skipped
     assert "date" in ids and "relevance" in ids             # others still returned
@@ -109,5 +109,14 @@ def test_deep_search_passes_order_through_real_signature():
         captured.append(order)
         return []
 
-    deep_search(fake, "X", plan=[("a", "date"), ("b", "viewCount")])
+    deep_search(fake, "X", plan=[("a", "date"), ("b", "viewCount")], combo_delay=0)
     assert captured == ["date", "viewCount"]
+
+
+def test_deep_search_paces_between_combos():
+    sleeps: list[float] = []
+    def fake(name, *, max_results, query_suffix, order, **kw):
+        return []
+    plan = [("a", "date"), ("b", "relevance"), ("c", "viewCount")]
+    deep_search(fake, "X", plan=plan, combo_delay=1.2, _sleep=lambda s: sleeps.append(s))
+    assert sleeps == [1.2, 1.2]  # paced between combos: N-1 sleeps, none before the first
