@@ -1,107 +1,30 @@
 <!DOCTYPE html>
+<!-- פְּרוֹטוֹקוֹל · root redirect → the platform landing (home.html). This repo (protokol)
+     is the fact-check platform, separate from the legacy OSINT scorecard. -->
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <title>מעקב כנסת · OSINT אובייקטיבי</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%233da9fc'/%3E%3Cpath d='M28 52l16 16 30-36' fill='none' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-  <meta property="og:title" content="מעקב כנסת · OSINT אובייקטיבי" />
-  <meta property="og:description" content="מעקב אובייקטיבי אחר נבחרי ציבור בישראל — נתונים רשמיים בלבד." />
-  <meta name="robots" content="index,follow" />
-  <meta name="description" content="מעקב אובייקטיבי אחר נבחרי ציבור בישראל — נתונים רשמיים בלבד, עם קישור למקור לכל נתון." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>פְּרוֹטוֹקוֹל</title>
+<meta http-equiv="refresh" content="0; url=./home.html" />
+<link rel="canonical" href="./home.html" />
+<meta property="og:title" content="פְּרוֹטוֹקוֹל" />
+<meta property="og:description" content="מה אמרו בכנסת — ומה אומרים הנתונים הרשמיים. ללא צד פוליטי, כל קביעה ממקור." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23b41f24'/%3E%3Cpath d='M27 52l16 16 30-37' fill='none' stroke='white' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+  html,body{height:100%;margin:0;background:#f4efe3;color:#1b1814;font-family:system-ui,"Heebo",sans-serif;}
+  .c{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;}
+  .m{font-family:"Suez One",serif;font-size:clamp(30px,7vw,52px);}
+  a{color:#b41f24;font-size:18px;border-bottom:2px solid #b41f24;text-decoration:none;padding-bottom:2px;}
+  .s{color:#6a6052;font-size:15px;}
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <h1 class="brand">מעקב כנסת <span class="brand-sub">OSINT אובייקטיבי</span></h1>
-      <p class="tagline">נתונים רשמיים בלבד · קישור למקור לכל נתון · ללא שיפוט אוטומטי</p>
-    </div>
-  </header>
-
-  <main class="wrap" id="app">
-    <div id="loading" class="loading">טוען נתונים…</div>
-    <div id="error" class="error hidden"></div>
-
-    <section id="content" class="hidden">
-      <!-- Politician hero -->
-      <section class="hero card">
-        <div class="hero-main">
-          <h2 id="p-name" class="p-name"></h2>
-          <div class="p-meta">
-            <span id="p-party" class="chip chip-party hidden"></span>
-            <span id="p-current" class="chip chip-current hidden">מכהן/ת כיום</span>
-          </div>
-          <a id="p-source" class="source-link" target="_blank" rel="noopener">המקור הרשמי (כנסת) ↗</a>
-        </div>
-      </section>
-
-      <!-- Accountability index -->
-      <section class="card index-card">
-        <div class="index-head">
-          <h3>מדד אחריותיות</h3>
-          <span id="idx-coverage" class="badge badge-warn"></span>
-        </div>
-        <div class="index-body">
-          <div class="index-ring" id="idx-ring">
-            <span id="idx-value" class="idx-value">—</span>
-            <span class="idx-of">מתוך 100</span>
-          </div>
-          <p id="idx-note" class="muted small"></p>
-        </div>
-        <p class="disclaimer" id="idx-disclaimer"></p>
-      </section>
-
-      <!-- Counts strip -->
-      <section class="counts" id="counts"></section>
-
-      <!-- Scorecard dimensions -->
-      <section>
-        <h3 class="section-title">כרטיס ציונים <span class="muted small">(כל ציון מבוסס נתון מקושר למקור)</span></h3>
-        <div id="dimensions" class="dims"></div>
-      </section>
-
-      <!-- Sample bills -->
-      <section>
-        <h3 class="section-title">הצעות חוק (מדגם)</h3>
-        <ul id="bills" class="list"></ul>
-      </section>
-
-      <!-- Recent votes -->
-      <section>
-        <h3 class="section-title">הצבעות אחרונות</h3>
-        <ul id="votes" class="list"></ul>
-      </section>
-
-      <!-- Methodology -->
-      <section class="card">
-        <details>
-          <summary class="section-title" style="cursor:pointer">מתודולוגיה ואובייקטיביות</summary>
-          <div class="method">
-            <p>הפלטפורמה מציגה <strong>עובדות בלבד</strong> ממקורות רשמיים (אתר הנתונים הפתוחים של הכנסת), וכל נתון מקושר למקורו. היא <strong>אינה</strong> קובעת אם אדם "טוב" או "רע".</p>
-            <p>"מדד האחריותיות" הוא <strong>עדשה משוקללת</strong> לפי קריטריונים גלויים — לא חוות דעת. כרגע הוא חלקי (חלק מהקריטריונים ממתינים למקורות נתונים בשלב הבא: מבקר המדינה, פסקי דין, מפתח התקציב ורשות התאגידים).</p>
-            <p>אנומליות (כגון סתירה בין הצהרה להצבעה) <strong>מסומנות לבדיקת אדם</strong> ולעולם אינן מוצגות כ"שקר" אוטומטי.</p>
-          </div>
-        </details>
-      </section>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p id="footer-sources" class="small muted"></p>
-      <p class="small muted">
-        קוד פתוח ·
-        <a href="https://github.com/noamsolomon123/knesset-osint" target="_blank" rel="noopener">GitHub</a>
-        · עודכן: <span id="footer-date">—</span>
-      </p>
-    </div>
-  </footer>
-
-  <script src="./app.js"></script>
+  <div class="c">
+    <div class="m">פְּרוֹטוֹקוֹל</div>
+    <div class="s">מעבירים אתכם לעמוד הבית…</div>
+    <a href="./home.html">כניסה לאתר →</a>
+  </div>
+  <script>location.replace('./home.html');</script>
 </body>
 </html>
