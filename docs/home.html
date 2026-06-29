@@ -43,7 +43,7 @@
   .hero-search input:focus{outline:none;border-color:var(--stamp);}
   .hero-search button{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;padding:0 22px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;transition:background .15s;white-space:nowrap;}
   .hero-search button:hover{background:var(--stamp);border-color:var(--stamp);}
-  .hero-hint{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-faint);margin:8px 0 0;}
+  .hero-hint{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-soft);margin:8px 0 0;}
   @media(max-width:560px){.hero-search{flex-direction:column;}}
   .stats{display:flex;gap:30px;flex-wrap:wrap;border-bottom:1.5px solid var(--ink);padding:18px 0;}
   .stat b{font-family:"Suez One",serif;font-size:34px;color:var(--stamp);line-height:1;display:block;}
@@ -61,7 +61,7 @@
   .tenet h4{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;margin:8px 0 6px;}
   .tenet p{margin:0;font-size:13.5px;color:var(--ink-soft);}
   footer{margin:30px 0 70px;padding-top:20px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:13px;color:var(--ink-soft);}
-  .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:16px;text-align:center;}
+  .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:16px;text-align:center;}
   @media(max-width:680px){ .tenets{grid-template-columns:1fr;} .tenet{border-inline-start:none;border-top:1px solid var(--rule);} }
 </style>
 </head>
@@ -74,16 +74,16 @@
     <p class="standfirst">פלטפורמה אובייקטיבית שאוספת ומתמללת ראיונות של חברי הכנסת, ומשווה את אמירותיהם לנתונים רשמיים שפרסמה המדינה. ימין ושמאל באותה אמת־מידה. כל קביעה — עם מקור בר־בדיקה.</p>
     <form class="hero-search" onsubmit="return goSearch(event)">
       <input id="hq" type="search" placeholder="חפשו מה שאמרו: גיוס, יוקר המחיה, חרדים…" aria-label="חיפוש בכל הראיונות" />
-      <button type="submit">חיפוש בכל הראיונות →</button>
+      <button type="submit">חיפוש בכל הראיונות ←</button>
     </form>
     <p class="hero-hint">לתפוס אותם על המילים — חיפוש חופשי בכל התמלולים, וקפיצה לרגע המדויק בסרטון.</p>
   </div></header>
 
-  <div class="wrap">
+  <main class="wrap">
     <div class="stats" id="stats">
       <div class="stat"><b class="num" id="s-iv">—</b><span>ראיונות תומללו</span></div>
       <div class="stat"><b class="num" id="s-mk">—</b><span>ח"כ במאגר</span></div>
-      <div class="stat"><b class="num" id="s-find">—</b><span>ממצאים לבדיקה</span></div>
+      <div class="stat"><b class="num" id="s-find">—</b><span>ממצאים שפורסמו</span></div>
       <div class="stat"><b class="num">120</b><span>חברי כנסת</span></div>
     </div>
 
@@ -93,7 +93,7 @@
       <a class="card" href="directory.html"><div class="c-k">03 · 120 חברי הכנסת</div><h3>מרשם חברי הכנסת</h3><p>כל ח"כ — הראיונות שלו, התמלולים, והבדיקות. מקובץ לפי סיעה.</p><span class="go">למרשם ←</span></a>
       <a class="card" href="ministers.html"><div class="c-k">04 · ביצועים בכהונה</div><h3>השרים והתחום שלהם</h3><p>לכל שר/ה — מגמת התחום בתקופת הכהונה (נתונים בלבד, ללא ייחוס אשמה).</p><span class="go">לשרים ←</span></a>
       <a class="card" href="statistics.html"><div class="c-k">05 · המספרים</div><h3>הנתונים הרשמיים</h3><p>כל הנתונים הממשלתיים שאספנו — כלכלה, חברה, ביטחון, דיור — כגרפים, כל אחד עם מקור.</p><span class="go">לנתונים ←</span></a>
-      <a class="card" href="leaderboard.html"><div class="c-k">06 · הדירוג</div><h3>לוח הסתירות</h3><p>חברי הכנסת מדורגים לפי מספר האמירות שנמצאו סותרות נתונים רשמיים.</p><span class="go">ללוח ←</span></a>
+      <a class="card" href="leaderboard.html"><div class="c-k">06 · הדירוג</div><h3>לוח הסתירות</h3><p>חברי הכנסת מדורגים לפי מספר האמירות שנמצאו סותרות נתונים רשמיים. מתעדכן ככל שמאומתות סתירות.</p><span class="go">ללוח ←</span></a>
       <a class="card" href="submit.html"><div class="c-k">07 · השתתפו</div><h3>הגשת טענה לבדיקה</h3><p>ראיתם נבחר ציבור טוען טענה מספרית? שלחו אותה — נבדוק מול הנתון הרשמי. גם עררים על ממצאים.</p><span class="go">להגשה ←</span></a>
       <a class="card" href="connections.html"><div class="c-k">08 · מי מדבר על מה</div><h3>מפת הקשרים</h3><p>לכל נושא ציבורי — מי מחברי הכנסת מדבר עליו, וכמה, מעוגן בנתון הרשמי שמודד אותו. מתאם בלבד.</p><span class="go">למפה ←</span></a>
     </div>
@@ -108,15 +108,15 @@
       <p>מאגר עובדתי, אובייקטיבי. התמלול אוטומטי וייתכנו שגיאות — לכן כל פריט מקושר למקורו לאימות. ממצאים אוטומטיים מסומנים כ"מועמדים לבדיקה" עד אימות אנושי.</p>
       <div class="colophon">פְּרוֹטוֹקוֹל · בקרת עובדות · אתר סטטי חינמי</div>
     </footer>
-  </div>
+  </main>
 <script>
 function goSearch(e){e.preventDefault();const v=document.getElementById('hq').value.trim();if(v)location.href='search.html?q='+encodeURIComponent(v);return false;}
 Promise.all([
   fetch('data/mk_index.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-  fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
-]).then(([idx,f])=>{
-  if(idx){ const iv=(idx.mks||[]).reduce((a,m)=>a+(m.interview_count||0),0); document.getElementById('s-iv').textContent=iv; document.getElementById('s-mk').textContent=idx.with_interviews||0; }
-  if(f){ document.getElementById('s-find').textContent=(f.counts&&f.counts.total)||0; }
+  fetch('data/cases.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([idx,cs])=>{
+  if(idx){ const iv=(idx.mks||[]).reduce((a,m)=>a+(m.interview_count||0),0); document.getElementById('s-iv').textContent=iv.toLocaleString('en-US'); document.getElementById('s-mk').textContent=idx.with_interviews||0; }
+  document.getElementById('s-find').textContent=(cs&&cs.cases&&cs.cases.length)||0;
 });
 </script>
 </body>

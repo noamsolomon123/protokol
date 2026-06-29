@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   פְּרוֹטוֹקוֹל · מרשם חברי הכנסת — real, browsable directory of the 120 sitting MKs.
-  Reads data/mk_roster.json (real data from the official Knesset OData API).
+  Reads data/mk_index.json (real data from the official Knesset OData API).
   Self-contained, RTL, "Forensic Dossier" aesthetic, free static on Pages.
 -->
 <html lang="he" dir="rtl">
@@ -73,7 +73,6 @@
   .card .who{min-width:0;}
   .card .nm{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:17px;line-height:1.15;}
   .card .id{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:2px;}
-  .soon{font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--ink-faint);border:1px solid var(--rule);border-radius:999px;padding:1px 7px;margin-inline-start:auto;align-self:flex-start;}
   .trend{position:absolute;top:-8px;left:-8px;width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;border:2px solid var(--paper);z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.28);cursor:help;}
   .trend.g{background:var(--true);} .trend.b{background:var(--stamp);}
   .legend{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin:2px 0 0;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
@@ -84,12 +83,12 @@
   footer{margin:48px 0 70px;padding-top:22px;border-top:1.5px solid var(--ink);font-family:"Frank Ruhl Libre",serif;font-size:14px;color:var(--ink-soft);}
   footer a{color:var(--gold);}
   .colophon{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);margin-top:18px;text-align:center;}
-  @media (max-width:600px){ .grid{grid-template-columns:1fr 1fr;} .card{flex-direction:column;align-items:flex-start;gap:8px;} .ava{width:36px;height:36px;font-size:16px;} .soon{display:none;} }
+  @media (max-width:600px){ .grid{grid-template-columns:1fr 1fr;} .card{flex-direction:column;align-items:flex-start;gap:8px;} .ava{width:36px;height:36px;font-size:16px;} }
 </style>
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./search.html">→ חיפוש</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./ministers.html">השרים</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a> &nbsp; <a class="nav-link" href="./connections.html">קשרים</a> &nbsp; <a class="nav-link" href="./submit.html">הגשה</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מקור: API הכנסת הרשמי <span class="dot"></span></span>
   </div></div>
 
@@ -104,11 +103,12 @@
       <input id="search" class="search" type="search" placeholder="חיפוש לפי שם או סיעה…" aria-label="חיפוש" />
       <span class="summary" id="summary"></span>
     </div>
+    <p class="legend"><i class="g">▲</i><i class="b">▼</i> = מגמת מדד התחום בכהונת השר/ה (נתון בלבד, ללא ייחוס סיבתי)</p>
     <div id="list"></div>
     <p id="state" class="state">טוען את מרשם חברי הכנסת…</p>
 
     <footer>
-      <p>הנתונים נשלפו ואומתו מ-API הרשמי של הכנסת (חברי כנסת מכהנים בלבד, הכנסת ה-25). זהו מרשם עובדתי — אינו כולל שיפוט. שרים שהתפטרו מכיסאם בכנסת לפי <strong>החוק הנורבגי</strong> אינם מופיעים כאן אלא בעמוד <a href="./ministers.html">השרים</a>. לבדיקת אמירות שסותרות נתונים רשמיים: <a href="./leaderboard.html">לוח הסתירות ←</a></p>
+      <p>הנתונים נשלפו ואומתו מ-API הרשמי של הכנסת (120 חברי הכנסת המכהנים וכן דמויות פוליטיות בולטות שאינן מכהנות, הכנסת ה-25). זהו מרשם עובדתי — אינו כולל שיפוט. שרים שהתפטרו מכיסאם בכנסת לפי <strong>החוק הנורבגי</strong> אינם מופיעים כאן אלא בעמוד <a href="./ministers.html">השרים</a>. לבדיקת אמירות שסותרות נתונים רשמיים: <a href="./leaderboard.html">לוח הסתירות ←</a></p>
       <div class="colophon">פְּרוֹטוֹקוֹל · בקרת עובדות · אתר סטטי חינמי</div>
     </footer>
   </div>
@@ -162,8 +162,9 @@ function render(filter){
       <div class="grid">
         ${g.members.map(m => `
           <a class="card" href="mk.html?id=${m.person_id}" title="${m.name}">
+            ${trendBadge(m.person_id)}
             <span class="ava">${firstLetter(m.name)}</span>
-            <span class="who"><span class="nm">${m.name}</span><span class="id num">${m.interview_count ? m.interview_count + ' ראיונות' : 'ID ' + m.person_id}</span></span>
+            <span class="who"><span class="nm">${m.name}</span><span class="id num">ID ${m.person_id}</span></span>
             ${m.interview_count ? `<span class="cnt num">${m.interview_count}</span>` : ''}
           </a>`).join('')}
       </div>

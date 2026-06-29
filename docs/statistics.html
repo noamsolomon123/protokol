@@ -48,7 +48,7 @@
   .labels span{flex:1;min-width:0;overflow:hidden;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:8px;color:var(--ink-faint);}
   .delta{font-family:"Frank Ruhl Libre",serif;font-size:14px;margin-top:10px;color:var(--ink-soft);}
   .delta b{font-family:"IBM Plex Mono",monospace;color:var(--ink);}
-  .arrow{font-weight:800;} .arrow.up{color:var(--stamp);} .arrow.down{color:var(--true);}
+  .arrow{font-weight:800;color:var(--ink-soft);}
   .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-faint);margin-top:auto;padding-top:10px;border-top:1px dashed var(--rule);}
   .src a{color:var(--gold);}
   .note{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink-faint);margin-top:8px;line-height:1.5;max-height:3.6em;overflow:hidden;cursor:pointer;}
@@ -60,7 +60,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./home.html">בית</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./ministers.html">שרים</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מקורות ממשלתיים רשמיים</span>
   </div></div>
   <header class="mast"><div class="wrap">
@@ -110,13 +110,17 @@ function statCard(key){
   </div>`;
 }
 
+function searchText(key){
+  const s=SERIES[key]||{};
+  return ((s.label||'')+' '+key+' '+((s.match||[]).join(' '))+' '+(s.unit||'')+' '+(s.note||'')).toLowerCase();
+}
 function render(filter){
-  const q=(filter||'').trim();
+  const q=(filter||'').trim().toLowerCase();
   let shown=0, html='';
   for(const [cat,keys] of CATS){
-    const cards=keys.filter(k=>SERIES[k]).map(statCard).filter(Boolean);
-    // apply text filter
-    const filtered=q ? cards.filter(c=>c.includes(q)) : cards;
+    // filter by a dedicated text key (label + synonyms + unit + note), not the card HTML
+    const matched=keys.filter(k=>SERIES[k] && (!q || searchText(k).includes(q)));
+    const filtered=matched.map(statCard).filter(Boolean);
     if(!filtered.length) continue;
     shown+=filtered.length;
     html+=`<h2 class="cat">${cat}</h2><div class="grid">${filtered.join('')}</div>`;
@@ -125,9 +129,23 @@ function render(filter){
   document.getElementById('count').innerHTML=`<b>${shown}</b> סדרות נתונים רשמיות`;
 }
 
-fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+function mergeCatalog(cat){
+  // fold catalog-derived series into SERIES and into the right category bucket
+  if(!cat||!cat.series) return;
+  for(const [key,s] of Object.entries(cat.series)){
+    SERIES[key]=s;
+    let bucket=CATS.find(c=>c[0]===s.category);
+    if(!bucket){ bucket=[s.category,[]]; CATS.push(bucket); }
+    if(!bucket[1].includes(key)) bucket[1].push(key);
+  }
+}
+Promise.all([
+  fetch('data/portfolio_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
+  fetch('data/catalog_series.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([d,cat])=>{
   if(!d||!d.series){ document.getElementById('state').textContent='הנתונים אינם זמינים כרגע.'; return; }
-  SERIES=d.series;
+  SERIES={...d.series};
+  mergeCatalog(cat);
   document.getElementById('state').style.display='none';
   render('');
 }).catch(()=>{ document.getElementById('state').textContent='שגיאה בטעינת הנתונים.'; });

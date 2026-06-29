@@ -50,7 +50,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./home.html">→ הבית</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>הגשות · עררים</span>
   </div></div>
   <header class="mast"><div class="wrap">
@@ -59,30 +59,30 @@
     <p class="standfirst">ראיתם נבחר ציבור טוען טענה שאפשר למדוד אותה מול נתון רשמי? שלחו אותה. נבדוק רק טענות קשות, כמותיות ובנות-הפרכה — מול סטטיסטיקה ישראלית פומבית, באותה אמת-מידה לכל הצדדים.</p>
   </div></header>
   <div class="wrap">
-    <div class="tabs">
-      <button class="tab on" data-mode="submission">הגשת טענה</button>
-      <button class="tab" data-mode="dispute">ערר על ממצא</button>
+    <div class="tabs" role="tablist" aria-label="סוג הגשה">
+      <button class="tab on" type="button" role="tab" aria-selected="true" data-mode="submission">הגשת טענה</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-mode="dispute">ערר על ממצא</button>
     </div>
 
     <form id="f">
       <div id="dispute-extra" style="display:none">
-        <label>מספר/כותרת הממצא שעליו מוגש הערר <span class="req">*</span></label>
+        <label for="finding">מספר/כותרת הממצא שעליו מוגש הערר <span class="req">*</span></label>
         <input id="finding" placeholder="לדוגמה: F-0042 או כותרת הממצא כפי שמופיעה באתר" />
         <p class="hint">מי שמגיש ערר על ממצא קיים — ציינו אותו במדויק כדי שנוכל לקשר.</p>
       </div>
 
-      <label>שם נבחר/ת הציבור <span class="req">*</span></label>
+      <label for="person">שם נבחר/ת הציבור <span class="req">*</span></label>
       <input id="person" placeholder="לדוגמה: שם ח״כ או שר/ה" required />
 
-      <label>הטענה / הציטוט המדויק <span class="req">*</span></label>
+      <label for="claim">הטענה / הציטוט המדויק <span class="req">*</span></label>
       <textarea id="claim" placeholder="צטטו את הטענה הכמותית במדויק. לדוגמה: &quot;האבטלה היום היא הנמוכה ביותר בהיסטוריה&quot;" required></textarea>
       <p class="hint">ככל שהציטוט מדויק ומספרי יותר — כך קל יותר לבדוק אותו.</p>
 
-      <label>קישור למקור <span class="req">*</span></label>
+      <label for="source">קישור למקור <span class="req">*</span></label>
       <input id="source" type="url" placeholder="https://… (יוטיוב, X/טוויטר, אתר חדשות, פרוטוקול כנסת)" required />
       <p class="hint">חובה. בלי מקור שניתן לאמת — לא נבדוק. עדיף קישור עם חותמת-זמן לרגע המדויק.</p>
 
-      <label>הערה (לא חובה)</label>
+      <label for="note">הערה (לא חובה)</label>
       <textarea id="note" placeholder="הקשר, תאריך, או למה לדעתכם הטענה ניתנת לבדיקה מול נתון רשמי."></textarea>
 
       <button class="btn" id="go" type="submit">פתחו את ההגשה ב-GitHub ↗</button>
@@ -106,8 +106,8 @@ const REPO='noamsolomon123/protokol';
 const $=id=>document.getElementById(id);
 let mode='submission';
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-  t.classList.add('on'); mode=t.dataset.mode;
+  document.querySelectorAll('.tab').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false');});
+  t.classList.add('on'); t.setAttribute('aria-selected','true'); mode=t.dataset.mode;
   $('dispute-extra').style.display = mode==='dispute' ? 'block' : 'none';
   $('finding').required = mode==='dispute';
   $('go').textContent = (mode==='dispute' ? 'פתחו את הערר ב-GitHub ↗' : 'פתחו את ההגשה ב-GitHub ↗');
@@ -116,7 +116,6 @@ $('f').addEventListener('submit',e=>{
   e.preventDefault();
   const person=$('person').value.trim(), claim=$('claim').value.trim(), source=$('source').value.trim(), note=$('note').value.trim();
   const isDispute = mode==='dispute', finding=$('finding').value.trim();
-  const label = isDispute ? 'dispute' : 'submission';
   const title = (isDispute ? '[ערר] ' : '[הגשה] ') + person + ' — ' + claim.slice(0,80);
   const body = [
     isDispute ? '**ערר על ממצא:** '+(finding||'(לא צוין)') : '**הגשת טענה לבדיקה**',
@@ -127,8 +126,7 @@ $('f').addEventListener('submit',e=>{
     '', '---', '_נשלח מטופס ההגשות הציבורי של פְּרוֹטוֹקוֹל. מועמד לבדיקה — לא ממצא._'
   ].join('\n');
   const url='https://github.com/'+REPO+'/issues/new'
-    +'?labels='+encodeURIComponent(label)
-    +'&title='+encodeURIComponent(title)
+    +'?title='+encodeURIComponent(title)
     +'&body='+encodeURIComponent(body);
   window.open(url,'_blank','noopener');
 });

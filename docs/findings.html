@@ -75,7 +75,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>בדיקה אוטומטית · מועמדים לבדיקה אנושית</span>
   </div></div>
 
@@ -87,14 +87,7 @@
   <div class="banner"><div class="wrap">⚠ אלה <b>ממצאים אוטומטיים מועמדים לבדיקה אנושית</b> — אינם קביעות סופיות. התמלול אוטומטי ועלול לכלול שגיאות; כל ממצא יאומת ידנית לפני פרסום כקביעה.</div></div>
 
   <div class="wrap">
-    <a class="feature" href="case-cartheft.html">
-      <div class="fstamp">נָכוֹן<br>אַךְ חָסֵר<br>הֶקְשֵׁר</div>
-      <div>
-        <div class="fkick">תיק #001 · בדיקת מסגור</div>
-        <div class="ftitle">בן גביר: "ירידה של 20% בגניבות רכב"</div>
-        <div class="fsub">הנתון נכון — אך נמדד מ<b>שיא כל-הזמנים שנקבע בכהונתו</b>, והרמה עדיין ~39% מעל הנורמה שלפניו (וגם הביקורת ההפוכה מטעה: הזינוק היה בירושה). הגרף הרשמי המלא, עם תקופת הכהונה מסומנת ←</div>
-      </div>
-    </a>
+    <div id="cases"></div>
     <div class="counts" id="counts"></div>
     <div id="list"></div>
     <p id="state" class="state">טוען ממצאים…</p>
@@ -125,7 +118,7 @@ function card(f){
       <div>
         <span class="lbl">הַנָּתוֹן הָרִשְׁמִי</span>
         <div class="datum"><b>${esc(String(s.value))} ${esc(s.unit||'')}</b> · ${esc(s.dimension_value||'')} (${esc(s.period||'')})</div>
-        <div class="src">מקור: ${esc(s.source_org||'')} · <a href="${s.source_url}" target="_blank" rel="noopener">↗</a></div>
+        <div class="src">מקור: ${esc(s.source_org||'')} · <a href="${esc(s.source_url||'#')}" target="_blank" rel="noopener">↗</a></div>
         ${f.reason?`<div class="src" style="margin-top:6px;color:var(--ink)">${esc(f.reason)}</div>`:''}
       </div>
       ${stamp}
@@ -133,6 +126,20 @@ function card(f){
     <div class="foot"><span>ביטחון אוטומטי <span class="num">${(f.confidence??'')}</span></span><a href="mk.html?id=${f.person_id}">עמוד הח"כ ←</a></div>
   </section>`;
 }
+// Published, human-verified case files (data/cases.json) render as featured cards above the candidate stream.
+function caseCard(c){
+  return `<a class="feature" href="${esc(c.url)}">
+    <div class="fstamp">${esc(c.verdict_he||'')}</div>
+    <div>
+      <div class="fkick">תיק ${esc(c.id)} · בדיקת מסגור</div>
+      <div class="ftitle">${esc(c.who)}: ${esc(c.title)}</div>
+      <div class="fsub">${esc(c.summary)} ←</div>
+    </div>
+  </a>`;
+}
+fetch('data/cases.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
+  if(d&&d.cases&&d.cases.length){ document.getElementById('cases').innerHTML=d.cases.map(caseCard).join(''); }
+}).catch(()=>{});
 fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{
   if(!d||!d.findings||!d.findings.length){ stateEl.textContent='התיק הראשון מוצג למעלה ↑ — ממצאים אוטומטיים נוספים יתווספו כאן ככל שהמערכת מעבדת ראיונות.'; return; }
   const c=d.counts||{};

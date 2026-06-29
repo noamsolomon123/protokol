@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "source": "verified_statistics catalog",
+  "count": 7,
+  "series": {
+    "vehicle_theft_count": {
+      "label": "גניבות רכב בישראל",
+      "unit": "מספר מוחלט לשנה",
+      "category": "ביטחון, פשיעה ומשפט",
+      "points": [
+        {
+          "year": 2017,
+          "value": 12176
+        },
+        {
+          "year": 2018,
+          "value": 10441
+        },
+        {
+          "year": 2019,
+          "value": 9981
+        },
+        {
+          "year": 2020,
+          "value": 8742
+        },
+        {
+          "year": 2021,
+          "value": 12256
+        },
+        {
+          "year": 2022,
+          "value": 16305
+        },
+        {
+          "year": 2023,
+          "value": 19094
+        },
+        {
+          "year": 2024,
+          "value": 18638
+        },
+        {
+          "year": 2025,
+          "value": 15153
+        }
+      ],
+      "sources": [
+        {
+          "org": "מרכז המחקר והמידע של הכנסת",
+          "url": "https://fs.knesset.gov.il/25/Committees/25_cs_mmm_4175820.pdf"
+        },
+        {
+          "org": "משטרת ישראל",
+          "url": "https://www.gov.il/BlobFolder/reports/police_statistical_2024/he/%D7%A9%D7%A0%D7%AA%D7%95%D7%9F%20%D7%A1%D7%98%D7%98%D7%99%D7%A1%D7%98%D7%99%202024%20%D7%9E%D7%A9%D7%98%D7%A8%D7%AA%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf"
+        }
+      ],
+      "note": "ירידה של ~19% לעומת 2024 ('הנמוך ביותר מאז 2021'); ירידה זו מיוחסת בין היתר לחיזוקי-אבטחה של יצרניות רכב סיניות מסוף 2024, לא רק למדיניות. עדיין גבוה ~39% מממוצע 2018–2021 ו-~7% מתחת ל-2022."
+    },
+    "femicide_victims_count": {
+      "label": "נשים שנרצחו בישראל",
+      "unit": "מספר מוחלט לשנה",
+      "category": "ביטחון, פשיעה ומשפט",
+      "points": [
+        {
+          "year": 2015,
+          "value": 28
+        },
+        {
+          "year": 2016,
+          "value": 28
+        },
+        {
+          "year": 2017,
+          "value": 21
+        },
+        {
+          "year": 2018,
+          "value": 29
+        },
+        {
+          "year": 2019,
+          "value": 17
+        },
+        {
+          "year": 2020,
+          "value": 29
+        },
+        {
+          "year": 2021,
+          "value": 27
+        },
+        {
+          "year": 2022,
+          "value": 23
+        },
+        {
+          "year": 2023,
+          "value": 32
+        },
+        {
+          "year": 2024,
+          "value": 35
+        }
+      ],
+      "sources": [
+        {
+          "org": "מרכז המחקר והמידע של הכנסת",
+          "url": "https://fs.knesset.gov.il/globaldocs/MMM/1a9317eb-97c4-f011-a865-005056aa9911/2_1a9317eb-97c4-f011-a865-005056aa9911_11_21126.pdf"
+        }
+      ],
+      "note": "מסמך 'נתונים על רצח נשים, 2015–2025' (24.11.2025). רצח פלילי, כל הגילים, לא רק על רקע מגדרי; אינו כולל פח\"ע. סך העשור 269 נרצחות, ממוצע ~27/שנה, שיא 2024=35. ~30% מהתיקים טרם פוענחו (46% ברצח נשים ערביות). 2025 חלקית (35 עד 7.9) — הושמטה כש"
+    },
+    "homicide_victims_count": {
+      "label": "נרצחים בישראל (סך הכל)",
+      "unit": "נרצחים",
+      "category": "ביטחון, פשיעה ומשפט",
+      "points": [
+        {
+          "year": 2020,
+          "value": 147
+        },
+        {
+          "year": 2023,
+          "value": 299
+        },
+        {
+          "year": 2024,
+          "value": 282
+        },
+        {
+          "year": 2025,
+          "value": 295
+        }
+      ],
+      "sources": [
+        {
+          "org": "מרכז טאוב",
+          "url": "https://www.taubcenter.org.il/wp-content/uploads/2024/02/Homicide-2024-HEB-3.pdf"
+        }
+      ],
+      "note": ""
+    },
+    "arab_population_share_pct": {
+      "label": "שיעור הערבים מהאוכלוסייה",
+      "unit": "% מכלל אוכלוסיית ישראל",
+      "category": "חברה, רווחה וחינוך",
+      "points": [
+        {
+          "year": 2018,
+          "value": 20.9
+        },
+        {
+          "year": 2020,
+          "value": 21
+        },
+        {
+          "year": 2021,
+          "value": 21.1
+        },
+        {
+          "year": 2022,
+          "value": 21.1
+        },
+        {
+          "year": 2023,
+          "value": 21.1
+        },
+        {
+          "year": 2024,
+          "value": 21
+        },
+        {
+          "year": 2025,
+          "value": 21.1
+        },
+        {
+          "year": 2026,
+          "value": 21.1
+        }
+      ],
+      "sources": [
+        {
+          "org": "הלשכה המרכזית לסטטיסטיקה",
+          "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2026/117/11_26_117b.pdf"
+        }
+      ],
+      "note": ""
+    },
+    "haredi_men_employment_rate_pct": {
+      "label": "תעסוקת גברים חרדים",
+      "unit": "אחוז (%)",
+      "category": "חברה, רווחה וחינוך",
+      "points": [
+        {
+          "year": 2015,
+          "value": 51.9
+        },
+        {
+          "year": 2021,
+          "value": 50.6
+        },
+        {
+          "year": 2022,
+          "value": 53.1
+        },
+        {
+          "year": 2023,
+          "value": 55.5
+        },
+        {
+          "year": 2024,
+          "value": 54
+        }
+      ],
+      "sources": [
+        {
+          "org": "הלשכה המרכזית לסטטיסטיקה",
+          "url": "https://www.calcalist.co.il/local_news/article/hk8qvnefke"
+        }
+      ],
+      "note": ""
+    },
+    "poverty_rate_arab_pct": {
+      "label": "עוני במשפחות ערביות",
+      "unit": "אחוז (%)",
+      "category": "חברה, רווחה וחינוך",
+      "points": [
+        {
+          "year": 2022,
+          "value": 38.9
+        },
+        {
+          "year": 2023,
+          "value": 38.4
+        },
+        {
+          "year": 2024,
+          "value": 37.6
+        }
+      ],
+      "sources": [
+        {
+          "org": "המוסד לביטוח לאומי, מינהל המחקר והתכנון",
+          "url": "https://www.btl.gov.il/Publications/oni_report/Documents/dohaoni2023.pdf"
+        },
+        {
+          "org": "המוסד לביטוח לאומי, מינהל המחקר והתכנון",
+          "url": "https://www.btl.gov.il/Publications/oni_report/Documents/dohahoni2024.pdf"
+        }
+      ],
+      "note": "ערך 2024 מדוח 2024. נותר גבוה פי ~2.5 מיהודים לא-חרדים (~14%)."
+    },
+    "housing_years_of_income": {
+      "label": "שנות שכר לרכישת דירה",
+      "unit": "שנות שכר",
+      "category": "דיור, תחבורה ואנרגיה",
+      "points": [
+        {
+          "year": 2013,
+          "value": 11.0
+        },
+        {
+          "year": 2014,
+          "value": 11.5
+        },
+        {
+          "year": 2015,
+          "value": 11.9
+        },
+        {
+          "year": 2016,
+          "value": 12.0
+        },
+        {
+          "year": 2017,
+          "value": 12.1
+        },
+        {
+          "year": 2018,
+          "value": 12.5
+        },
+        {
+          "year": 2019,
+          "value": 12.6
+        },
+        {
+          "year": 2020,
+          "value": 11.5
+        }
+      ],
+      "sources": [
+        {
+          "org": "מרכז המחקר והמידע של הכנסת",
+          "url": "https://fs.knesset.gov.il/globaldocs/MMM/e2bce121-c1e3-eb11-8127-00155d0af32a/2_e2bce121-c1e3-eb11-8127-00155d0af32a_11_18086.pdf"
+        }
+      ],
+      "note": "ערך גולמי במקור: 138.6 משכורות חודשיות (÷12 = 11.5 שנות שכר ברוטו למשרת שכיר בודדת). גבוה ממדד 'נשיגות הרכישה' של בנק ישראל (הכנסת משק בית נטו, ~5–6.4 שנים). 2020 מוטה כלפי מטה בשל זינוק השכר בקורונה. מסמך 19.7.2021."
+    }
+  }
+}

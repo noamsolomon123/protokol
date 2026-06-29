@@ -65,18 +65,18 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./directory.html">→ מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים הרשמיים</a> &nbsp; <a class="nav-link" href="./findings.html">ממצאים</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מקור: API הכנסת הרשמי</span>
   </div></div>
   <header class="mast"><div class="wrap">
     <div class="kicker">הממשלה · נתונים רשמיים</div>
-    <h1 class="wordmark">הַשָּׂרִים</h1>
-    <p class="standfirst">השרים וסגני השרים המכהנים, התיק שהם מחזיקים והמועד שבו נכנסו לתפקיד — נשלף מ-API הרשמי של הכנסת. בקרוב: לכל שר/ה לשונית "ביצועים" — נתוני התחום הרשמיים לאורך תקופת הכהונה, מקושרים למקור (נתונים בלבד, ללא ייחוס אשמה).</p>
+    <h1 class="wordmark"><a href="./home.html" style="text-decoration:none;color:inherit;">הַשָּׂרִים</a></h1>
+    <p class="standfirst">השרים וסגני השרים המכהנים, התיק שהם מחזיקים והמועד שבו נכנסו לתפקיד — נשלף מ-API הרשמי של הכנסת. לכל שר/ה שמשויך לו נתון מוצגים בכרטיס גם נתוני התחום הרשמיים לאורך תקופת הכהונה, מקושרים למקור (נתונים בלבד, ללא ייחוס אשמה).</p>
   </div></header>
   <div class="wrap">
     <div class="grid" id="grid"></div>
     <p id="state" class="state">טוען…</p>
-    <footer><p>מרשם עובדתי של חברי הממשלה. לשונית "ביצועים" תציג נתוני תחום רשמיים בתקופת הכהונה — כעובדה מקושרת למקור, ולא כקביעה שהשר/ה אחראי/ת לתוצאה.</p></footer>
+    <footer><p>מרשם עובדתי של חברי הממשלה. נתוני הביצועים מציגים נתוני תחום רשמיים בתקופת הכהונה — כעובדה מקושרת למקור, ולא כקביעה שהשר/ה אחראי/ת לתוצאה.</p></footer>
   </div>
 <script>
 const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -113,8 +113,10 @@ Promise.all([
       const startPt=pts.find(x=>x.year===tyn)||pts.find(x=>tyn&&x.year>=tyn), lastPt=pts[pts.length-1];
       let cap='';
       if(startPt&&lastPt){cap=`בתקופת הכהונה (משנת ${tyn}): מ-<b>${startPt.value}</b> ל-<b>${lastPt.value}${lastPt.provisional?'*':''}</b> ${esc(matched.unit)}.`;}
+      const dir=(startPt&&lastPt)?(lastPt.value>startPt.value?'במגמת עלייה':(lastPt.value<startPt.value?'במגמת ירידה':'יציב')):'';
+      const chartAria=`תרשים עמודות: ${matched.label}${dir?' — '+dir:''}${(startPt&&lastPt)?', מ-'+startPt.value+' ל-'+lastPt.value+' '+(matched.unit||''):''}`;
       const srcs=(matched.sources||[]).map(x=>`<a href="${x.url}" target="_blank" rel="noopener">${esc(x.org)} ↗</a>`).join(' · ');
-      perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה. אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
+      perf=`<div class="perf-h">ביצועים בתקופת הכהונה</div><div class="perf-t">${esc(matched.label)} — לפי שנה</div><div class="chart" role="img" aria-label="${esc(chartAria)}">${bars}</div><div class="labels">${labels}</div><div class="perf-cap">${cap}</div><div class="perf-src">מקורות: ${srcs}</div><div class="perf-note">⚠ נתונים בלבד — מגמת התחום בתקופת הכהונה. אין בכך קביעה שהשר/ה אחראי/ת לתוצאה. ${esc(matched.note||'')}</div>`;
     }
     return {perf:!!mm, html:`<div class="m${mm?' perf-card':''}">
       ${badge(p.person_id)}

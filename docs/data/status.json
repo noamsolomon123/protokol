@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-06-27T15:32:14.186226+00:00",
+  "generated_at": "2026-06-29T09:55:39.119885+00:00",
   "harvester": {
-    "transcribed": 2149,
-    "processed": 2296,
+    "transcribed": 4413,
+    "processed": 4717,
     "active": true,
-    "last_log_min": 0.6
+    "last_log_min": 0.3
   },
   "corpus": {
-    "transcripts": 2149,
-    "mks_with_interviews": 113
+    "transcripts": 4413,
+    "mks_with_interviews": 125
   },
   "findings": {
     "total": 0,
@@ -19,8 +19,13 @@
   "backlog": [
     {
       "id": "F1",
-      "done": false,
-      "label": "F1 — Findings at scale** — multi-model agent fact-check: Claude agents (no Gemini"
+      "done": true,
+      "label": "F1 — Findings at scale** — DONE (pipeline exercised; honest 0-yield): the cheap"
+    },
+    {
+      "id": "F9",
+      "done": true,
+      "label": "F9 ACTIVATED (2026-06-28, supervised):** `run_harvester.bat` now passes `--deep`;"
     },
     {
       "id": "F2",
@@ -29,43 +34,43 @@
     },
     {
       "id": "F3",
-      "done": false,
-      "label": "F3 — Human review console** — confirm candidate → published (integrity-critical;"
+      "done": true,
+      "label": "F3 — Human review console** — DONE: `docs/review.html` (internal, noindex) reviews"
     },
     {
       "id": "F4",
-      "done": false,
-      "label": "F4 — Consistency profile per MK** — RAG over each MK's own record; flag only hard,"
+      "done": true,
+      "label": "F4 — Consistency profile per MK** — DONE (mechanism + honest result):"
     },
     {
       "id": "F5",
-      "done": false,
-      "label": "F5 — X/Twitter integration** — tweets via a throwaway X account (user-provided),"
+      "done": true,
+      "label": "F5 — X/Twitter** — DONE (display): user's X account (cookies session), verified-"
     },
     {
       "id": "F6",
-      "done": false,
-      "label": "F6 — Public submissions + disputes** — public submits clips/claims; MKs can appeal"
+      "done": true,
+      "label": "F6 — Public submissions + disputes** — DONE: `docs/submit.html` — backend-free"
     },
     {
       "id": "F7",
-      "done": false,
-      "label": "F7 — Connections engine** — sourced knowledge-graph linking people/claims/topics/"
+      "done": true,
+      "label": "F7 — Connections engine** — DONE: `scripts/build_connections.py` + `connections.html`"
     },
     {
       "id": "F8",
-      "done": false,
-      "label": "F8 — Polish + ship for voters** — navigation, mobile, share cards, favicons,"
+      "done": true,
+      "label": "F8 — Polish + ship for voters** — DONE (core): OG/Twitter summary share-cards on"
     },
     {
       "id": "F9",
-      "done": false,
-      "label": "F9 — Deeper crawl** — pagination/varied queries beyond the recent-25/MK cap to grow"
+      "done": true,
+      "label": "F9 — Deeper crawl** — DONE (capability, tested; activation = 1-line toggle):"
     },
     {
       "id": "F10",
-      "done": false,
-      "label": "F10 — Own repo + Pages** — migrate the platform to its own repo, fully separate"
+      "done": true,
+      "label": "F10 — Own repo + Pages** — DONE (2026-06-28): platform migrated to its own public"
     }
   ],
   "agents": [

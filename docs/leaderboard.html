@@ -231,7 +231,7 @@
   <div class="ribbon">תצוגה לדוגמה · נתונים סינתטיים</div>
 
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./findings.html">→ ממצאים לבדיקה</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם חברי הכנסת</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מקור־אמת: נתונים ממשלתיים רשמיים <span class="dot"></span></span>
   </div></div>
 
@@ -390,7 +390,7 @@ function render(){
   const data = [...currentRows()].sort((a,b) => b.count - a.count);
   if(!data.length){
     board.innerHTML = '<div class="empty-note">' +
-      '<p>עדיין אין אמירות שפורסמו — אנחנו בונים את מאגר הראיות מנתונים רשמיים בלבד, וכל קביעה תיבדק מול מקור אמיתי.</p>' +
+      '<p>עדיין אין אמירות שנמצאו סותרות נתונים רשמיים ומדורגות כאן — ממצאים מתפרסמים ב<a href="./findings.html" style="color:var(--stamp);font-weight:700;text-underline-offset:3px">עמוד הממצאים</a>.</p>' +
       '<p><strong>120 חברי הכנסת</strong> כבר במעקב. <a href="./directory.html" style="color:var(--stamp);font-weight:700;text-underline-offset:3px">עיינו במרשם המלא ←</a></p>' +
       '</div>';
     return;

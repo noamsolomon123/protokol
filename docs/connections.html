@@ -59,7 +59,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./home.html">→ הבית</a> &nbsp; <a class="nav-link" href="./directory.html">מרשם</a> &nbsp; <a class="nav-link" href="./statistics.html">הנתונים</a> &nbsp; <a class="nav-link" href="./search.html">חיפוש</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מפת קשרים</span>
   </div></div>
   <header class="mast"><div class="wrap">
@@ -77,7 +77,7 @@
 const esc=t=>(t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const heb=n=>(n==null?'':Number(n).toLocaleString('he-IL'));
 fetch('data/connections.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
-  const tp=d.topics||[];
+  const tp=(d.topics||[]).filter(t=>t.mk_count>0);
   const maxc=Math.max(1,...tp.map(t=>t.mk_count));
   document.getElementById('totals').innerHTML =
     `<b>${tp.length}</b> נושאים · <b>${d.totals.mks_connected}</b> חברי כנסת מקושרים · <b>${heb(d.totals.edges)}</b> קשרים`;

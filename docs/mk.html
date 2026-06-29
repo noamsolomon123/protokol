@@ -84,7 +84,7 @@
 </head>
 <body>
   <div class="filebar"><div class="wrap">
-    <span><a class="nav-link" href="./directory.html">→ מרשם חברי הכנסת</a> &nbsp; <a class="nav-link" href="./leaderboard.html">לוח הסתירות</a></span>
+    <span><a class="nav-link" href="./home.html">בית</a> · <a class="nav-link" href="./search.html">חיפוש</a> · <a class="nav-link" href="./findings.html">ממצאים</a> · <a class="nav-link" href="./directory.html">מרשם</a> · <a class="nav-link" href="./ministers.html">שרים</a> · <a class="nav-link" href="./statistics.html">נתונים</a> · <a class="nav-link" href="./leaderboard.html">לוח</a> · <a class="nav-link" href="./connections.html">קשרים</a> · <a class="nav-link" href="./submit.html">הגשה</a></span>
     <span>מקור: ראיונות ציבוריים · תמלול אוטומטי</span>
   </div></div>
 
@@ -136,13 +136,13 @@ function render(filter){
       const mm = String(Math.floor(t/60)).padStart(2,'0'), ss = String(t%60).padStart(2,'0');
       let txt = esc(s.text);
       if(hit) txt = txt.split(q).join('<mark>'+esc(q)+'</mark>');
-      return `<div class="seg${hit?' hit':''}" data-iv="${i}" data-t="${t}"><span class="t num">${mm}:${ss}</span><span>${txt}</span></div>`;
+      return `<div class="seg${hit?' hit':''}" role="button" tabindex="0" aria-label="קפיצה לרגע ${mm}:${ss}" data-iv="${i}" data-t="${t}"><span class="t num">${mm}:${ss}</span><span>${txt}</span></div>`;
     }).join('');
     if(q && !rows) return '';  // hide interviews with no match
     return `<section class="iv">
       <div class="iv-head">
         <h3 class="iv-title">${esc(iv.title || 'ראיון')}</h3>
-        <div class="iv-sub">${esc(iv.channel||'')} · ${fmtDate(iv.published_at)} · ${fmtDur(iv.duration_sec)} · <a href="${iv.url}" target="_blank" rel="noopener">צפייה במקור ↗</a></div>
+        <div class="iv-sub">${[esc(iv.channel||''), fmtDate(iv.published_at), fmtDur(iv.duration_sec)].filter(Boolean).join(' · ')} · <a href="${iv.url}" target="_blank" rel="noopener">צפייה במקור ↗</a></div>
       </div>
       <div class="iv-body">
         <div class="transcript">${rows || '<div class="seg"><span>אין תוצאות לחיפוש בראיון זה.</span></div>'}</div>
@@ -153,10 +153,16 @@ function render(filter){
   if(q){ stateEl.style.display = totalHits ? 'none' : ''; stateEl.textContent = totalHits ? '' : 'לא נמצאו תוצאות לחיפוש.'; }
 }
 
-listEl.addEventListener('click', e => {
-  const seg = e.target.closest('.seg'); if(!seg || seg.dataset.iv===undefined) return;
+function seekSeg(seg){
+  if(!seg || seg.dataset.iv===undefined) return;
   const f = document.getElementById('yt-'+seg.dataset.iv);
   if(f) f.src = `https://www.youtube.com/embed/${DATA.interviews[seg.dataset.iv].video_id}?start=${seg.dataset.t}&autoplay=1`;
+}
+listEl.addEventListener('click', e => seekSeg(e.target.closest('.seg')));
+listEl.addEventListener('keydown', e => {
+  if(e.key!=='Enter' && e.key!==' ') return;
+  const seg = e.target.closest('.seg'); if(!seg || seg.dataset.iv===undefined) return;
+  e.preventDefault(); seekSeg(seg);
 });
 searchEl.addEventListener('input', e => render(e.target.value));
 
@@ -181,7 +187,7 @@ function renderFindings(all){
     const s=f.stat||{};
     return `<div class="contra"><div class="c-stamp">סוֹתֵר נְתוּנִים</div>
       <span class="lbl">האמירה</span><p class="c-quote">"${esc(f.quote)}"</p>
-      <span class="lbl">הנתון הרשמי</span><div class="c-datum">${esc(String(s.value))} ${esc(s.unit||'')} · ${esc(s.source_org||'')} <a href="${s.source_url}" target="_blank" rel="noopener">↗</a></div>
+      <span class="lbl">הנתון הרשמי</span><div class="c-datum">${esc(String(s.value))} ${esc(s.unit||'')} · ${esc(s.source_org||'')} <a href="${esc(s.source_url||'#')}" target="_blank" rel="noopener">↗</a></div>
       ${f.reason?`<div class="c-reason">${esc(f.reason)}</div>`:''}
       <a class="c-mom" href="${mom(f.url,f.approx_seconds)}" target="_blank" rel="noopener">▶ צפייה ברגע</a></div>`;
   }).join('');
@@ -197,7 +203,7 @@ function renderTweets(tj){
   tweetsEl.innerHTML=`<div class="tw-h">🐦 ציוצים אחרונים — <a href="https://x.com/${esc(tj.handle)}" target="_blank" rel="noopener">@${esc(tj.handle)} ↗</a> · נאספים ומקושרים למקור</div><div class="tweets">${items}</div>`;
 }
 
-if(!id){ stateEl.textContent='לא צוין מזהה ח"כ.'; }
+if(!id){ stateEl.textContent='לא צוין מזהה ח"כ.'; nameEl.textContent='לא נבחר חבר/ת כנסת'; }
 else Promise.all([
   fetch(`data/mk/${id}.json`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
   fetch('data/findings.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
@@ -207,14 +213,23 @@ else Promise.all([
   renderTweets(tj);
   if(!d){
     stateEl.textContent='אין עדיין ראיונות מתומללים עבור ח"כ זה. המערכת אוספת ומתמללת ראיונות באופן רציף.';
-    return fetch('data/mk_index.json').then(r=>r.json()).then(idx=>{const m=(idx.mks||[]).find(x=>String(x.person_id)===String(id)); if(m){nameEl.textContent=m.name; metaEl.innerHTML=`${m.party||''} · <b>0</b> ראיונות`;}}).catch(()=>{});
+    return Promise.all([
+      fetch('data/mk_index.json').then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('data/ministers.json').then(r=>r.ok?r.json():null).catch(()=>null)
+    ]).then(([idx,mins])=>{
+      const m=idx&&(idx.mks||[]).find(x=>String(x.person_id)===String(id));
+      const mn=mins&&(mins.ministers||[]).find(x=>String(x.person_id)===String(id));
+      if(m){ nameEl.textContent=m.name; metaEl.innerHTML=`${esc(m.party||'')} · <b>0</b> ראיונות`; }
+      else if(mn){ nameEl.textContent=mn.name; metaEl.innerHTML=`${esc(mn.position||mn.ministry||'')} · <b>0</b> ראיונות`; }
+      else { nameEl.textContent='חבר/ת כנסת'; }
+    }).catch(()=>{ nameEl.textContent='חבר/ת כנסת'; });
   }
   DATA=d; nameEl.textContent=d.name;
   const segs=d.interviews.reduce((a,iv)=>a+(iv.segments||[]).length,0);
   metaEl.innerHTML=`${d.party||''} · <b>${d.interviews.length}</b> ראיונות · <b>${segs}</b> קטעי תמלול`;
   stateEl.style.display='none';
   render('');
-}).catch(()=>{ stateEl.textContent='שגיאה בטעינת נתוני הח"כ.'; });
+}).catch(()=>{ stateEl.textContent='שגיאה בטעינת נתוני הח"כ.'; if(nameEl.textContent==='…') nameEl.textContent='חבר/ת כנסת'; });
 </script>
 </body>
 </html>

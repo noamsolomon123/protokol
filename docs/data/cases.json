@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "note": "Published, human-verified finding case files (distinct from auto-extracted candidate findings in findings.json). Each links to its full case page.",
+  "cases": [
+    {
+      "id": "C001",
+      "type": "missing_context",
+      "who": "איתמר בן גביר",
+      "role": "השר לביטחון לאומי",
+      "title": "\"ירידה של 20% בגניבות רכב\"",
+      "verdict_he": "נכון אך חסר הקשר",
+      "topic": "פשיעה",
+      "url": "case-cartheft.html",
+      "date": "2026-06-28",
+      "summary": "הנתון נכון — אך נמדד מ‏שיא כל-הזמנים שנקבע בכהונתו, והרמה עדיין ~39% מעל הנורמה שלפניו. וגם הביקורת ההפוכה מטעה: הזינוק היה בירושה. הגרף הרשמי המלא, עם תקופת הכהונה מסומנת."
+    }
+  ]
+}
